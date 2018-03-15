@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:budget_tracker/category/Category.dart';
+import 'package:intl/intl.dart';
 
 class Transaction {
   final int id;
@@ -24,7 +25,7 @@ class Transaction {
       id: json['id'],
       type: json['type'],
       amount: json['amount'],
-      dateTime: new DateTime(2018,1,2),
+      dateTime:  new DateFormat('yyyy-MM-dd').parse(json['date']),
       note: json['note'],
       category: new TransactionCategory.fromJson(json['category'])
     );
