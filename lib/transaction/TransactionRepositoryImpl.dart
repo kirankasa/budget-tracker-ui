@@ -8,7 +8,7 @@ import 'package:budget_tracker/transaction/TransactionRepository.dart';
 
 class TransactionRepositoryImpl implements TransactionRepository {
   static const transactions_url =
-      'https://budget-tracker.cfapps.io/transactions';
+      'http://192.168.56.1:8080/transactions';
 
   @override
   Future<List<Transaction>> retrieveTransactions() {

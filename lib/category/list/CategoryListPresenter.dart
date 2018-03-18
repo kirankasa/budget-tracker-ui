@@ -1,9 +1,9 @@
-import 'package:budget_tracker/category/CategoryViewContract.dart';
+import 'package:budget_tracker/category/list/CategoryListViewContract.dart';
 import 'package:budget_tracker/category/CategoryRepository.dart';
 import 'package:budget_tracker/common/di/injection.dart';
 
 class CategoryPresenter {
-  CategoryViewContract _view;
+  CategoryListViewContract _view;
   CategoryRepository _repository;
 
   CategoryPresenter(this._view) {

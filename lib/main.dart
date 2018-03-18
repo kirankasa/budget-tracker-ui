@@ -1,3 +1,5 @@
+import 'package:budget_tracker/category/details/CategoryDetailsView.dart';
+import 'package:budget_tracker/category/list/CategoryListView.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_tracker/transaction/TransactionView.dart';
 
@@ -10,7 +12,7 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home: new TransactionView(),
+      home: new CategoryListView(),
     );
   }
 }

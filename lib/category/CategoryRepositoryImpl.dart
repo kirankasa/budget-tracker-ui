@@ -8,7 +8,7 @@ import 'package:budget_tracker/category/CategoryRepository.dart';
 
 class CategoryRepositoryImpl implements CategoryRepository {
   static const categories_url =
-      'https://budget-tracker.cfapps.io/transactions/categories';
+      'http://192.168.56.1:8080/transactions/categories';
 
   @override
   Future<List<TransactionCategory>> retrieveTransactionCategories() {
@@ -24,6 +24,21 @@ class CategoryRepositoryImpl implements CategoryRepository {
       return categories
           .map((category) => new TransactionCategory.fromJson(category))
           .toList();
+    });
+  }
+
+  @override
+  Future<TransactionCategory> retrieveTransactionCategoryDetails(int id) {
+    return http.get(categories_url+"/"+id.toString()).then((http.Response response) {
+      final String jsonBody = response.body;
+      final statusCode = response.statusCode;
+
+      if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
+        throw new FetchDataException(
+            "Error while retriveing Transaction category details[StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+      }
+      var categoryJson = JSON.decode(response.body);
+      return new TransactionCategory.fromJson(categoryJson);
     });
   }
 }

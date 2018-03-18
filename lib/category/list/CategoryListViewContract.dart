@@ -1,6 +1,6 @@
 import 'package:budget_tracker/category/Category.dart';
 
-abstract class CategoryViewContract {
+abstract class CategoryListViewContract {
 
   void showCategoriesList(List<TransactionCategory> categories);
 

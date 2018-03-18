@@ -1,9 +1,10 @@
 import 'package:budget_tracker/category/Category.dart';
+import 'package:budget_tracker/category/details/CategoryDetailsView.dart';
 import 'package:flutter/material.dart';
-import 'package:budget_tracker/category/categoryPresenter.dart';
-import 'package:budget_tracker/category/CategoryViewContract.dart';
+import 'package:budget_tracker/category/list/CategoryListPresenter.dart';
+import 'package:budget_tracker/category/list/CategoryListViewContract.dart';
 
-class CategoryView extends StatelessWidget {
+class CategoryListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -22,7 +23,7 @@ class CategoryList extends StatefulWidget {
 }
 
 class _CategoryListState extends State<CategoryList>
-    implements CategoryViewContract {
+    implements CategoryListViewContract {
   CategoryPresenter _presenter;
 
   List<TransactionCategory> _categories;
@@ -72,8 +73,14 @@ class _CategoryListState extends State<CategoryList>
 
   List<_CategoryListItem> _buildTransactionList() {
     return _categories
-        .map((category) =>
-            new _CategoryListItem(category: category, onTap: () {}))
+        .map((category) => new _CategoryListItem(
+            category: category,
+            onTap: () {
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => new CategoryDetailsView(categoryId: category.id,)));
+            }))
         .toList();
   }
 }
