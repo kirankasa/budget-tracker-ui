@@ -7,4 +7,8 @@ class TransactionCategory {
   factory TransactionCategory.fromJson(Map<String, dynamic> json) {
     return new TransactionCategory(id: json['id'], category: json['category']);
   }
+
+  bool operator ==(other) {
+    return (other is TransactionCategory && other.category == category);
+  }
 }

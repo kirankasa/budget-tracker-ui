@@ -1,5 +1,6 @@
 import 'package:budget_tracker/transaction/Transaction.dart';
 import 'package:budget_tracker/transaction/details/TransactionDetailView.dart';
+import 'package:budget_tracker/transaction/details/TransactionFormView.dart';
 import 'package:budget_tracker/transaction/list/TransactionListPresenter.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_tracker/transaction/list/TransactionListViewContract.dart';
@@ -11,6 +12,11 @@ class TransactionListView extends StatelessWidget {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('Transactions'),
+        actions: <Widget>[
+          new IconButton(icon: new Icon(Icons.add_circle,size: 30.0,) , onPressed: (){
+            Navigator.push(context, new MaterialPageRoute(builder: (context) => new TransactionFormView()));
+          })
+        ],
       ),
       body: new TransactionList(),
     );

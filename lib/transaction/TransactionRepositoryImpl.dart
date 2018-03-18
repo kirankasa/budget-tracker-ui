@@ -42,4 +42,16 @@ class TransactionRepositoryImpl implements TransactionRepository {
       return new Transaction.fromJson(transactionJson);
     });
   }
+
+  @override
+  void saveTransaction(Transaction transaction) {
+    String json = JSON.encode(transaction);
+    http.post(transactions_url, body: json,headers: {'content-type':'application/json'}).then((http.Response response) {
+      final statusCode = response.statusCode;
+      if (statusCode < 200 || statusCode >= 300) {
+        throw new FetchDataException(
+            "Error while saving transaction details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+      }
+    });
+  }
 }

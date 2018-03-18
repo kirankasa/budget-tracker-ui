@@ -22,20 +22,18 @@ class Transaction {
 
   factory Transaction.fromJson(Map<String, dynamic> json) {
     return new Transaction(
-      id: json['id'],
-      type: json['type'],
-      amount: json['amount'],
-      dateTime:  new DateFormat('yyyy-MM-dd').parse(json['date']),
-      note: json['note'],
-      category: new TransactionCategory.fromJson(json['category'])
-    );
+        id: json['id'],
+        type: json['type'],
+        amount: json['amount'],
+        dateTime: new DateFormat('yyyy-MM-dd').parse(json['date']),
+        note: json['note'],
+        category: new TransactionCategory.fromJson(json['category']));
   }
-}
-
-Future<Transaction> retrieveTransactions() async {
-  final response =
-      await http.get('https://budget-tracker.cfapps.io/transactions');
-  final json = JSON.decode(response.body);
-
-  return new Transaction.fromJson(json);
+  Map<String, dynamic> toJson() => {
+        'type': type=='Income'? "C": "D",
+        'category': {'category': category.category, 'id': category.id},
+        'amount': amount,
+        'date': new DateFormat('yyyy-MM-dd').format(dateTime),
+        'note': note
+      };
 }

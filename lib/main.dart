@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primarySwatch: Colors.purple,
       ),
+      debugShowCheckedModeBanner: false,
       home: new TransactionListView(),
     );
   }
