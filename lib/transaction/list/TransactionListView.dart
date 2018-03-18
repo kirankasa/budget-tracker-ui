@@ -1,10 +1,11 @@
 import 'package:budget_tracker/transaction/Transaction.dart';
+import 'package:budget_tracker/transaction/details/TransactionDetailView.dart';
+import 'package:budget_tracker/transaction/list/TransactionListPresenter.dart';
 import 'package:flutter/material.dart';
-import 'package:budget_tracker/transaction/TransactionViewContract.dart';
-import 'package:budget_tracker/transaction/TransactionPresenter.dart';
+import 'package:budget_tracker/transaction/list/TransactionListViewContract.dart';
 import 'package:intl/intl.dart';
 
-class TransactionView extends StatelessWidget {
+class TransactionListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -23,15 +24,15 @@ class TransactionList extends StatefulWidget {
 }
 
 class _TransactionListState extends State<TransactionList>
-    implements TransactionViewContract {
-  TransactionPresenter _presenter;
+    implements TransactionListViewContract {
+  TransactionListPresenter _presenter;
 
   List<Transaction> _transactions;
 
   bool _isLoading;
 
   _TransactionListState() {
-    _presenter = new TransactionPresenter(this);
+    _presenter = new TransactionListPresenter(this);
   }
 
   @override
@@ -73,8 +74,16 @@ class _TransactionListState extends State<TransactionList>
 
   List<_TransactionListItem> _buildTransactionList() {
     return _transactions
-        .map((transaction) =>
-            new _TransactionListItem(transaction: transaction, onTap: () {}))
+        .map((transaction) => new _TransactionListItem(
+            transaction: transaction,
+            onTap: () {
+              Navigator.push(
+                  context,
+                  new MaterialPageRoute(
+                      builder: (context) => new TransactionDetailView(
+                            transactionId: transaction.id,
+                          )));
+            }))
         .toList();
   }
 }

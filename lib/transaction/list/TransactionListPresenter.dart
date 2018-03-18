@@ -1,12 +1,12 @@
-import 'package:budget_tracker/transaction/TransactionViewContract.dart';
+import 'package:budget_tracker/transaction/list/TransactionListViewContract.dart';
 import 'package:budget_tracker/transaction/TransactionRepository.dart';
 import 'package:budget_tracker/common/di/injection.dart';
 
-class TransactionPresenter {
-  TransactionViewContract _view;
+class TransactionListPresenter {
+  TransactionListViewContract _view;
   TransactionRepository _repository;
 
-  TransactionPresenter(this._view) {
+  TransactionListPresenter(this._view) {
     _repository = new Injector().transactionRepository;
   }
 
