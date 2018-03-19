@@ -4,7 +4,6 @@ import 'package:budget_tracker/category/Category.dart';
 import 'package:budget_tracker/transaction/Transaction.dart';
 import 'package:budget_tracker/transaction/details/TransactionFormPresenter.dart';
 import 'package:budget_tracker/transaction/details/TransactionFormViewContract.dart';
-import 'package:budget_tracker/transaction/list/TransactionListView.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

@@ -1,6 +1,5 @@
 import 'package:budget_tracker/category/Category.dart';
 import 'package:budget_tracker/category/CategoryRepository.dart';
-import 'package:budget_tracker/category/details/CategoryDetailsViewContract.dart';
 import 'package:budget_tracker/category/details/CategoryFormViewContract.dart';
 import 'package:budget_tracker/common/di/injection.dart';
 

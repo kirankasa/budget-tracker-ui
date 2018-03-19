@@ -36,6 +36,11 @@ class BudgetDrawer extends StatelessWidget {
               ),
             ],
           )),
+          new AboutListTile(
+            applicationName: "Budget tracker",
+            applicationVersion: "1.0",
+            applicationIcon: new Icon(Icons.supervisor_account),
+          )
         ],
       ),
     );
