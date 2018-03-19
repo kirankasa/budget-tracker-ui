@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
         '/transactions': (BuildContext context) => new TransactionListView(),
         '/categories': (BuildContext context) => new CategoryListView(),
       },
+
     );
   }
 }

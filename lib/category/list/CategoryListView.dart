@@ -1,5 +1,6 @@
 import 'package:budget_tracker/category/Category.dart';
 import 'package:budget_tracker/category/details/CategoryDetailsView.dart';
+import 'package:budget_tracker/common/ui/BudgetDrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_tracker/category/list/CategoryListPresenter.dart';
 import 'package:budget_tracker/category/list/CategoryListViewContract.dart';
@@ -11,6 +12,7 @@ class CategoryListView extends StatelessWidget {
       appBar: new AppBar(
         title: new Text('Categories'),
       ),
+      drawer: new BudgetDrawer(),
       body: new CategoryList(),
     );
   }

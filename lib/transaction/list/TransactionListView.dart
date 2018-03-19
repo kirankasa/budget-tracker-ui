@@ -1,3 +1,4 @@
+import 'package:budget_tracker/common/ui/BudgetDrawer.dart';
 import 'package:budget_tracker/transaction/Transaction.dart';
 import 'package:budget_tracker/transaction/details/TransactionDetailView.dart';
 import 'package:budget_tracker/transaction/details/TransactionFormView.dart';
@@ -13,11 +14,20 @@ class TransactionListView extends StatelessWidget {
       appBar: new AppBar(
         title: new Text('Transactions'),
         actions: <Widget>[
-          new IconButton(icon: new Icon(Icons.add_circle,size: 30.0,) , onPressed: (){
-            Navigator.push(context, new MaterialPageRoute(builder: (context) => new TransactionFormView()));
-          })
+          new IconButton(
+              icon: new Icon(
+                Icons.add_circle,
+                size: 30.0,
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => new TransactionFormView()));
+              })
         ],
       ),
+      drawer: new BudgetDrawer(),
       body: new TransactionList(),
     );
   }
@@ -60,6 +70,7 @@ class _TransactionListState extends State<TransactionList>
     } else {
       widget = new ListView(
           padding: new EdgeInsets.symmetric(vertical: 8.0),
+          reverse: true,
           children: _buildTransactionList());
     }
     return widget;
@@ -120,7 +131,7 @@ class _TransactionListItem extends ListTile {
               ),
             ),
             subtitle: new Text(
-              "${new DateFormat().add_yMd().add_jm().format(transaction.dateTime)}\n${transaction.note}",
+              "${new DateFormat.yMMMd().format(transaction.dateTime)}\n${transaction.note}",
               style: new TextStyle(fontSize: 17.0),
             ),
             leading: new CircleAvatar(
