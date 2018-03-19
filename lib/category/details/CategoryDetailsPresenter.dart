@@ -17,7 +17,6 @@ class CategoryDetailsPresenter{
         .retrieveTransactionCategoryDetails(categoryId)
         .then((category) => _view.showCategory(category))
         .catchError((onError) {
-      print(onError);
       _view.showError();
     });
   }

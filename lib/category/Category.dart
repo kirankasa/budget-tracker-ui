@@ -8,6 +8,8 @@ class TransactionCategory {
     return new TransactionCategory(id: json['id'], category: json['category']);
   }
 
+  Map<String, dynamic> toJson() => {'category': category};
+
   @override
   bool operator ==(other) {
     return (other is TransactionCategory && other.category == category);
