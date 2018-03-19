@@ -9,7 +9,7 @@ class TransactionFormPresenter {
   TransactionRepository _transactionRepository;
   CategoryRepository _categoryRepository;
 
-  TransactionFormPresenter(this._view){
+  TransactionFormPresenter(this._view) {
     _transactionRepository = new Injector().transactionRepository;
     _categoryRepository = new Injector().categoryRepository;
   }
@@ -27,7 +27,12 @@ class TransactionFormPresenter {
 
   void saveTransaction(Transaction transaction) {
     assert(_view != null);
-    _transactionRepository.saveTransaction(transaction);
-    _view.navigateToTransactionListPage();
+    _transactionRepository
+        .saveTransaction(transaction)
+        .then((transaction) => _view.navigateToTransactionListPage())
+        .catchError((onError) {
+      print(onError);
+      _view.showError();
+    });
   }
 }

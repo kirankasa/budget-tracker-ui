@@ -7,7 +7,8 @@ import 'package:budget_tracker/transaction/Transaction.dart';
 import 'package:budget_tracker/transaction/TransactionRepository.dart';
 
 class TransactionRepositoryImpl implements TransactionRepository {
-  static const transactions_url = 'https://budget-tracker.cfapps.io/transactions';
+  static const transactions_url =
+      'https://budget-tracker.cfapps.io/transactions';
 
   @override
   Future<List<Transaction>> retrieveTransactions() {
@@ -44,14 +45,19 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  void saveTransaction(Transaction transaction) {
-    String json = JSON.encode(transaction);
-    http.post(transactions_url, body: json,headers: {'content-type':'application/json'}).then((http.Response response) {
+  Future<Transaction> saveTransaction(Transaction transaction) {
+    String requestJson = JSON.encode(transaction);
+    return http.post(transactions_url, body: requestJson, headers: {
+      'content-type': 'application/json'
+    }).then((http.Response response) {
+      final String jsonBody = response.body;
       final statusCode = response.statusCode;
-      if (statusCode < 200 || statusCode >= 300) {
+      if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
         throw new FetchDataException(
             "Error while saving transaction details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
       }
+      var transactionJson = JSON.decode(response.body);
+      return new Transaction.fromJson(transactionJson);
     });
   }
 }

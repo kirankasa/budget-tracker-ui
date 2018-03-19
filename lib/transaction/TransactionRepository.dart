@@ -6,5 +6,5 @@ abstract class TransactionRepository {
 
   Future<Transaction> retrieveTransactionDetails(int transactionId);
 
-  void saveTransaction(Transaction transaction);
+  Future<Transaction> saveTransaction(Transaction transaction);
 }

@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:budget_tracker/category/Category.dart';
 import 'package:budget_tracker/transaction/Transaction.dart';
 import 'package:budget_tracker/transaction/details/TransactionFormPresenter.dart';
 import 'package:budget_tracker/transaction/details/TransactionFormViewContract.dart';
 import 'package:budget_tracker/transaction/list/TransactionListView.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TransactionFormView extends StatelessWidget {
   @override
@@ -29,6 +32,7 @@ class _TransactionFormState extends State<TransactionForm>
   }
 
   bool _isLoading = false;
+  DateTime selectedDate = new DateTime.now();
   TransactionFormPresenter _presenter;
   List<TransactionCategory> _categories;
   TransactionCategory selectedCategory;
@@ -47,7 +51,6 @@ class _TransactionFormState extends State<TransactionForm>
   @override
   Widget build(BuildContext context) {
     var widget;
-
     if (_isLoading) {
       widget = new Center(
           child: new Padding(
@@ -58,7 +61,7 @@ class _TransactionFormState extends State<TransactionForm>
         children: <Widget>[
           new ListTile(
               title: new DropdownButton<TransactionCategory>(
-                  hint: new Text("Select category"),
+                  hint: new Text("Select Category"),
                   items: _categories.map((TransactionCategory category) {
                     return new DropdownMenuItem<TransactionCategory>(
                       child: new Text(category.category),
@@ -75,7 +78,7 @@ class _TransactionFormState extends State<TransactionForm>
                   })),
           new ListTile(
               title: new DropdownButton<String>(
-                  hint: new Text("Select type"),
+                  hint: new Text("Select Type"),
                   items: ["Expense", "Income"].map((String type) {
                     return new DropdownMenuItem<String>(
                       child: new Text(type),
@@ -92,19 +95,28 @@ class _TransactionFormState extends State<TransactionForm>
                   })),
           new ListTile(
             title: new TextField(
-              decoration: new InputDecoration(hintText: "Enter Amount"),
+              decoration: new InputDecoration(labelText: "Amount"),
               controller: amountController,
+              keyboardType: TextInputType.number,
             ),
           ),
           new ListTile(
-            title: new TextField(
-              decoration: new InputDecoration(hintText: "Enter Date"),
-              controller: dateController,
+            title: new InputDecorator(
+              decoration: new InputDecoration(
+                  hintText: "Enter Date",
+                  labelText: "Transaction Date",
+                  labelStyle: new TextStyle(fontSize: 20.0)),
+              child: new Text(selectedDate != null
+                  ? new DateFormat.yMMMd().format(selectedDate)
+                  : ""),
             ),
+            onTap: () {
+              _selectDate(context);
+            },
           ),
           new ListTile(
             title: new TextField(
-              decoration: new InputDecoration(hintText: "Enter Note"),
+              decoration: new InputDecoration(labelText: "Enter Note"),
               controller: noteController,
             ),
           ),
@@ -115,14 +127,16 @@ class _TransactionFormState extends State<TransactionForm>
                     category: selectedCategory,
                     amount: double.parse(amountController.text),
                     note: noteController.text,
-                    dateTime: new DateTime.now(),
+                    dateTime: selectedDate,
                     type: selectedType));
               },
               child: new Text(
-                "Save",
+                "Add",
                 style:
                     new TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
               ),
+              color: Colors.purple,
+              textColor: Colors.white,
             ),
           ),
         ],
@@ -131,6 +145,18 @@ class _TransactionFormState extends State<TransactionForm>
     return widget;
   }
 
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: new DateTime.now(),
+        firstDate: new DateTime.now().add(new Duration(days: -365 * 2)),
+        lastDate: new DateTime.now().add(new Duration(days: 365 * 2)));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
 
   @override
   void showError() {
@@ -147,6 +173,7 @@ class _TransactionFormState extends State<TransactionForm>
 
   @override
   void navigateToTransactionListPage() {
-    Navigator.of(context).pushNamedAndRemoveUntil("/transactions", (Route<dynamic> route) => false);
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        "/transactions", (Route<dynamic> route) => false);
   }
 }
