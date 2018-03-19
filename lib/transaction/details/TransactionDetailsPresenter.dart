@@ -1,5 +1,4 @@
 import 'package:budget_tracker/transaction/details/TransactionDetailsViewContract.dart';
-import 'package:budget_tracker/transaction/list/TransactionListViewContract.dart';
 import 'package:budget_tracker/transaction/TransactionRepository.dart';
 import 'package:budget_tracker/common/di/injection.dart';
 

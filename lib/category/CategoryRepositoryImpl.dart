@@ -8,7 +8,7 @@ import 'package:budget_tracker/category/CategoryRepository.dart';
 
 class CategoryRepositoryImpl implements CategoryRepository {
   static const categories_url =
-      'http://192.168.56.1:8080/transactions/categories';
+      'https://budget-tracker.cfapps.io/transactions/categories';
 
   @override
   Future<List<TransactionCategory>> retrieveTransactionCategories() {

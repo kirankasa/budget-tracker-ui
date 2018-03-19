@@ -6,17 +6,17 @@ import 'package:budget_tracker/transaction/details/TransactionFormViewContract.d
 
 class TransactionFormPresenter {
   TransactionFormViewContract _view;
-  TransactionRepository _transaction_repository;
-  CategoryRepository _category_repository;
+  TransactionRepository _transactionRepository;
+  CategoryRepository _categoryRepository;
 
   TransactionFormPresenter(this._view){
-    _transaction_repository = new Injector().transactionRepository;
-    _category_repository = new Injector().categoryRepository;
+    _transactionRepository = new Injector().transactionRepository;
+    _categoryRepository = new Injector().categoryRepository;
   }
 
   void loadCategories() {
     assert(_view != null);
-    _category_repository
+    _categoryRepository
         .retrieveTransactionCategories()
         .then((categories) => _view.showTransactionCategoryList(categories))
         .catchError((onError) {
@@ -27,7 +27,7 @@ class TransactionFormPresenter {
 
   void saveTransaction(Transaction transaction) {
     assert(_view != null);
-    _transaction_repository.saveTransaction(transaction);
+    _transactionRepository.saveTransaction(transaction);
     _view.navigateToTransactionListPage();
   }
 }

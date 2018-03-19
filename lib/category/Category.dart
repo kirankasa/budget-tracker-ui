@@ -8,7 +8,11 @@ class TransactionCategory {
     return new TransactionCategory(id: json['id'], category: json['category']);
   }
 
+  @override
   bool operator ==(other) {
     return (other is TransactionCategory && other.category == category);
   }
+
+  @override
+  int get hashCode => category.hashCode;
 }

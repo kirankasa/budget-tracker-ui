@@ -131,18 +131,6 @@ class _TransactionFormState extends State<TransactionForm>
     return widget;
   }
 
-  List<DropdownMenuItem<TransactionCategory>> getDropDownMenuItems() {
-    List<TransactionCategory> categories = [];
-    categories.add(new TransactionCategory(category: "salary", id: 1));
-    categories.add(new TransactionCategory(category: "entertainment", id: 2));
-    List<DropdownMenuItem<TransactionCategory>> dropDown = [];
-    return categories.map((TransactionCategory category) {
-      return new DropdownMenuItem<TransactionCategory>(
-        child: new Text(category.category),
-        value: category,
-      );
-    }).toList();
-  }
 
   @override
   void showError() {
@@ -159,6 +147,6 @@ class _TransactionFormState extends State<TransactionForm>
 
   @override
   void navigateToTransactionListPage() {
-    Navigator.push(context, new MaterialPageRoute(builder: (context) => new TransactionListView()));
+    Navigator.of(context).pushNamedAndRemoveUntil("/transactions", (Route<dynamic> route) => false);
   }
 }
