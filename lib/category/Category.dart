@@ -8,7 +8,7 @@ class TransactionCategory {
     return new TransactionCategory(id: json['id'], category: json['category']);
   }
 
-  Map<String, dynamic> toJson() => {'category': category};
+  Map<String, dynamic> toJson() => {'category': category, 'id' : id};
 
   @override
   bool operator ==(other) {

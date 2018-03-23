@@ -6,4 +6,6 @@ abstract class CategoryRepository {
   Future<TransactionCategory> retrieveTransactionCategoryDetails(int id);
   Future<TransactionCategory> saveTransactionCategory(
       TransactionCategory transactionCategory);
+  Future<TransactionCategory> updateTransactionCategory(
+      TransactionCategory transactionCategory);
 }

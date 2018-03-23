@@ -1,6 +1,5 @@
 import 'package:budget_tracker/category/Category.dart';
 import 'package:budget_tracker/category/details/CategoryDetailsPresenter.dart';
-import 'package:budget_tracker/category/details/CategoryDetailsViewContract.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 

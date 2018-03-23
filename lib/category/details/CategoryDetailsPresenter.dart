@@ -1,6 +1,11 @@
 import 'package:budget_tracker/category/CategoryRepository.dart';
-import 'package:budget_tracker/category/details/CategoryDetailsViewContract.dart';
 import 'package:budget_tracker/common/di/injection.dart';
+import 'package:budget_tracker/category/Category.dart';
+
+abstract class CategoryDetailsViewContract{
+  void showCategory(TransactionCategory category);
+  void showError();
+}
 
 class CategoryDetailsPresenter{
   CategoryDetailsViewContract _view;

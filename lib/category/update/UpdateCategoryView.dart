@@ -1,39 +1,48 @@
 import 'package:budget_tracker/category/Category.dart';
-import 'package:budget_tracker/category/details/CategoryFormPresenter.dart';
-import 'package:budget_tracker/category/details/CategoryFormViewContract.dart';
+import 'package:budget_tracker/category/update/UpdateCategoryPresenter.dart';
 import 'package:flutter/material.dart';
 
-class CategoryFormView extends StatelessWidget {
+class UpdateCategoryView extends StatelessWidget {
+  TransactionCategory category;
+
+  UpdateCategoryView(this.category);
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text('Add Category'),
+        title: new Text('Update Category'),
       ),
-      body: new CategoryForm(),
+      body: new UpdateCategory(category),
     );
   }
 }
 
-class CategoryForm extends StatefulWidget {
+class UpdateCategory extends StatefulWidget {
+  TransactionCategory category;
+  UpdateCategory(this.category);
+
   @override
   State<StatefulWidget> createState() {
-    return new _CategoryFormState();
+    return new _UpdateCategoryState();
   }
 }
 
-class _CategoryFormState extends State<CategoryForm>
-    implements CategoryFormViewContract {
-  CategoryFormPresenter _presenter;
+class _UpdateCategoryState extends State<UpdateCategory>
+    implements UpdateCategoryViewContract {
+  int categoryId;
+  UpdateCategoryPresenter _presenter;
   TextEditingController categoryController = new TextEditingController();
 
-  _CategoryFormState() {
-    _presenter = new CategoryFormPresenter(this);
+  _UpdateCategoryState() {
+    _presenter = new UpdateCategoryPresenter(this);
   }
 
   @override
   void initState() {
     super.initState();
+    categoryController.text = widget.category.category;
+    categoryId = widget.category.id;
   }
 
   @override
@@ -49,11 +58,11 @@ class _CategoryFormState extends State<CategoryForm>
         new ListTile(
           title: new RaisedButton(
             onPressed: () {
-              _presenter.saveTransactionCategory(
-                  new TransactionCategory(category: categoryController.text));
+              _presenter.updateTransactionCategory(new TransactionCategory(
+                  id: categoryId, category: categoryController.text));
             },
             child: new Text(
-              "Add",
+              "Update",
               style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
             ),
             color: Colors.purple,

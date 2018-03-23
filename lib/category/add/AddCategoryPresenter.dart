@@ -1,13 +1,17 @@
 import 'package:budget_tracker/category/Category.dart';
 import 'package:budget_tracker/category/CategoryRepository.dart';
-import 'package:budget_tracker/category/details/CategoryFormViewContract.dart';
 import 'package:budget_tracker/common/di/injection.dart';
 
-class CategoryFormPresenter {
-  CategoryFormViewContract _view;
+abstract class AddCategoryViewContract {
+  void navigateToCategoriesListPage();
+  void showError();
+}
+
+class AddCategoryPresenter {
+  AddCategoryViewContract _view;
   CategoryRepository _repository;
 
-  CategoryFormPresenter(this._view) {
+  AddCategoryPresenter(this._view) {
     _repository = new Injector().categoryRepository;
   }
 
