@@ -1,10 +1,10 @@
 import 'package:budget_tracker/common/ui/BudgetDrawer.dart';
 import 'package:budget_tracker/transaction/Transaction.dart';
 import 'package:budget_tracker/transaction/details/TransactionDetailView.dart';
-import 'package:budget_tracker/transaction/details/TransactionFormView.dart';
+import 'package:budget_tracker/transaction/add/AddTransactionView.dart';
 import 'package:budget_tracker/transaction/list/TransactionListPresenter.dart';
+import 'package:budget_tracker/transaction/update/UpdateTransactionView.dart';
 import 'package:flutter/material.dart';
-import 'package:budget_tracker/transaction/list/TransactionListViewContract.dart';
 import 'package:intl/intl.dart';
 
 class TransactionListView extends StatelessWidget {
@@ -23,7 +23,7 @@ class TransactionListView extends StatelessWidget {
                 Navigator.push(
                     context,
                     new MaterialPageRoute(
-                        builder: (context) => new TransactionFormView()));
+                        builder: (context) => new AddTransactionView()));
               })
         ],
       ),
@@ -97,9 +97,8 @@ class _TransactionListState extends State<TransactionList>
               Navigator.push(
                   context,
                   new MaterialPageRoute(
-                      builder: (context) => new TransactionDetailView(
-                            transactionId: transaction.id,
-                          )));
+                      builder: (context) =>
+                          new UpdateTransactionView(transaction)));
             }))
         .toList();
   }

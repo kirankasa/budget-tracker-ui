@@ -60,4 +60,36 @@ class TransactionRepositoryImpl implements TransactionRepository {
       return new Transaction.fromJson(transactionJson);
     });
   }
+
+  @override
+  Future<Transaction> updateTransaction(Transaction transaction) {
+    String requestJson = JSON.encode(transaction);
+    return http.put(transactions_url+ "/" + transaction.id.toString(), body: requestJson, headers: {
+      'content-type': 'application/json'
+    }).then((http.Response response) {
+      final String jsonBody = response.body;
+      final statusCode = response.statusCode;
+      if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
+        throw new FetchDataException(
+            "Error while saving transaction details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+      }
+      var transactionJson = JSON.decode(response.body);
+      return new Transaction.fromJson(transactionJson);
+    });
+  }
+
+  @override
+  Future<Null> deleteTransaction(int transactionId) {
+    return http
+        .delete(transactions_url + "/" + transactionId.toString())
+        .then((http.Response response) {
+      final statusCode = response.statusCode;
+
+      if (statusCode < 200 || statusCode >= 300 ) {
+        throw new FetchDataException(
+            "Error while deleting transaction details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+      }
+      return null;
+    });
+  }
 }

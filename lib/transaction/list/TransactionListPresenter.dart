@@ -1,6 +1,11 @@
-import 'package:budget_tracker/transaction/list/TransactionListViewContract.dart';
+import 'package:budget_tracker/transaction/Transaction.dart';
 import 'package:budget_tracker/transaction/TransactionRepository.dart';
 import 'package:budget_tracker/common/di/injection.dart';
+
+abstract class TransactionListViewContract {
+  void showTransactionList(List<Transaction> transactions);
+  void showError();
+}
 
 class TransactionListPresenter {
   TransactionListViewContract _view;

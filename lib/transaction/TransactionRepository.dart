@@ -7,4 +7,8 @@ abstract class TransactionRepository {
   Future<Transaction> retrieveTransactionDetails(int transactionId);
 
   Future<Transaction> saveTransaction(Transaction transaction);
+
+  Future<Transaction> updateTransaction(Transaction transaction);
+
+  Future<Null> deleteTransaction(int transactionId);
 }

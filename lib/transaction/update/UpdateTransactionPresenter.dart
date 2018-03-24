@@ -2,14 +2,21 @@ import 'package:budget_tracker/category/CategoryRepository.dart';
 import 'package:budget_tracker/common/di/injection.dart';
 import 'package:budget_tracker/transaction/Transaction.dart';
 import 'package:budget_tracker/transaction/TransactionRepository.dart';
-import 'package:budget_tracker/transaction/details/TransactionFormViewContract.dart';
 
-class TransactionFormPresenter {
-  TransactionFormViewContract _view;
+import 'package:budget_tracker/category/Category.dart';
+
+abstract class UpdateTransactionViewContract {
+  void showTransactionCategoryList(List<TransactionCategory> categories);
+  void navigateToTransactionListPage();
+  void showError();
+}
+
+class UpdateTransactionPresenter {
+  UpdateTransactionViewContract _view;
   TransactionRepository _transactionRepository;
   CategoryRepository _categoryRepository;
 
-  TransactionFormPresenter(this._view) {
+  UpdateTransactionPresenter(this._view) {
     _transactionRepository = new Injector().transactionRepository;
     _categoryRepository = new Injector().categoryRepository;
   }
@@ -25,10 +32,21 @@ class TransactionFormPresenter {
     });
   }
 
-  void saveTransaction(Transaction transaction) {
+  void updateTransaction(Transaction transaction) {
     assert(_view != null);
     _transactionRepository
-        .saveTransaction(transaction)
+        .updateTransaction(transaction)
+        .then((transaction) => _view.navigateToTransactionListPage())
+        .catchError((onError) {
+      print(onError);
+      _view.showError();
+    });
+  }
+
+  void deleteTransaction(int transactionId) {
+    assert(_view != null);
+    _transactionRepository
+        .deleteTransaction(transactionId)
         .then((transaction) => _view.navigateToTransactionListPage())
         .catchError((onError) {
       print(onError);

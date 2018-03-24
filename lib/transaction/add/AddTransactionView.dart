@@ -2,37 +2,36 @@ import 'dart:async';
 
 import 'package:budget_tracker/category/Category.dart';
 import 'package:budget_tracker/transaction/Transaction.dart';
-import 'package:budget_tracker/transaction/details/TransactionFormPresenter.dart';
-import 'package:budget_tracker/transaction/details/TransactionFormViewContract.dart';
+import 'package:budget_tracker/transaction/add/AddTransactionPresenter.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class TransactionFormView extends StatelessWidget {
+class AddTransactionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('Add Transaction'),
       ),
-      body: new TransactionForm(),
+      body: new AddTransaction(),
     );
   }
 }
 
-class TransactionForm extends StatefulWidget {
+class AddTransaction extends StatefulWidget {
   @override
-  _TransactionFormState createState() => new _TransactionFormState();
+  _AddTransactionState createState() => new _AddTransactionState();
 }
 
-class _TransactionFormState extends State<TransactionForm>
-    implements TransactionFormViewContract {
-  _TransactionFormState() {
-    _presenter = new TransactionFormPresenter(this);
+class _AddTransactionState extends State<AddTransaction>
+    implements AddTransactionViewContract {
+  _AddTransactionState() {
+    _presenter = new AddTransactionPresenter(this);
   }
 
   bool _isLoading = false;
   DateTime selectedDate = new DateTime.now();
-  TransactionFormPresenter _presenter;
+  AddTransactionPresenter _presenter;
   List<TransactionCategory> _categories;
   TransactionCategory selectedCategory;
   String selectedType;
@@ -78,9 +77,9 @@ class _TransactionFormState extends State<TransactionForm>
           new ListTile(
               title: new DropdownButton<String>(
                   hint: new Text("Select Type"),
-                  items: ["Expense", "Income"].map((String type) {
+                  items: ["D", "C"].map((String type) {
                     return new DropdownMenuItem<String>(
-                      child: new Text(type),
+                      child: new Text(type == "C"? "Income" : "Expense"),
                       value: type,
                     );
                   }).toList(),

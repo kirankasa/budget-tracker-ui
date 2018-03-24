@@ -27,7 +27,8 @@ class Transaction {
         category: new TransactionCategory.fromJson(json['category']));
   }
   Map<String, dynamic> toJson() => {
-        'type': type=='Income'? "C": "D",
+        'id': id,
+        'type': type,
         'category': {'category': category.category, 'id': category.id},
         'amount': amount,
         'date': new DateFormat('yyyy-MM-dd').format(dateTime),

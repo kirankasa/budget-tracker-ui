@@ -2,25 +2,9 @@ import 'package:budget_tracker/category/Category.dart';
 import 'package:budget_tracker/category/update/UpdateCategoryPresenter.dart';
 import 'package:flutter/material.dart';
 
-class UpdateCategoryView extends StatelessWidget {
+class UpdateCategoryView extends StatefulWidget {
   TransactionCategory category;
-
   UpdateCategoryView(this.category);
-
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Update Category'),
-      ),
-      body: new UpdateCategory(category),
-    );
-  }
-}
-
-class UpdateCategory extends StatefulWidget {
-  TransactionCategory category;
-  UpdateCategory(this.category);
 
   @override
   State<StatefulWidget> createState() {
@@ -28,7 +12,7 @@ class UpdateCategory extends StatefulWidget {
   }
 }
 
-class _UpdateCategoryState extends State<UpdateCategory>
+class _UpdateCategoryState extends State<UpdateCategoryView>
     implements UpdateCategoryViewContract {
   int categoryId;
   UpdateCategoryPresenter _presenter;
@@ -72,7 +56,12 @@ class _UpdateCategoryState extends State<UpdateCategory>
       ],
     );
 
-    return widget;
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('Update Category'),
+      ),
+      body: widget,
+    );
   }
 
   @override

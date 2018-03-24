@@ -12,9 +12,9 @@ class TransactionCategory {
 
   @override
   bool operator ==(other) {
-    return (other is TransactionCategory && other.category == category);
+    return (other is TransactionCategory && other.id  == id);
   }
 
   @override
-  int get hashCode => category.hashCode;
+  int get hashCode => id.hashCode;
 }
