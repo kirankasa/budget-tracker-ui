@@ -47,6 +47,13 @@ matrix:
       script:
         - ./flutter/bin/internal/update_dart_sdk.sh
         - ./flutter/bin/flutter -v build apk
+      deploy:
+        provider: releases
+        api_key: "V9_BPUX379UB3LtsrYu7iA"
+        file: "/home/travis/build/kiranreddykasa/budget-tracker-ui/build/app/outputs/apk/release/app-release.apk"
+        skip_cleanup: true
+        on:
+           tags: true  
 
     # Builds an IPA.
     - env: JOB=IPA
@@ -63,7 +70,6 @@ matrix:
       script:
         - ./flutter/bin/internal/update_dart_sdk.sh
         - ./flutter/bin/flutter -v build ios --no-codesign
-
 cache:
   directories:
     - $HOME/.pub-cache
