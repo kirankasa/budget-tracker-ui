@@ -110,7 +110,7 @@ class _CategoryListItem extends ListTile {
               child: new Text(category.category),
             ),
             leading: new CircleAvatar(
-              child: new Text(category.category!=null? category.category[0] : "C"),
+              child: new Text(category.category[0]),
             ),
             onTap: onTap);
 }
