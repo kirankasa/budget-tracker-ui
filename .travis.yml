@@ -40,14 +40,6 @@ matrix:
     script:
     - "./flutter/bin/internal/update_dart_sdk.sh"
     - "./flutter/bin/flutter -v build apk"
-    deploy:
-      provider: releases
-      api_key:
-        secure: GfNrLSMueb2kxVR7AwMgaRD/7CzyTwyfVuZaXq5uLCGnBoQ/cYvhNXBt7FxrgD6/zjD6BJuDppKuuRxh6/ni9j4OqR9DNbVhbVET3wNnnpv46zODB9mZtvTStVCZu6WuPIpsF8Ls74Ln1d1hTiy2QD2HVDTVvKzJv30TQ80lQvfsykhRKlcwgaNHvHCxuNj6Fg+V0tC1ZU31jiqh72gKlVD1GRns900hTUSsf3YbxDi1QtkIqJEe8hg3cDo5xXxZBjns0gmW0v8hF4W7y3RR8BbvYRkcqnJw+5sGLmGHbXlUsNNAT+EJLxlDfc7nBH8ZHC1NO3L6AbyM7812fveui9xD6KjkPLaB0194lxTHyqD3SdY4eeVPZ16OMhPIXbxHI86pNYGc4kKtCRDyTb4fF9MWu6qeiIuJuAVtT1yjA5v4Wp387R8Uta4dPuNH6aIkFOY7D4aRojsLIXI7o4SVQzc23B8J7lZMGHYGUk9ZXqKQL9+dTvxq93fPTSOOLjDBDmfi3ay4QJh6wdSf5EN4ucrN09Tt1XUPCi57ai1g8iOyxsWAhHqJUsEXf3cWqBPQ+lm0FyrRUIuFhi4VwvYB/JRday69fOdQdBb6Bhk1BGW7rylNEdx4j3kCJy1ekY5Obj8HhWe6GECant2rwhzPeIE1wZ5mPPxzaHsnFws6Cig=
-      file: "/home/travis/build/kiranreddykasa/budget-tracker-ui/build/app/outputs/apk/release/app-release.apk"
-      skip_cleanup: true
-      on:
-        tags: true
   - env: JOB=IPA
     os: osx
     language: generic
@@ -69,7 +61,7 @@ matrix:
       file: "/Users/travis/build/kiranreddykasa/budget-tracker-ui/build/ios/iphoneos/Runner.app"
       skip_cleanup: true
       on:
-        tags: true    
+        tags: true
 cache:
   directories:
   - "$HOME/.pub-cache"
