@@ -60,7 +60,8 @@ matrix:
         - unzip -qq gradle-3.5-bin.zip
         - export GRADLE_HOME=$PWD/gradle-3.5
         - export PATH=$GRADLE_HOME/bin:$PATH
-        - git clone https://github.com/flutter/flutter.git -b beta --depth 1
+        - git clone https://github.com/flutter/flutter.git -b beta
+        - ./flutter/bin/flutter doctor
       script:
         - ./flutter/bin/internal/update_dart_sdk.sh
         - ./flutter/bin/flutter -v build apk
@@ -69,7 +70,7 @@ matrix:
     - env: JOB=IPA
       os: osx
       language: generic
-      osx_image: xcode8.3
+      osx_image: xcode9.0
       before_script:
         - brew update
         - brew install --HEAD libimobiledevice
