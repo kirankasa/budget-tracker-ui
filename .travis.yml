@@ -1,75 +1,67 @@
 matrix:
-  # This causes the build to complete immediately upon first failure or once
-  # required jobs are green.
   fast_finish: true
-
-  # Building APK/IPA takes a long time; do not wait for them to finish.
   allow_failures:
-    - env: JOB=APK
-    - env: JOB=IPA
-
+  - env: JOB=APK
+  - env: JOB=IPA
   include:
-    # Builds an APK.
-    - env: JOB=APK
-      os: linux
-      language: android
-      licenses:
-        - 'android-sdk-preview-license-.+'
-        - 'android-sdk-license-.+'
-        - 'google-gdk-license-.+'
-      android:
-        components:
-          - tools
-          - platform-tools
-          - build-tools-26.0.2
-          - android-27
-          - sys-img-armeabi-v7a-google_apis-25
-          - extra-android-m2repository
-          - extra-google-m2repository
-          - extra-google-android-support
-      jdk: oraclejdk8
-      sudo: false
-      addons:
-        apt:
-          # Flutter depends on /usr/lib/x86_64-linux-gnu/libstdc++.so.6 version GLIBCXX_3.4.18
-          sources:
-            - ubuntu-toolchain-r-test # if we don't specify this, the libstdc++6 we get is the wrong version
-          packages:
-            - libstdc++6
-            - fonts-droid
-      before_script:
-        - wget http://services.gradle.org/distributions/gradle-3.5-bin.zip
-        - unzip -qq gradle-3.5-bin.zip
-        - export GRADLE_HOME=$PWD/gradle-3.5
-        - export PATH=$GRADLE_HOME/bin:$PATH
-        - git clone https://github.com/flutter/flutter.git -b beta
-        - ./flutter/bin/flutter doctor
-      script:
-        - ./flutter/bin/internal/update_dart_sdk.sh
-        - ./flutter/bin/flutter -v build apk
-      deploy:
+  - env: JOB=APK
+    os: linux
+    language: android
+    licenses:
+    - android-sdk-preview-license-.+
+    - android-sdk-license-.+
+    - google-gdk-license-.+
+    android:
+      components:
+      - tools
+      - platform-tools
+      - build-tools-26.0.2
+      - android-27
+      - sys-img-armeabi-v7a-google_apis-25
+      - extra-android-m2repository
+      - extra-google-m2repository
+      - extra-google-android-support
+    jdk: oraclejdk8
+    sudo: false
+    addons:
+      apt:
+        sources:
+        - ubuntu-toolchain-r-test
+        packages:
+        - libstdc++6
+        - fonts-droid
+    before_script:
+    - wget http://services.gradle.org/distributions/gradle-3.5-bin.zip
+    - unzip -qq gradle-3.5-bin.zip
+    - export GRADLE_HOME=$PWD/gradle-3.5
+    - export PATH=$GRADLE_HOME/bin:$PATH
+    - git clone https://github.com/flutter/flutter.git -b beta
+    - "./flutter/bin/flutter doctor"
+    script:
+    - "./flutter/bin/internal/update_dart_sdk.sh"
+    - "./flutter/bin/flutter -v build apk"
+    deploy:
         provider: releases
-        api_key: V9_BPUX379UB3LtsrYu7iA
+        api_key:
+        secure: GfNrLSMueb2kxVR7AwMgaRD/7CzyTwyfVuZaXq5uLCGnBoQ/cYvhNXBt7FxrgD6/zjD6BJuDppKuuRxh6/ni9j4OqR9DNbVhbVET3wNnnpv46zODB9mZtvTStVCZu6WuPIpsF8Ls74Ln1d1hTiy2QD2HVDTVvKzJv30TQ80lQvfsykhRKlcwgaNHvHCxuNj6Fg+V0tC1ZU31jiqh72gKlVD1GRns900hTUSsf3YbxDi1QtkIqJEe8hg3cDo5xXxZBjns0gmW0v8hF4W7y3RR8BbvYRkcqnJw+5sGLmGHbXlUsNNAT+EJLxlDfc7nBH8ZHC1NO3L6AbyM7812fveui9xD6KjkPLaB0194lxTHyqD3SdY4eeVPZ16OMhPIXbxHI86pNYGc4kKtCRDyTb4fF9MWu6qeiIuJuAVtT1yjA5v4Wp387R8Uta4dPuNH6aIkFOY7D4aRojsLIXI7o4SVQzc23B8J7lZMGHYGUk9ZXqKQL9+dTvxq93fPTSOOLjDBDmfi3ay4QJh6wdSf5EN4ucrN09Tt1XUPCi57ai1g8iOyxsWAhHqJUsEXf3cWqBPQ+lm0FyrRUIuFhi4VwvYB/JRday69fOdQdBb6Bhk1BGW7rylNEdx4j3kCJy1ekY5Obj8HhWe6GECant2rwhzPeIE1wZ5mPPxzaHsnFws6Cig=
         file: "/home/travis/build/kiranreddykasa/budget-tracker-ui/build/app/outputs/apk/release/app-release.apk"
         skip_cleanup: true
         on:
-           tags: true  
-
-    # Builds an IPA.
-    - env: JOB=IPA
-      os: osx
-      language: generic
-      osx_image: xcode9.2
-      before_script:
-        - brew update
-        - brew install --HEAD libimobiledevice
-        - brew install ideviceinstaller
-        - brew install ios-deploy
-        - git clone https://github.com/flutter/flutter.git -b beta
-        - ./flutter/bin/flutter doctor
-      script:
-        - ./flutter/bin/internal/update_dart_sdk.sh
-        - ./flutter/bin/flutter -v build ios --no-codesign
+            tags: true
+  - env: JOB=IPA
+    os: osx
+    language: generic
+    osx_image: xcode9.2
+    before_script:
+    - brew update
+    - brew install --HEAD libimobiledevice
+    - brew install ideviceinstaller
+    - brew install ios-deploy
+    - git clone https://github.com/flutter/flutter.git -b beta
+    - "./flutter/bin/flutter doctor"
+    script:
+    - "./flutter/bin/internal/update_dart_sdk.sh"
+    - "./flutter/bin/flutter -v build ios --no-codesign"
 cache:
   directories:
-    - $HOME/.pub-cache
+  - "$HOME/.pub-cache"
