@@ -77,6 +77,7 @@ matrix:
         - brew install ideviceinstaller
         - brew install ios-deploy
         - git clone https://github.com/flutter/flutter.git -b beta
+        - ./flutter/bin/flutter doctor
       script:
         - ./flutter/bin/internal/update_dart_sdk.sh
         - ./flutter/bin/flutter -v build ios --no-codesign
