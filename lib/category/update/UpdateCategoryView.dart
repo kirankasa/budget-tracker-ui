@@ -14,9 +14,10 @@ class UpdateCategoryView extends StatefulWidget {
 
 class _UpdateCategoryState extends State<UpdateCategoryView>
     implements UpdateCategoryViewContract {
-  int categoryId;
+  int _categoryId;
+  String _category;
+  final formKey = new GlobalKey<FormState>();
   UpdateCategoryPresenter _presenter;
-  TextEditingController categoryController = new TextEditingController();
 
   _UpdateCategoryState() {
     _presenter = new UpdateCategoryPresenter(this);
@@ -25,36 +26,48 @@ class _UpdateCategoryState extends State<UpdateCategoryView>
   @override
   void initState() {
     super.initState();
-    categoryController.text = widget.category.category;
-    categoryId = widget.category.id;
+    _category = widget.category.category;
+    _categoryId = widget.category.id;
   }
 
   @override
   Widget build(BuildContext context) {
-    var widget = new ListView(
-      children: <Widget>[
-        new ListTile(
-          title: new TextField(
-            decoration: new InputDecoration(labelText: "Category"),
-            controller: categoryController,
-          ),
-        ),
-        new ListTile(
-          title: new RaisedButton(
-            onPressed: () {
-              _presenter.updateTransactionCategory(new TransactionCategory(
-                  id: categoryId, category: categoryController.text));
-            },
-            child: new Text(
-              "Update",
-              style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+    var widget = new Form(
+        key: formKey,
+        child: new ListView(
+          children: <Widget>[
+            new ListTile(
+              title: new TextFormField(
+                decoration: new InputDecoration(labelText: "Category"),
+                initialValue: _category,
+                validator: (val) =>
+                    val.isEmpty ? 'Category can\'t be empty.' : null,
+                onSaved: (val) => _category = val,
+              ),
             ),
-            color: Colors.purple,
-            textColor: Colors.white,
-          ),
-        ),
-      ],
-    );
+            new ListTile(
+              title: new RaisedButton(
+                onPressed: () {
+                  final form = formKey.currentState;
+
+                  if (form.validate()) {
+                    form.save();
+                    _presenter.updateTransactionCategory(
+                        new TransactionCategory(
+                            id: _categoryId, category: _category));
+                  }
+                },
+                child: new Text(
+                  "Update",
+                  style: new TextStyle(
+                      fontSize: 20.0, fontWeight: FontWeight.bold),
+                ),
+                color: Colors.purple,
+                textColor: Colors.white,
+              ),
+            ),
+          ],
+        ));
 
     return new Scaffold(
       appBar: new AppBar(

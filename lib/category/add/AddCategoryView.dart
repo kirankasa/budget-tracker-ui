@@ -2,30 +2,19 @@ import 'package:budget_tracker/category/Category.dart';
 import 'package:budget_tracker/category/add/AddCategoryPresenter.dart';
 import 'package:flutter/material.dart';
 
-class AddCategoryView extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Add Category'),
-      ),
-      body: new AddCategory(),
-    );
-  }
-}
-
-class AddCategory extends StatefulWidget {
+class AddCategoryView extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return new _AddCategoryState();
   }
 }
 
-class _AddCategoryState extends State<AddCategory>
+class _AddCategoryState extends State<AddCategoryView>
     implements AddCategoryViewContract {
-  AddCategoryPresenter _presenter;
-  TextEditingController categoryController = new TextEditingController();
+  final formKey = new GlobalKey<FormState>();
+  String _category;
 
+  AddCategoryPresenter _presenter;
   _AddCategoryState() {
     _presenter = new AddCategoryPresenter(this);
   }
@@ -37,32 +26,46 @@ class _AddCategoryState extends State<AddCategory>
 
   @override
   Widget build(BuildContext context) {
-    var widget = new ListView(
-      children: <Widget>[
-        new ListTile(
-          title: new TextField(
-            decoration: new InputDecoration(labelText: "Category"),
-            controller: categoryController,
-          ),
-        ),
-        new ListTile(
-          title: new RaisedButton(
-            onPressed: () {
-              _presenter.saveTransactionCategory(
-                  new TransactionCategory(category: categoryController.text));
-            },
-            child: new Text(
-              "Add",
-              style: new TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+    var widget = new Form(
+        key: formKey,
+        child: new ListView(
+          children: <Widget>[
+            new ListTile(
+              title: new TextFormField(
+                decoration: new InputDecoration(labelText: "Category"),
+                validator: (val) =>
+                    val.isEmpty ? 'Category can\'t be empty.' : null,
+                onSaved: (val) => _category = val,
+              ),
             ),
-            color: Colors.purple,
-            textColor: Colors.white,
-          ),
-        ),
-      ],
-    );
+            new ListTile(
+              title: new RaisedButton(
+                onPressed: () {
+                  final form = formKey.currentState;
 
-    return widget;
+                  if (form.validate()) {
+                    form.save();
+                    _presenter.saveTransactionCategory(
+                        new TransactionCategory(category: _category));
+                  }
+                },
+                child: new Text(
+                  "Add",
+                  style: new TextStyle(
+                      fontSize: 20.0, fontWeight: FontWeight.bold),
+                ),
+                color: Colors.purple,
+                textColor: Colors.white,
+              ),
+            ),
+          ],
+        ));
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('Add Category'),
+      ),
+      body: widget,
+    );
   }
 
   @override
