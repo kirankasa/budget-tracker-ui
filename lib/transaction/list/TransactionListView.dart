@@ -1,6 +1,5 @@
 import 'package:budget_tracker/common/ui/BudgetDrawer.dart';
 import 'package:budget_tracker/transaction/Transaction.dart';
-import 'package:budget_tracker/transaction/details/TransactionDetailView.dart';
 import 'package:budget_tracker/transaction/add/AddTransactionView.dart';
 import 'package:budget_tracker/transaction/list/TransactionListPresenter.dart';
 import 'package:budget_tracker/transaction/update/UpdateTransactionView.dart';
@@ -89,19 +88,29 @@ class _TransactionListState extends State<TransactionList>
     });
   }
 
-  List<_TransactionListItem> _buildTransactionList() {
+  List<Dismissible> _buildTransactionList() {
     return _transactions
-        .map((transaction) => new _TransactionListItem(
-            transaction: transaction,
-            onTap: () {
-              Navigator.push(
-                  context,
-                  new MaterialPageRoute(
-                      builder: (context) =>
-                          new UpdateTransactionView(transaction)));
-            }))
+        .map((transaction) => new Dismissible(
+            key: new Key(transaction.id.toString()),
+            onDismissed: (direction) {
+              _presenter.deleteTransaction(transaction.id);
+              _transactions.remove(transaction);
+              Scaffold.of(context).showSnackBar(
+                  new SnackBar(content: new Text("Transaction deleted")));
+            },
+            background: new LeaveBehindView(),
+            child: new _TransactionListItem(
+                transaction: transaction,
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (context) =>
+                              new UpdateTransactionView(transaction)));
+                })))
         .toList();
   }
+
 }
 
 class _TransactionListItem extends ListTile {
@@ -137,4 +146,25 @@ class _TransactionListItem extends ListTile {
               child: new Text(transaction.category.category[0]),
             ),
             onTap: onTap);
+}
+
+class LeaveBehindView extends StatelessWidget {
+  LeaveBehindView({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+      padding: const EdgeInsets.all(16.0),
+      color: Colors.red,
+      child: new Row(
+        children: <Widget>[
+          new Icon(Icons.delete),
+          new Expanded(
+            child: new Text(''),
+          ),
+          new Icon(Icons.delete),
+        ],
+      ),
+    );
+  }
 }

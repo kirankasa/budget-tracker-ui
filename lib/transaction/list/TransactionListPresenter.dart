@@ -26,4 +26,14 @@ class TransactionListPresenter {
       _view.showError();
     });
   }
+
+  void deleteTransaction(int transactionId) {
+    assert(_view != null);
+    _repository
+        .deleteTransaction(transactionId)
+        .catchError((onError) {
+      print(onError);
+      _view.showError();
+    });
+  }
 }
