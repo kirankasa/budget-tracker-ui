@@ -146,7 +146,7 @@ class _UpdateTransactionState extends State<UpdateTransactionView>
                     style: new TextStyle(
                         fontSize: 20.0, fontWeight: FontWeight.bold),
                   ),
-                  color: Colors.purple,
+                  color:  Theme.of(context).primaryColor,
                   textColor: Colors.white,
                 ),
               ),

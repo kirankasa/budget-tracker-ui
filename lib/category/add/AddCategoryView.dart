@@ -54,7 +54,7 @@ class _AddCategoryState extends State<AddCategoryView>
                   style: new TextStyle(
                       fontSize: 20.0, fontWeight: FontWeight.bold),
                 ),
-                color: Colors.purple,
+                color:  Theme.of(context).primaryColor,
                 textColor: Colors.white,
               ),
             ),
