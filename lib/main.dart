@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       theme: new ThemeData(
-        primarySwatch: Colors.purple,
+        primarySwatch: Colors.teal,
       ),
       debugShowCheckedModeBanner: false,
       home: new TransactionListView(),
