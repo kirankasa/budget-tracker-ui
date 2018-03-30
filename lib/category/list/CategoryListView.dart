@@ -1,5 +1,4 @@
 import 'package:budget_tracker/category/Category.dart';
-import 'package:budget_tracker/category/details/CategoryDetailsView.dart';
 import 'package:budget_tracker/category/add/AddCategoryView.dart';
 import 'package:budget_tracker/category/update/UpdateCategoryView.dart';
 import 'package:budget_tracker/common/ui/BudgetDrawer.dart';
