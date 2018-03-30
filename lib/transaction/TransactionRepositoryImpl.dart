@@ -9,6 +9,7 @@ import 'package:budget_tracker/transaction/TransactionRepository.dart';
 class TransactionRepositoryImpl implements TransactionRepository {
   static const transactions_url =
       'https://budget-tracker.cfapps.io/transactions';
+  static const json = const JsonCodec();
 
   @override
   Future<List<Transaction>> retrieveTransactions() {
@@ -20,7 +21,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
         throw new FetchDataException(
             "Error while retriveing transactions [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
       }
-      final List transactions = JSON.decode(response.body);
+      final List transactions = json.decode(response.body);
       return transactions
           .map((transaction) => new Transaction.fromJson(transaction))
           .toList();
@@ -39,14 +40,14 @@ class TransactionRepositoryImpl implements TransactionRepository {
         throw new FetchDataException(
             "Error while retriveing transaction details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
       }
-      var transactionJson = JSON.decode(response.body);
+      var transactionJson = json.decode(response.body);
       return new Transaction.fromJson(transactionJson);
     });
   }
 
   @override
   Future<Transaction> saveTransaction(Transaction transaction) {
-    String requestJson = JSON.encode(transaction);
+    String requestJson = json.encode(transaction);
     return http.post(transactions_url, body: requestJson, headers: {
       'content-type': 'application/json'
     }).then((http.Response response) {
@@ -56,14 +57,14 @@ class TransactionRepositoryImpl implements TransactionRepository {
         throw new FetchDataException(
             "Error while saving transaction details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
       }
-      var transactionJson = JSON.decode(response.body);
+      var transactionJson = json.decode(response.body);
       return new Transaction.fromJson(transactionJson);
     });
   }
 
   @override
   Future<Transaction> updateTransaction(Transaction transaction) {
-    String requestJson = JSON.encode(transaction);
+    String requestJson = json.encode(transaction);
     return http.put(transactions_url+ "/" + transaction.id.toString(), body: requestJson, headers: {
       'content-type': 'application/json'
     }).then((http.Response response) {
@@ -73,7 +74,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
         throw new FetchDataException(
             "Error while saving transaction details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
       }
-      var transactionJson = JSON.decode(response.body);
+      var transactionJson = json.decode(response.body);
       return new Transaction.fromJson(transactionJson);
     });
   }

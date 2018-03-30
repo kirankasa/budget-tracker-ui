@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class UpdateTransactionView extends StatefulWidget {
-  Transaction transaction;
+  final Transaction transaction;
   UpdateTransactionView(this.transaction);
 
   @override

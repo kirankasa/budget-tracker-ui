@@ -3,7 +3,7 @@ import 'package:budget_tracker/category/update/UpdateCategoryPresenter.dart';
 import 'package:flutter/material.dart';
 
 class UpdateCategoryView extends StatefulWidget {
-  TransactionCategory category;
+  final TransactionCategory category;
   UpdateCategoryView(this.category);
 
   @override

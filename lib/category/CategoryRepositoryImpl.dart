@@ -9,6 +9,7 @@ import 'package:budget_tracker/category/CategoryRepository.dart';
 class CategoryRepositoryImpl implements CategoryRepository {
   static const categories_url =
       'https://budget-tracker.cfapps.io/transactions/categories';
+  static const json = const JsonCodec();
 
   @override
   Future<List<TransactionCategory>> retrieveTransactionCategories() {
@@ -20,7 +21,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
         throw new FetchDataException(
             "Error while retriveing categories [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
       }
-      final List categories = JSON.decode(response.body);
+      final List categories = json.decode(response.body);
       return categories
           .map((category) => new TransactionCategory.fromJson(category))
           .toList();
@@ -39,7 +40,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
         throw new FetchDataException(
             "Error while retriveing Transaction category details[StatusCode:$statusCode, Error:${response.reasonPhrase}]");
       }
-      var categoryJson = JSON.decode(response.body);
+      var categoryJson = json.decode(response.body);
       return new TransactionCategory.fromJson(categoryJson);
     });
   }
@@ -47,7 +48,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
   @override
   Future<TransactionCategory> saveTransactionCategory(
       TransactionCategory transactionCategory) {
-    String requestJson = JSON.encode(transactionCategory);
+    String requestJson = json.encode(transactionCategory);
     return http.post(categories_url, body: requestJson, headers: {
       'content-type': 'application/json'
     }).then((http.Response response) {
@@ -57,7 +58,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
         throw new FetchDataException(
             "Error while saving transaction category details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
       }
-      var categoryJson = JSON.decode(response.body);
+      var categoryJson = json.decode(response.body);
       return new TransactionCategory.fromJson(categoryJson);
     });
   }
@@ -65,7 +66,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
   @override
   Future<TransactionCategory> updateTransactionCategory(
       TransactionCategory transactionCategory) {
-    String requestJson = JSON.encode(transactionCategory);
+    String requestJson = json.encode(transactionCategory);
     return http.put(categories_url + "/" + transactionCategory.id.toString(),
         body: requestJson,
         headers: {
@@ -77,7 +78,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
         throw new FetchDataException(
             "Error while saving transaction category details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
       }
-      var categoryJson = JSON.decode(response.body);
+      var categoryJson = json.decode(response.body);
       return new TransactionCategory.fromJson(categoryJson);
     });
   }
