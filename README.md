@@ -1,4 +1,4 @@
-# budget_tracker
+# budget_tracker_ui
 
 Budget tracker
 
@@ -6,6 +6,8 @@ Budget tracker
 
 For help getting started with Flutter, view our online
 [documentation](https://flutter.io/).
+
+Backend rest api is at the following [repo](https://github.com/kiranreddykasa/budget-tracker-api) 
 
 License
 -------
