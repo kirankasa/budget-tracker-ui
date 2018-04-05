@@ -5,11 +5,9 @@ import 'package:http/http.dart' as http;
 import 'package:budget_tracker/common/exception/CommonExceptions.dart';
 import 'package:budget_tracker/transaction/Transaction.dart';
 import 'package:budget_tracker/transaction/TransactionRepository.dart';
+import 'package:budget_tracker/common/constants.dart';
 
 class TransactionRepositoryImpl implements TransactionRepository {
-  static const transactions_url =
-      'https://budget-tracker.cfapps.io/transactions';
-  static const json = const JsonCodec();
 
   @override
   Future<List<Transaction>> retrieveTransactions() {
