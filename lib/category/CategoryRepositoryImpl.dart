@@ -1,19 +1,20 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 
 import 'package:budget_tracker/common/exception/CommonExceptions.dart';
 import 'package:budget_tracker/category/Category.dart';
 import 'package:budget_tracker/category/CategoryRepository.dart';
+import 'package:budget_tracker/common/constants.dart';
 
 class CategoryRepositoryImpl implements CategoryRepository {
-  static const categories_url =
-      'https://budget-tracker.cfapps.io/transactions/categories';
-  static const json = const JsonCodec();
-
   @override
   Future<List<TransactionCategory>> retrieveTransactionCategories() {
-    return http.get(categories_url).then((http.Response response) {
+    return http.get(
+      categories_url,
+      headers: {HttpHeaders.AUTHORIZATION: "Basic your_api_token_here"},
+    ).then((http.Response response) {
       final String jsonBody = response.body;
       final statusCode = response.statusCode;
 
