@@ -69,7 +69,6 @@ class _TransactionListState extends State<TransactionList>
     } else {
       widget = new ListView(
           padding: new EdgeInsets.symmetric(vertical: 8.0),
-          reverse: true,
           children: _buildTransactionList());
     }
     return widget;
