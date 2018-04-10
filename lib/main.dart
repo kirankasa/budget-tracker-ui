@@ -1,4 +1,5 @@
 import 'package:budget_tracker/category/list/CategoryListView.dart';
+import 'package:budget_tracker/login/LoginView.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_tracker/transaction/list/TransactionListView.dart';
 
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
       ),
       debugShowCheckedModeBanner: false,
-      home: new TransactionListView(),
+      home: new LoginView(),
       routes: <String, WidgetBuilder>{
         '/transactions': (BuildContext context) => new TransactionListView(),
         '/categories': (BuildContext context) => new CategoryListView(),

@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+import 'package:budget_tracker/common/AuthorizationHelper.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:budget_tracker/common/exception/CommonExceptions.dart';
@@ -8,87 +10,94 @@ import 'package:budget_tracker/transaction/TransactionRepository.dart';
 import 'package:budget_tracker/common/constants.dart';
 
 class TransactionRepositoryImpl implements TransactionRepository {
-
   @override
-  Future<List<Transaction>> retrieveTransactions() {
-    return http.get(transactions_url).then((http.Response response) {
-      final String jsonBody = response.body;
-      final statusCode = response.statusCode;
-
-      if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
-        throw new FetchDataException(
-            "Error while retriveing transactions [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
-      }
-      final List transactions = json.decode(response.body);
-      return transactions
-          .map((transaction) => new Transaction.fromJson(transaction))
-          .toList();
-    });
+  Future<List<Transaction>> retrieveTransactions() async {
+    String _token = await AuthorizationHelper.getTokenValue();
+    var response = await http
+        .get(transactions_url, headers: {HttpHeaders.AUTHORIZATION: _token});
+    final String jsonBody = response.body;
+    final statusCode = response.statusCode;
+    if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
+      throw new FetchDataException(
+          "Error while retriveing transactions [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+    }
+    final List transactions = json.decode(response.body);
+    return transactions
+        .map((transaction) => new Transaction.fromJson(transaction))
+        .toList();
   }
 
   @override
-  Future<Transaction> retrieveTransactionDetails(int transactionId) {
-    return http
-        .get(transactions_url + "/" + transactionId.toString())
-        .then((http.Response response) {
-      final String jsonBody = response.body;
-      final statusCode = response.statusCode;
-
-      if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
-        throw new FetchDataException(
-            "Error while retriveing transaction details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
-      }
-      var transactionJson = json.decode(response.body);
-      return new Transaction.fromJson(transactionJson);
-    });
+  Future<Transaction> retrieveTransactionDetails(int transactionId) async {
+    String _token = await AuthorizationHelper.getTokenValue();
+    var response = await http.get(
+        transactions_url + "/" + transactionId.toString(),
+        headers: {HttpHeaders.AUTHORIZATION: _token});
+    final String jsonBody = response.body;
+    final statusCode = response.statusCode;
+    if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
+      throw new FetchDataException(
+          "Error while retriveing transaction details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+    }
+    var transactionJson = json.decode(response.body);
+    return new Transaction.fromJson(transactionJson);
   }
 
   @override
-  Future<Transaction> saveTransaction(Transaction transaction) {
+  Future<Transaction> saveTransaction(Transaction transaction) async {
+    String _token = await AuthorizationHelper.getTokenValue();
     String requestJson = json.encode(transaction);
-    return http.post(transactions_url, body: requestJson, headers: {
-      'content-type': 'application/json'
-    }).then((http.Response response) {
-      final String jsonBody = response.body;
-      final statusCode = response.statusCode;
-      if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
-        throw new FetchDataException(
-            "Error while saving transaction details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
-      }
-      var transactionJson = json.decode(response.body);
-      return new Transaction.fromJson(transactionJson);
-    });
+    var response = await http.post(transactions_url,
+        body: requestJson,
+        headers: {
+          HttpHeaders.CONTENT_TYPE: 'application/json',
+          HttpHeaders.AUTHORIZATION: _token
+        });
+    final String jsonBody = response.body;
+    final statusCode = response.statusCode;
+    if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
+      throw new FetchDataException(
+          "Error while saving transaction details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+    }
+    var transactionJson = json.decode(response.body);
+    return new Transaction.fromJson(transactionJson);
   }
 
   @override
-  Future<Transaction> updateTransaction(Transaction transaction) {
+  Future<Transaction> updateTransaction(Transaction transaction) async {
+    String _token = await AuthorizationHelper.getTokenValue();
     String requestJson = json.encode(transaction);
-    return http.put(transactions_url+ "/" + transaction.id.toString(), body: requestJson, headers: {
-      'content-type': 'application/json'
-    }).then((http.Response response) {
-      final String jsonBody = response.body;
-      final statusCode = response.statusCode;
-      if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
-        throw new FetchDataException(
-            "Error while saving transaction details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
-      }
-      var transactionJson = json.decode(response.body);
-      return new Transaction.fromJson(transactionJson);
-    });
+    var response = await http.put(
+        transactions_url + "/" + transaction.id.toString(),
+        body: requestJson,
+        headers: {
+          HttpHeaders.CONTENT_TYPE: 'application/json',
+          HttpHeaders.AUTHORIZATION: _token
+        });
+    final String jsonBody = response.body;
+    final statusCode = response.statusCode;
+    if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
+      throw new FetchDataException(
+          "Error while saving transaction details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+    }
+    var transactionJson = json.decode(response.body);
+    return new Transaction.fromJson(transactionJson);
   }
 
   @override
-  Future<Null> deleteTransaction(int transactionId) {
-    return http
-        .delete(transactions_url + "/" + transactionId.toString())
-        .then((http.Response response) {
-      final statusCode = response.statusCode;
-
-      if (statusCode < 200 || statusCode >= 300 ) {
-        throw new FetchDataException(
-            "Error while deleting transaction details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
-      }
-      return null;
+  Future<Null> deleteTransaction(int transactionId) async {
+    String _token = await AuthorizationHelper.getTokenValue();
+    var response = await http
+        .delete(transactions_url + "/" + transactionId.toString(), headers: {
+      HttpHeaders.CONTENT_TYPE: 'application/json',
+      HttpHeaders.AUTHORIZATION: _token
     });
+    final statusCode = response.statusCode;
+
+    if (statusCode < 200 || statusCode >= 300) {
+      throw new FetchDataException(
+          "Error while deleting transaction details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+    }
+    return null;
   }
 }

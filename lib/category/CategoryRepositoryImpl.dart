@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:budget_tracker/common/AuthorizationHelper.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:budget_tracker/common/exception/CommonExceptions.dart';
@@ -10,77 +11,86 @@ import 'package:budget_tracker/common/constants.dart';
 
 class CategoryRepositoryImpl implements CategoryRepository {
   @override
-  Future<List<TransactionCategory>> retrieveTransactionCategories() {
-    return http.get(
+  Future<List<TransactionCategory>> retrieveTransactionCategories() async {
+    String _token = await AuthorizationHelper.getTokenValue();
+    var response = await http.get(
       categories_url,
-      headers: {HttpHeaders.AUTHORIZATION: "Basic your_api_token_here"},
-    ).then((http.Response response) {
-      final String jsonBody = response.body;
-      final statusCode = response.statusCode;
+      headers: {
+        HttpHeaders.CONTENT_TYPE: 'application/json',
+        HttpHeaders.AUTHORIZATION: _token
+      },
+    );
+    final String jsonBody = response.body;
+    final statusCode = response.statusCode;
 
-      if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
-        throw new FetchDataException(
-            "Error while retriveing categories [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
-      }
-      final List categories = json.decode(response.body);
-      return categories
-          .map((category) => new TransactionCategory.fromJson(category))
-          .toList();
-    });
+    if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
+      throw new FetchDataException(
+          "Error while retriveing categories [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+    }
+    final List categories = json.decode(response.body);
+    return categories
+        .map((category) => new TransactionCategory.fromJson(category))
+        .toList();
   }
 
   @override
-  Future<TransactionCategory> retrieveTransactionCategoryDetails(int id) {
-    return http
-        .get(categories_url + "/" + id.toString())
-        .then((http.Response response) {
-      final String jsonBody = response.body;
-      final statusCode = response.statusCode;
+  Future<TransactionCategory> retrieveTransactionCategoryDetails(int id) async {
+    String _token = await AuthorizationHelper.getTokenValue();
+    var response = await http.get(categories_url + "/" + id.toString(),
+        headers: {
+          HttpHeaders.CONTENT_TYPE: 'application/json',
+          HttpHeaders.AUTHORIZATION: _token
+        });
 
-      if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
-        throw new FetchDataException(
-            "Error while retriveing Transaction category details[StatusCode:$statusCode, Error:${response.reasonPhrase}]");
-      }
-      var categoryJson = json.decode(response.body);
-      return new TransactionCategory.fromJson(categoryJson);
-    });
+    final String jsonBody = response.body;
+    final statusCode = response.statusCode;
+
+    if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
+      throw new FetchDataException(
+          "Error while retriveing Transaction category details[StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+    }
+    var categoryJson = json.decode(response.body);
+    return new TransactionCategory.fromJson(categoryJson);
   }
 
   @override
   Future<TransactionCategory> saveTransactionCategory(
-      TransactionCategory transactionCategory) {
+      TransactionCategory transactionCategory) async {
+    String _token = await AuthorizationHelper.getTokenValue();
     String requestJson = json.encode(transactionCategory);
-    return http.post(categories_url, body: requestJson, headers: {
-      'content-type': 'application/json'
-    }).then((http.Response response) {
-      final String jsonBody = response.body;
-      final statusCode = response.statusCode;
-      if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
-        throw new FetchDataException(
-            "Error while saving transaction category details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
-      }
-      var categoryJson = json.decode(response.body);
-      return new TransactionCategory.fromJson(categoryJson);
+    var response = await http.post(categories_url, body: requestJson, headers: {
+      HttpHeaders.CONTENT_TYPE: 'application/json',
+      HttpHeaders.AUTHORIZATION: _token
     });
+    final String jsonBody = response.body;
+    final statusCode = response.statusCode;
+    if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
+      throw new FetchDataException(
+          "Error while saving transaction category details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+    }
+    var categoryJson = json.decode(response.body);
+    return new TransactionCategory.fromJson(categoryJson);
   }
 
   @override
   Future<TransactionCategory> updateTransactionCategory(
-      TransactionCategory transactionCategory) {
+      TransactionCategory transactionCategory) async {
+    String _token = await AuthorizationHelper.getTokenValue();
     String requestJson = json.encode(transactionCategory);
-    return http.put(categories_url + "/" + transactionCategory.id.toString(),
+    var response = await http.put(
+        categories_url + "/" + transactionCategory.id.toString(),
         body: requestJson,
         headers: {
-          'content-type': 'application/json'
-        }).then((http.Response response) {
-      final String jsonBody = response.body;
-      final statusCode = response.statusCode;
-      if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
-        throw new FetchDataException(
-            "Error while saving transaction category details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
-      }
-      var categoryJson = json.decode(response.body);
-      return new TransactionCategory.fromJson(categoryJson);
-    });
+          HttpHeaders.CONTENT_TYPE: 'application/json',
+          HttpHeaders.AUTHORIZATION: _token
+        });
+    final String jsonBody = response.body;
+    final statusCode = response.statusCode;
+    if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
+      throw new FetchDataException(
+          "Error while saving transaction category details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+    }
+    var categoryJson = json.decode(response.body);
+    return new TransactionCategory.fromJson(categoryJson);
   }
 }
