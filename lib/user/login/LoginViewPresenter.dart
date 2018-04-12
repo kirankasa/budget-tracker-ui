@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:budget_tracker/common/di/injection.dart';
-import 'package:budget_tracker/login/AuthenticationRequest.dart';
-import 'package:budget_tracker/login/AuthenticationResponse.dart';
-import 'package:budget_tracker/login/LoginRepository.dart';
+import 'package:budget_tracker/user/AuthenticationRequest.dart';
+import 'package:budget_tracker/user/AuthenticationResponse.dart';
+import 'package:budget_tracker/user/UserRepository.dart';
 
 abstract class LoginViewContract {
   void navigateToTransactionsListPage();
@@ -14,9 +14,9 @@ abstract class LoginViewContract {
 
 class LoginViewPresenter {
   LoginViewContract _view;
-  LoginRepository _repository;
+  UserRepository _repository;
   LoginViewPresenter(this._view) {
-    _repository = new Injector().loginRepository;
+    _repository = new Injector().userRepository;
   }
 
   void login(AuthenticationRequest authenticationRequest) {

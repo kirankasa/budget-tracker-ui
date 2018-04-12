@@ -1,5 +1,5 @@
-import 'package:budget_tracker/login/AuthenticationRequest.dart';
-import 'package:budget_tracker/login/LoginViewPresenter.dart';
+import 'package:budget_tracker/user/AuthenticationRequest.dart';
+import 'package:budget_tracker/user/login/LoginViewPresenter.dart';
 import 'package:flutter/material.dart';
 
 class LoginView extends StatefulWidget {

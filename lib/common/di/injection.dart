@@ -1,5 +1,5 @@
-import 'package:budget_tracker/login/LoginRepository.dart';
-import 'package:budget_tracker/login/LoginRepositoryImpl.dart';
+import 'package:budget_tracker/user/UserRepository.dart';
+import 'package:budget_tracker/user/UserRepositoryImpl.dart';
 import 'package:budget_tracker/transaction/TransactionRepository.dart';
 import 'package:budget_tracker/transaction/TransactionRepositoryImpl.dart';
 import 'package:budget_tracker/category/CategoryRepository.dart';
@@ -22,7 +22,7 @@ class Injector {
     return new CategoryRepositoryImpl();
   }
 
-  LoginRepository get loginRepository {
-    return new LoginRepositoryImpl();
+  UserRepository get userRepository {
+    return new UserRepositoryImpl();
   }
 }

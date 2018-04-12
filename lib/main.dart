@@ -1,5 +1,6 @@
 import 'package:budget_tracker/category/list/CategoryListView.dart';
-import 'package:budget_tracker/login/LoginView.dart';
+import 'package:budget_tracker/user/login/LoginView.dart';
+import 'package:budget_tracker/user/signup/SignUpView.dart';
 import 'package:flutter/material.dart';
 import 'package:budget_tracker/transaction/list/TransactionListView.dart';
 
@@ -13,8 +14,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
       ),
       debugShowCheckedModeBanner: false,
-      home: new LoginView(),
+      home: new SignUpView(),
       routes: <String, WidgetBuilder>{
+        '/login': (BuildContext context) => new LoginView(),
         '/transactions': (BuildContext context) => new TransactionListView(),
         '/categories': (BuildContext context) => new CategoryListView(),
       },
