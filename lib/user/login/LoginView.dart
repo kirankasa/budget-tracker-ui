@@ -10,6 +10,7 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> implements LoginViewContract {
   String _username;
   String _password;
+  final formKey = new GlobalKey<FormState>();
   LoginViewPresenter _presenter;
 
   _LoginViewState() {
@@ -17,7 +18,6 @@ class _LoginViewState extends State<LoginView> implements LoginViewContract {
   }
   @override
   Widget build(BuildContext context) {
-    final formKey = new GlobalKey<FormState>();
     return new Scaffold(
         body: new Center(
       child: new Column(
