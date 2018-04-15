@@ -1,3 +1,4 @@
+import 'package:budget_tracker/common/SharedPreferencesHelper.dart';
 import 'package:flutter/material.dart';
 
 class BudgetDrawer extends StatelessWidget {
@@ -40,6 +41,18 @@ class BudgetDrawer extends StatelessWidget {
             applicationName: "Budget tracker",
             applicationVersion: "1.0",
             applicationIcon: new Icon(Icons.supervisor_account),
+          ),
+          new Divider(
+            color: Colors.black,
+            height: 2.0,
+          ),
+          new ListTile(
+            title: new Text("Sign out"),
+            leading: new Icon(Icons.delete_forever),
+            onTap: () {
+              SharedPreferencesHelper.removeToken();
+              Navigator.pushNamed(context, "/login");
+            },
           )
         ],
       ),
