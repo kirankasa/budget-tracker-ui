@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
+import 'package:budget_tracker/common/SharedPreferencesHelper.dart';
 import 'package:budget_tracker/common/constants.dart';
 import 'package:budget_tracker/common/exception/CommonExceptions.dart';
 import 'package:budget_tracker/user/User.dart';
@@ -31,6 +33,21 @@ class UserRepositoryImpl implements UserRepository {
     String requestJson = json.encode(user);
     var response = await http.post(register_url,
         body: requestJson, headers: {'content-type': 'application/json'});
+    final String jsonBody = response.body;
+    final statusCode = response.statusCode;
+    if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
+      throw new FetchDataException(
+          "Error while sign up [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+    }
+    var userJson = json.decode(response.body);
+    return new User.fromJson(userJson);
+  }
+
+  @override
+  Future<User> getLoggedInUserDetails() async {
+    String _token = await SharedPreferencesHelper.getTokenValue();
+    var response = await http
+        .get(loggedin_user_url, headers: {HttpHeaders.AUTHORIZATION: _token});
     final String jsonBody = response.body;
     final statusCode = response.statusCode;
     if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:budget_tracker/user/User.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesHelper {
@@ -8,6 +9,14 @@ class SharedPreferencesHelper {
     final SharedPreferences prefs = await _prefs;
     String token = prefs.getString("token");
     return "Bearer " + token;
+  }
+
+  static Future<User> getLoggedinValue() async {
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    final SharedPreferences prefs = await _prefs;
+    String email = prefs.getString("email");
+    String userName = prefs.getString("userName");
+    return new User(userName: userName, email: email);
   }
 
   static void removeToken() async {

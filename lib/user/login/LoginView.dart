@@ -56,7 +56,7 @@ class _LoginViewState extends State<LoginView> implements LoginViewContract {
                         if (form.validate()) {
                           form.save();
                           _presenter.login(new AuthenticationRequest(
-                              username: _username, password: _password));
+                              userName: _username, password: _password));
                         }
                       },
                       child: new Text(

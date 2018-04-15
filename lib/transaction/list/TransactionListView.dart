@@ -1,49 +1,24 @@
+import 'package:budget_tracker/common/SharedPreferencesHelper.dart';
 import 'package:budget_tracker/common/ui/BudgetDrawer.dart';
 import 'package:budget_tracker/transaction/Transaction.dart';
 import 'package:budget_tracker/transaction/add/AddTransactionView.dart';
 import 'package:budget_tracker/transaction/list/TransactionListPresenter.dart';
 import 'package:budget_tracker/transaction/update/UpdateTransactionView.dart';
+import 'package:budget_tracker/user/User.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class TransactionListView extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Transactions'),
-        actions: <Widget>[
-          new IconButton(
-              icon: new Icon(
-                Icons.add_circle,
-                size: 30.0,
-              ),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) => new AddTransactionView()));
-              })
-        ],
-      ),
-      drawer: new BudgetDrawer(),
-      body: new TransactionList(),
-    );
-  }
-}
-
-class TransactionList extends StatefulWidget {
-  TransactionList({Key key}) : super(key: key);
+class TransactionListView extends StatefulWidget {
+  TransactionListView({Key key}) : super(key: key);
   @override
   _TransactionListState createState() => new _TransactionListState();
 }
 
-class _TransactionListState extends State<TransactionList>
+class _TransactionListState extends State<TransactionListView>
     implements TransactionListViewContract {
+  User _loggedInUser;
   TransactionListPresenter _presenter;
-
   List<Transaction> _transactions;
-
   bool _isLoading;
 
   _TransactionListState() {
@@ -54,6 +29,11 @@ class _TransactionListState extends State<TransactionList>
   void initState() {
     super.initState();
     _isLoading = true;
+    SharedPreferencesHelper.getLoggedinValue().then((user) {
+      setState(() {
+        _loggedInUser = user;
+      });
+    });
     _presenter.loadTransactions();
   }
 
@@ -71,7 +51,29 @@ class _TransactionListState extends State<TransactionList>
           padding: new EdgeInsets.symmetric(vertical: 8.0),
           children: _buildTransactionList());
     }
-    return widget;
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text('Transactions'),
+        actions: <Widget>[
+          new IconButton(
+              icon: new Icon(
+                Icons.add_circle,
+                size: 30.0,
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    new MaterialPageRoute(
+                        builder: (context) => new AddTransactionView()));
+              })
+        ],
+      ),
+      drawer: new BudgetDrawer(
+        userName: _loggedInUser != null ? _loggedInUser.userName : "",
+        email: _loggedInUser != null ? _loggedInUser.email : "",
+      ),
+      body: widget,
+    );
   }
 
   @override
@@ -109,7 +111,6 @@ class _TransactionListState extends State<TransactionList>
                 })))
         .toList();
   }
-
 }
 
 class _TransactionListItem extends ListTile {
