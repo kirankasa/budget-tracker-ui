@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:budget_tracker/common/AuthorizationHelper.dart';
+import 'package:budget_tracker/common/SharedPreferencesHelper.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:budget_tracker/common/exception/CommonExceptions.dart';
@@ -12,7 +12,7 @@ import 'package:budget_tracker/common/constants.dart';
 class CategoryRepositoryImpl implements CategoryRepository {
   @override
   Future<List<TransactionCategory>> retrieveTransactionCategories() async {
-    String _token = await AuthorizationHelper.getTokenValue();
+    String _token = await SharedPreferencesHelper.getTokenValue();
     var response = await http.get(
       categories_url,
       headers: {
@@ -35,7 +35,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
 
   @override
   Future<TransactionCategory> retrieveTransactionCategoryDetails(int id) async {
-    String _token = await AuthorizationHelper.getTokenValue();
+    String _token = await SharedPreferencesHelper.getTokenValue();
     var response = await http.get(categories_url + "/" + id.toString(),
         headers: {
           HttpHeaders.CONTENT_TYPE: 'application/json',
@@ -56,7 +56,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
   @override
   Future<TransactionCategory> saveTransactionCategory(
       TransactionCategory transactionCategory) async {
-    String _token = await AuthorizationHelper.getTokenValue();
+    String _token = await SharedPreferencesHelper.getTokenValue();
     String requestJson = json.encode(transactionCategory);
     var response = await http.post(categories_url, body: requestJson, headers: {
       HttpHeaders.CONTENT_TYPE: 'application/json',
@@ -75,7 +75,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
   @override
   Future<TransactionCategory> updateTransactionCategory(
       TransactionCategory transactionCategory) async {
-    String _token = await AuthorizationHelper.getTokenValue();
+    String _token = await SharedPreferencesHelper.getTokenValue();
     String requestJson = json.encode(transactionCategory);
     var response = await http.put(
         categories_url + "/" + transactionCategory.id.toString(),

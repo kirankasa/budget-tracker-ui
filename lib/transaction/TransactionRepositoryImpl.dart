@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:budget_tracker/common/AuthorizationHelper.dart';
+import 'package:budget_tracker/common/SharedPreferencesHelper.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:budget_tracker/common/exception/CommonExceptions.dart';
@@ -12,7 +12,7 @@ import 'package:budget_tracker/common/constants.dart';
 class TransactionRepositoryImpl implements TransactionRepository {
   @override
   Future<List<Transaction>> retrieveTransactions() async {
-    String _token = await AuthorizationHelper.getTokenValue();
+    String _token = await SharedPreferencesHelper.getTokenValue();
     var response = await http
         .get(transactions_url, headers: {HttpHeaders.AUTHORIZATION: _token});
     final String jsonBody = response.body;
@@ -29,7 +29,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
 
   @override
   Future<Transaction> retrieveTransactionDetails(int transactionId) async {
-    String _token = await AuthorizationHelper.getTokenValue();
+    String _token = await SharedPreferencesHelper.getTokenValue();
     var response = await http.get(
         transactions_url + "/" + transactionId.toString(),
         headers: {HttpHeaders.AUTHORIZATION: _token});
@@ -45,7 +45,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
 
   @override
   Future<Transaction> saveTransaction(Transaction transaction) async {
-    String _token = await AuthorizationHelper.getTokenValue();
+    String _token = await SharedPreferencesHelper.getTokenValue();
     String requestJson = json.encode(transaction);
     var response = await http.post(transactions_url,
         body: requestJson,
@@ -65,7 +65,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
 
   @override
   Future<Transaction> updateTransaction(Transaction transaction) async {
-    String _token = await AuthorizationHelper.getTokenValue();
+    String _token = await SharedPreferencesHelper.getTokenValue();
     String requestJson = json.encode(transaction);
     var response = await http.put(
         transactions_url + "/" + transaction.id.toString(),
@@ -86,7 +86,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
 
   @override
   Future<Null> deleteTransaction(int transactionId) async {
-    String _token = await AuthorizationHelper.getTokenValue();
+    String _token = await SharedPreferencesHelper.getTokenValue();
     var response = await http
         .delete(transactions_url + "/" + transactionId.toString(), headers: {
       HttpHeaders.CONTENT_TYPE: 'application/json',
