@@ -2,14 +2,16 @@ import 'package:budget_tracker/common/SharedPreferencesHelper.dart';
 import 'package:flutter/material.dart';
 
 class BudgetDrawer extends StatelessWidget {
+  String userName;
+  String email;
+  BudgetDrawer({this.email, this.userName});
   @override
   Widget build(BuildContext context) {
     return new Drawer(
       child: new Column(
         children: <Widget>[
           new UserAccountsDrawerHeader(
-              accountName: new Text("kiranreddykasa"),
-              accountEmail: new Text("kiranreddy2004@gmail.com")),
+              accountName: new Text(userName), accountEmail: new Text(email)),
           new DrawerHeader(
               child: new ListView(
             children: <Widget>[

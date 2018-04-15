@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:budget_tracker/user/User.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:budget_tracker/common/di/injection.dart';
@@ -25,9 +26,12 @@ class LoginViewPresenter {
         .login(authenticationRequest)
         .then((AuthenticationResponse authenticationResponse) {
       _setTokenValue(authenticationResponse);
-      _view.navigateToTransactionsListPage();
     }).catchError((onError) {
       _view.showError();
+    }).then((Null) {
+      _repository.getLoggedInUserDetails().then((user) {
+        _setUserValue(user);
+      });
     });
   }
 
@@ -35,5 +39,13 @@ class LoginViewPresenter {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     final SharedPreferences prefs = await _prefs;
     prefs.setString("token", authenticationResponse.token);
+  }
+
+  void _setUserValue(User user) async {
+    Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    final SharedPreferences prefs = await _prefs;
+    prefs.setString("userName", user.userName);
+    prefs.setString("email", user.email);
+    _view.navigateToTransactionsListPage();
   }
 }
