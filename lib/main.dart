@@ -1,4 +1,5 @@
 import 'package:budget_tracker/category/list/CategoryListView.dart';
+import 'package:budget_tracker/common/SharedPreferencesHelper.dart';
 import 'package:budget_tracker/user/login/LoginView.dart';
 import 'package:budget_tracker/user/signup/SignUpView.dart';
 import 'package:flutter/material.dart';
@@ -14,14 +15,22 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
       ),
       debugShowCheckedModeBanner: false,
-      home: new LoginView(),
+      home: new FutureBuilder(
+        builder: ((BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            return new LoginView();
+          } else {
+            return SignUpView();
+          }
+        }),
+        future: SharedPreferencesHelper.getTokenValue(),
+      ),
       routes: <String, WidgetBuilder>{
         '/login': (BuildContext context) => new LoginView(),
         '/signup': (BuildContext context) => new SignUpView(),
         '/transactions': (BuildContext context) => new TransactionListView(),
         '/categories': (BuildContext context) => new CategoryListView(),
       },
-
     );
   }
 }
