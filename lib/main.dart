@@ -14,9 +14,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
       ),
       debugShowCheckedModeBanner: false,
-      home: new SignUpView(),
+      home: new LoginView(),
       routes: <String, WidgetBuilder>{
         '/login': (BuildContext context) => new LoginView(),
+        '/signup': (BuildContext context) => new SignUpView(),
         '/transactions': (BuildContext context) => new TransactionListView(),
         '/categories': (BuildContext context) => new CategoryListView(),
       },

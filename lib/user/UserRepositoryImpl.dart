@@ -52,7 +52,7 @@ class UserRepositoryImpl implements UserRepository {
     final statusCode = response.statusCode;
     if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
       throw new FetchDataException(
-          "Error while sign up [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+          "Error while getting logged in user details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
     }
     var userJson = json.decode(response.body);
     return new User.fromJson(userJson);
