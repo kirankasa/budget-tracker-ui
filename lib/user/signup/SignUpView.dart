@@ -1,5 +1,6 @@
 import 'package:budget_tracker/user/User.dart';
 import 'package:budget_tracker/user/signup/SignUpViewPresenter.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class SignUpView extends StatefulWidget {
@@ -30,6 +31,10 @@ class _SignUpViewState extends State<SignUpView> implements SignUpViewContract {
             key: formKey,
             child: new ListView(
               children: <Widget>[
+                new Container(
+                  margin: new EdgeInsets.all(20.0),
+                  child: new FlutterLogo(size: 100.0, colors: Colors.blue),
+                ),
                 new TextFormField(
                   decoration: new InputDecoration(
                     labelText: "Username",
@@ -98,6 +103,28 @@ class _SignUpViewState extends State<SignUpView> implements SignUpViewContract {
                     ),
                     color: Theme.of(context).primaryColor,
                     textColor: Colors.white,
+                  ),
+                ),
+                new Padding(
+                  padding: new EdgeInsets.only(top: 25.0),
+                  child: new Center(
+                    child: new RichText(
+                      text: new TextSpan(children: [
+                        new TextSpan(
+                          text: 'Already registered? ',
+                          style: new TextStyle(color: Colors.black),
+                        ),
+                        new TextSpan(
+                          text: 'Login',
+                          style: new TextStyle(color: Colors.blue),
+                          recognizer: new TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  "/login", (Route<dynamic> route) => false);
+                            },
+                        )
+                      ]),
+                    ),
                   ),
                 )
               ],

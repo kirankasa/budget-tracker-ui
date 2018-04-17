@@ -20,19 +20,17 @@ class LoginViewPresenter {
     _repository = new Injector().userRepository;
   }
 
-  void login(AuthenticationRequest authenticationRequest) {
+  Future login(AuthenticationRequest authenticationRequest) async {
     assert(_view != null);
-    _repository
-        .login(authenticationRequest)
-        .then((AuthenticationResponse authenticationResponse) {
+    try {
+      var authenticationResponse =
+          await _repository.login(authenticationRequest);
       _setTokenValue(authenticationResponse);
-    }).catchError((onError) {
+      var user = await _repository.getLoggedInUserDetails();
+      _setUserValue(user);
+    } on Exception catch (e) {
       _view.showError();
-    }).then((Null) {
-      _repository.getLoggedInUserDetails().then((user) {
-        _setUserValue(user);
-      });
-    });
+    }
   }
 
   void _setTokenValue(AuthenticationResponse authenticationResponse) async {
