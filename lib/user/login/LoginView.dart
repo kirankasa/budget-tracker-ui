@@ -31,7 +31,7 @@ class _LoginViewState extends State<LoginView> implements LoginViewContract {
             children: <Widget>[
               new Container(
                 margin: new EdgeInsets.all(20.0),
-                child: new FlutterLogo(size: 100.0, colors: Colors.blue),
+                child: new FlutterLogo(size: 100.0, colors: Colors.blue, ),
               ),
               error
                   ? new Center(
