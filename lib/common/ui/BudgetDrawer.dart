@@ -8,7 +8,7 @@ class BudgetDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new Drawer(
-      child: new Column(
+      child: new ListView(
         children: <Widget>[
           new UserAccountsDrawerHeader(
               accountName: new Text(userName), accountEmail: new Text(email)),
@@ -39,18 +39,9 @@ class BudgetDrawer extends StatelessWidget {
               ),
             ],
           )),
-          new AboutListTile(
-            applicationName: "Budget tracker",
-            applicationVersion: "1.0",
-            applicationIcon: new Icon(Icons.supervisor_account),
-          ),
-          new Divider(
-            color: Colors.black,
-            height: 2.0,
-          ),
           new ListTile(
             title: new Text("Sign out"),
-            leading: new Icon(Icons.delete_forever),
+            leading: new Icon(Icons.remove_circle),
             onTap: () {
               SharedPreferencesHelper.removeToken();
               Navigator.pushNamed(context, "/login");
