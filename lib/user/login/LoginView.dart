@@ -30,8 +30,15 @@ class _LoginViewState extends State<LoginView> implements LoginViewContract {
           child: new ListView(
             children: <Widget>[
               new Container(
-                margin: new EdgeInsets.all(20.0),
-                child: new FlutterLogo(size: 100.0, colors: Colors.blue, ),
+                height: 100.0,
+                width: 200.0,
+                padding: EdgeInsets.only(top: 20.0),
+                child: new DecoratedBox(
+                  decoration: new BoxDecoration(
+                      image: new DecorationImage(
+                          fit: BoxFit.contain,
+                          image: new AssetImage("assets/expense_tracker.jpg"))),
+                ),
               ),
               error
                   ? new Center(
