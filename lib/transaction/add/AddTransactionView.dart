@@ -131,7 +131,7 @@ class _AddTransactionState extends State<AddTransactionView>
                     style: new TextStyle(
                         fontSize: 20.0, fontWeight: FontWeight.bold),
                   ),
-                  color:  Theme.of(context).primaryColor,
+                  color: Theme.of(context).primaryColor,
                   textColor: Colors.white,
                 ),
               ),
@@ -168,6 +168,8 @@ class _AddTransactionState extends State<AddTransactionView>
   void showTransactionCategoryList(List<TransactionCategory> categories) {
     setState(() {
       _categories = categories;
+      _selectedCategory = _categories != null ? _categories[0] : null;
+      _selectedType = "D";
       _isLoading = false;
     });
   }
