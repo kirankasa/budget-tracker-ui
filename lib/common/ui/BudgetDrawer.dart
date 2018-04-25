@@ -40,6 +40,14 @@ class BudgetDrawer extends StatelessWidget {
             ],
           )),
           new ListTile(
+            title: new Text("Feedback"),
+            leading: new Icon(Icons.comment),
+            onTap: () {
+              SharedPreferencesHelper.removeToken();
+              Navigator.pushNamed(context, "/feedback");
+            },
+          ),
+          new ListTile(
             title: new Text("Sign out"),
             leading: new Icon(Icons.remove_circle),
             onTap: () {

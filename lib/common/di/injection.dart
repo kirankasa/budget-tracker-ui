@@ -1,3 +1,5 @@
+import 'package:budget_tracker/feedback/FeedbackRepository.dart';
+import 'package:budget_tracker/feedback/FeedbackRepositoryImpl.dart';
 import 'package:budget_tracker/user/UserRepository.dart';
 import 'package:budget_tracker/user/UserRepositoryImpl.dart';
 import 'package:budget_tracker/transaction/TransactionRepository.dart';
@@ -24,5 +26,9 @@ class Injector {
 
   UserRepository get userRepository {
     return new UserRepositoryImpl();
+  }
+
+  FeedbackRepository get feedbackRepository {
+    return new FeedbackRepositoryImpl();
   }
 }

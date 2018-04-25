@@ -1,5 +1,6 @@
 import 'package:budget_tracker/category/list/CategoryListView.dart';
 import 'package:budget_tracker/common/SharedPreferencesHelper.dart';
+import 'package:budget_tracker/feedback/FeedbackView.dart';
 import 'package:budget_tracker/user/login/LoginView.dart';
 import 'package:budget_tracker/user/signup/SignUpView.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         '/signup': (BuildContext context) => new SignUpView(),
         '/transactions': (BuildContext context) => new TransactionListView(),
         '/categories': (BuildContext context) => new CategoryListView(),
+        '/feedback': (BuildContext context) => new FeedbackView()
       },
     );
   }
