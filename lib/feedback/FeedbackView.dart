@@ -62,6 +62,13 @@ class _FeedbackViewState extends State<FeedbackView>
                   ),
                   controller: fromEmailController,
                   onSaved: (val) => _fromEmail = val,
+                  validator: (val) {
+                    if (val.isNotEmpty && !val.contains("@")) {
+                      return "Please enter valid email.";
+                    } else {
+                      null;
+                    }
+                  },
                   keyboardType: TextInputType.emailAddress,
                 ),
                 new Padding(
