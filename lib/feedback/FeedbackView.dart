@@ -12,8 +12,10 @@ class _FeedbackViewState extends State<FeedbackView>
     implements FeedbackViewContract {
   String _fromEmail;
   String _message;
-
+  TextEditingController fromEmailController = new TextEditingController();
+  TextEditingController messageController = new TextEditingController();
   final formKey = new GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   FeedbackViewPresenter _presenter;
   _FeedbackViewState() {
     _presenter = new FeedbackViewPresenter(this);
@@ -22,6 +24,7 @@ class _FeedbackViewState extends State<FeedbackView>
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      key: _scaffoldKey,
       body: new Theme(
         data: new ThemeData(
             inputDecorationTheme: new InputDecorationTheme(
@@ -46,10 +49,10 @@ class _FeedbackViewState extends State<FeedbackView>
                   decoration: new InputDecoration(
                     labelText: "Message",
                   ),
-                  initialValue: _message,
+                  controller: messageController,
                   maxLines: 4,
                   validator: (val) =>
-                  val.isEmpty ? 'Message can\'t be empty.' : null,
+                      val.isEmpty ? 'Message can\'t be empty.' : null,
                   onSaved: (val) => _message = val,
                   keyboardType: TextInputType.text,
                 ),
@@ -57,12 +60,12 @@ class _FeedbackViewState extends State<FeedbackView>
                   decoration: new InputDecoration(
                     labelText: "Your Email (Optional)",
                   ),
-                  initialValue: _fromEmail,
+                  controller: fromEmailController,
                   onSaved: (val) => _fromEmail = val,
                   keyboardType: TextInputType.emailAddress,
                 ),
                 new Padding(
-                  padding: new EdgeInsets.all(8.0),
+                  padding: new EdgeInsets.all(15.0),
                   child: new RaisedButton(
                     onPressed: () {
                       final form = formKey.currentState;
@@ -81,28 +84,6 @@ class _FeedbackViewState extends State<FeedbackView>
                     textColor: Colors.white,
                   ),
                 ),
-                new Padding(
-                  padding: new EdgeInsets.only(top: 25.0),
-                  child: new Center(
-                    child: new RichText(
-                      text: new TextSpan(children: [
-                        new TextSpan(
-                          text: 'Already registered? ',
-                          style: new TextStyle(color: Colors.black),
-                        ),
-                        new TextSpan(
-                          text: 'Login',
-                          style: new TextStyle(color: Colors.blue),
-                          recognizer: new TapGestureRecognizer()
-                            ..onTap = () {
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                  "/login", (Route<dynamic> route) => false);
-                            },
-                        )
-                      ]),
-                    ),
-                  ),
-                )
               ],
             )),
       ),
@@ -116,12 +97,11 @@ class _FeedbackViewState extends State<FeedbackView>
 
   @override
   void success() {
-   /* print("called");
     setState(() {
-      _message = "";
-      _fromEmail = "";
+      fromEmailController.text = "";
+      messageController.text = "";
     });
-    Scaffold.of(context).showSnackBar(
-        new SnackBar(content: new Text("Feedback submitted successfully")));*/
+    _scaffoldKey.currentState.showSnackBar(
+        new SnackBar(content: new Text("Feedback submitted successfully")));
   }
 }
