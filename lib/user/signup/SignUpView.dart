@@ -74,8 +74,13 @@ class _SignUpViewState extends State<SignUpView> implements SignUpViewContract {
                   decoration: new InputDecoration(
                     labelText: "Email",
                   ),
-                  validator: (val) =>
-                      val.isEmpty ? 'Email can\'t be empty.' : null,
+                  validator: (val) {
+                    if (val.isEmpty) {
+                      return 'Email can\'t be empty.';
+                    } else if (!val.contains("@")) {
+                      return 'Please enter valid email.';
+                    }
+                  },
                   onSaved: (val) => _email = val,
                   keyboardType: TextInputType.emailAddress,
                 ),
