@@ -55,25 +55,20 @@ class _CategoryListState extends State<CategoryListView>
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('Categories'),
-        actions: <Widget>[
-          new IconButton(
-              icon: new Icon(
-                Icons.add_circle,
-                size: 30.0,
-              ),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    new MaterialPageRoute(
-                        builder: (context) => new AddCategoryView()));
-              })
-        ],
       ),
       drawer: new BudgetDrawer(
         userName: _loggedInUser != null ? _loggedInUser.userName : "",
         email: _loggedInUser != null ? _loggedInUser.email : "",
       ),
       body: widget,
+      floatingActionButton: new FloatingActionButton(
+          child: new Icon(Icons.add),
+          onPressed: () {
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (context) => new AddCategoryView()));
+          }),
     );
   }
 
