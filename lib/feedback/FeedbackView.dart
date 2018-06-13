@@ -1,6 +1,8 @@
+import 'package:budget_tracker/common/SharedPreferencesHelper.dart';
+import 'package:budget_tracker/common/ui/BudgetDrawer.dart';
 import 'package:budget_tracker/feedback/FeedbackViewPresenter.dart';
 import 'package:budget_tracker/feedback/Feedback.dart';
-import 'package:flutter/gestures.dart';
+import 'package:budget_tracker/user/User.dart';
 import 'package:flutter/material.dart';
 
 class FeedbackView extends StatefulWidget {
@@ -10,21 +12,36 @@ class FeedbackView extends StatefulWidget {
 
 class _FeedbackViewState extends State<FeedbackView>
     implements FeedbackViewContract {
-  String _fromEmail;
+  User _loggedInUser;
   String _message;
-  TextEditingController fromEmailController = new TextEditingController();
   TextEditingController messageController = new TextEditingController();
   final formKey = new GlobalKey<FormState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   FeedbackViewPresenter _presenter;
+
   _FeedbackViewState() {
     _presenter = new FeedbackViewPresenter(this);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    SharedPreferencesHelper.getLoggedInValue().then((user) {
+      setState(() {
+        _loggedInUser = user;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
       key: _scaffoldKey,
+      appBar: new AppBar(title: new Text("Feedback"),),
+      drawer: new BudgetDrawer(
+        userName: _loggedInUser != null ? _loggedInUser.userName : "",
+        email: _loggedInUser != null ? _loggedInUser.email : "",
+      ),
       body: new Theme(
         data: new ThemeData(
             inputDecorationTheme: new InputDecorationTheme(
@@ -56,21 +73,6 @@ class _FeedbackViewState extends State<FeedbackView>
                   onSaved: (val) => _message = val,
                   keyboardType: TextInputType.text,
                 ),
-                new TextFormField(
-                  decoration: new InputDecoration(
-                    labelText: "Your Email (Optional)",
-                  ),
-                  controller: fromEmailController,
-                  onSaved: (val) => _fromEmail = val,
-                  validator: (val) {
-                    if (val.isNotEmpty && !val.contains("@")) {
-                      return "Please enter valid email.";
-                    } else {
-                      null;
-                    }
-                  },
-                  keyboardType: TextInputType.emailAddress,
-                ),
                 new Padding(
                   padding: new EdgeInsets.all(15.0),
                   child: new RaisedButton(
@@ -78,8 +80,8 @@ class _FeedbackViewState extends State<FeedbackView>
                       final form = formKey.currentState;
                       if (form.validate()) {
                         form.save();
-                        _presenter.feedback(new ExpenseFeedback(
-                            fromEmail: _fromEmail, message: _message));
+                        _presenter
+                            .feedback(new ExpenseFeedback(message: _message));
                       }
                     },
                     child: new Text(
@@ -105,7 +107,6 @@ class _FeedbackViewState extends State<FeedbackView>
   @override
   void success() {
     setState(() {
-      fromEmailController.text = "";
       messageController.text = "";
     });
     _scaffoldKey.currentState.showSnackBar(

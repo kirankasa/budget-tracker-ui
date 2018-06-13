@@ -43,7 +43,6 @@ class BudgetDrawer extends StatelessWidget {
             title: new Text("Feedback"),
             leading: new Icon(Icons.comment),
             onTap: () {
-              SharedPreferencesHelper.removeToken();
               Navigator.pushNamed(context, "/feedback");
             },
           ),

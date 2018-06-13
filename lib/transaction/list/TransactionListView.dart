@@ -29,7 +29,7 @@ class _TransactionListState extends State<TransactionListView>
   void initState() {
     super.initState();
     _isLoading = true;
-    SharedPreferencesHelper.getLoggedinValue().then((user) {
+    SharedPreferencesHelper.getLoggedInValue().then((user) {
       setState(() {
         _loggedInUser = user;
       });
