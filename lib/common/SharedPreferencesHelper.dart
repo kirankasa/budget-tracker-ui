@@ -11,7 +11,7 @@ class SharedPreferencesHelper {
     return token != null ? "Bearer " + token : null;
   }
 
-  static Future<User> getLoggedinValue() async {
+  static Future<User> getLoggedInValue() async {
     Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
     final SharedPreferences prefs = await _prefs;
     String email = prefs.getString("email");
