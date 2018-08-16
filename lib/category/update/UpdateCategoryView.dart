@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 
 class UpdateCategoryView extends StatefulWidget {
   final TransactionCategory category;
+
   UpdateCategoryView(this.category);
 
   @override
   State<StatefulWidget> createState() {
-    return new _UpdateCategoryState();
+    return _UpdateCategoryState();
   }
 }
 
@@ -16,11 +17,11 @@ class _UpdateCategoryState extends State<UpdateCategoryView>
     implements UpdateCategoryViewContract {
   int _categoryId;
   String _category;
-  final formKey = new GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   UpdateCategoryPresenter _presenter;
 
   _UpdateCategoryState() {
-    _presenter = new UpdateCategoryPresenter(this);
+    _presenter = UpdateCategoryPresenter(this);
   }
 
   @override
@@ -32,46 +33,44 @@ class _UpdateCategoryState extends State<UpdateCategoryView>
 
   @override
   Widget build(BuildContext context) {
-    var widget = new Form(
+    var widget = Form(
         key: formKey,
-        child: new ListView(
+        child: ListView(
           children: <Widget>[
-            new ListTile(
-              title: new TextFormField(
-                decoration: new InputDecoration(labelText: "Category"),
+            ListTile(
+              title: TextFormField(
+                decoration: InputDecoration(labelText: "Category"),
                 initialValue: _category,
                 validator: (val) =>
                     val.isEmpty ? 'Category can\'t be empty.' : null,
                 onSaved: (val) => _category = val,
               ),
             ),
-            new ListTile(
-              title: new RaisedButton(
+            ListTile(
+              title: RaisedButton(
                 onPressed: () {
                   final form = formKey.currentState;
 
                   if (form.validate()) {
                     form.save();
-                    _presenter.updateTransactionCategory(
-                        new TransactionCategory(
-                            id: _categoryId, category: _category));
+                    _presenter.updateTransactionCategory(TransactionCategory(
+                        id: _categoryId, category: _category));
                   }
                 },
-                child: new Text(
+                child: Text(
                   "Update",
-                  style: new TextStyle(
-                      fontSize: 20.0, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                 ),
-                color:  Theme.of(context).primaryColor,
+                color: Theme.of(context).primaryColor,
                 textColor: Colors.white,
               ),
             ),
           ],
         ));
 
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Update Category'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Update Category'),
       ),
       body: widget,
     );

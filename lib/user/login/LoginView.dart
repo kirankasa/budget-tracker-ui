@@ -5,102 +5,109 @@ import 'package:flutter/material.dart';
 
 class LoginView extends StatefulWidget {
   @override
-  _LoginViewState createState() => new _LoginViewState();
+  _LoginViewState createState() => _LoginViewState();
 }
 
 class _LoginViewState extends State<LoginView> implements LoginViewContract {
   String _username;
   String _password;
   bool error = false;
-  final formKey = new GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   LoginViewPresenter _presenter;
 
   _LoginViewState() {
-    _presenter = new LoginViewPresenter(this);
+    _presenter = LoginViewPresenter(this);
   }
+
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        body: new Theme(
-      data: new ThemeData(
-          inputDecorationTheme: new InputDecorationTheme(
-              labelStyle: new TextStyle(fontSize: 20.0))),
-      child: new Form(
+    return Scaffold(
+        body: Theme(
+      data: ThemeData(
+          inputDecorationTheme:
+              InputDecorationTheme(labelStyle: TextStyle(fontSize: 20.0))),
+      child: Form(
           key: formKey,
-          child: new ListView(
+          child: ListView(
             children: <Widget>[
-              new Container(
+              Container(
                 height: 100.0,
                 width: 200.0,
                 padding: EdgeInsets.only(top: 20.0),
-                child: new DecoratedBox(
-                  decoration: new BoxDecoration(
-                      image: new DecorationImage(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
                           fit: BoxFit.contain,
-                          image: new AssetImage("assets/expense_tracker.jpg"))),
+                          image: AssetImage("assets/expense_tracker.jpg"))),
                 ),
               ),
               error
-                  ? new Center(
-                      child: new Text(
+                  ? Center(
+                      child: Text(
                         "Invalid username or password",
-                        style: new TextStyle(
+                        style: TextStyle(
                             fontSize: 20.0,
                             color: Colors.red,
                             fontStyle: FontStyle.italic),
                       ),
                     )
-                  : new Container(),
-              new TextFormField(
-                decoration: new InputDecoration(
-                  labelText: "Username",
+                  : Container(),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    labelText: "Username",
+                  ),
+                  validator: (val) =>
+                      val.isEmpty ? 'Username can\'t be empty.' : null,
+                  onSaved: (val) => _username = val,
                 ),
-                validator: (val) =>
-                    val.isEmpty ? 'Username can\'t be empty.' : null,
-                onSaved: (val) => _username = val,
               ),
-              new TextFormField(
-                decoration: new InputDecoration(labelText: "Password"),
-                obscureText: true,
-                validator: (val) =>
-                    val.isEmpty ? 'Password can\'t be empty.' : null,
-                onSaved: (val) => _password = val,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextFormField(
+                  decoration: InputDecoration(labelText: "Password"),
+                  obscureText: true,
+                  validator: (val) =>
+                      val.isEmpty ? 'Password can\'t be empty.' : null,
+                  onSaved: (val) => _password = val,
+                ),
               ),
-              new Padding(
-                padding: new EdgeInsets.all(8.0),
-                child: new RaisedButton(
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: RaisedButton(
                   highlightColor: Colors.cyan,
                   onPressed: () {
                     final form = formKey.currentState;
 
                     if (form.validate()) {
                       form.save();
-                      _presenter.login(new AuthenticationRequest(
+                      _presenter.login(AuthenticationRequest(
                           userName: _username, password: _password));
                     }
                   },
-                  child: new Text(
+                  child: Text(
                     "Login",
-                    style: new TextStyle(
-                        fontSize: 20.0, fontWeight: FontWeight.bold),
+                    style:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                   ),
                   color: Theme.of(context).primaryColor,
                   textColor: Colors.white,
                 ),
               ),
-              new Padding(
-                padding: new EdgeInsets.only(top: 25.0),
+              Padding(
+                padding: EdgeInsets.only(top: 25.0),
                 child: Center(
-                  child: new RichText(
-                    text: new TextSpan(children: [
-                      new TextSpan(
+                  child: RichText(
+                    text: TextSpan(children: [
+                      TextSpan(
                         text: 'New user? ',
-                        style: new TextStyle(color: Colors.black),
+                        style: TextStyle(color: Colors.black),
                       ),
-                      new TextSpan(
+                      TextSpan(
                         text: 'Sign up',
-                        style: new TextStyle(color: Colors.blue),
-                        recognizer: new TapGestureRecognizer()
+                        style: TextStyle(color: Colors.blue),
+                        recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             Navigator.of(context).pushNamedAndRemoveUntil(
                                 "/signup", (Route<dynamic> route) => false);

@@ -18,20 +18,21 @@ class Transaction {
       this.note});
 
   factory Transaction.fromJson(Map<String, dynamic> json) {
-    return new Transaction(
+    return Transaction(
         id: json['id'],
         type: json['type'],
         amount: json['amount'],
-        dateTime: new DateFormat('yyyy-MM-dd').parse(json['date']),
+        dateTime: DateFormat('yyyy-MM-dd').parse(json['date']),
         note: json['note'],
-        category: new TransactionCategory.fromJson(json['category']));
+        category: TransactionCategory.fromJson(json['category']));
   }
+
   Map<String, dynamic> toJson() => {
         'id': id,
         'type': type,
         'category': {'category': category.category, 'id': category.id},
         'amount': amount,
-        'date': new DateFormat('yyyy-MM-dd').format(dateTime),
+        'date': DateFormat('yyyy-MM-dd').format(dateTime),
         'note': note
       };
 }

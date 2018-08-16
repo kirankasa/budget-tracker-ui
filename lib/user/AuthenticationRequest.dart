@@ -5,7 +5,7 @@ class AuthenticationRequest {
   const AuthenticationRequest({this.userName, this.password});
 
   factory AuthenticationRequest.fromJson(Map<String, dynamic> json) {
-    return new AuthenticationRequest(
+    return AuthenticationRequest(
         userName: json['userName'], password: json['password']);
   }
 

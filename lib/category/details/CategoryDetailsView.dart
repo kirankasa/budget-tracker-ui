@@ -5,25 +5,30 @@ import 'package:meta/meta.dart';
 
 class CategoryDetailsView extends StatelessWidget {
   final int categoryId;
+
   CategoryDetailsView({Key key, @required this.categoryId});
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Category Details'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Category Details'),
       ),
-      body: new CategoryDetails(categoryId: categoryId,),
+      body: CategoryDetails(
+        categoryId: categoryId,
+      ),
     );
   }
 }
 
 class CategoryDetails extends StatefulWidget {
   final int categoryId;
+
   CategoryDetails({Key key, @required this.categoryId});
+
   @override
   State<StatefulWidget> createState() {
-    return new _CategoryDetailsState();
+    return _CategoryDetailsState();
   }
 }
 
@@ -36,7 +41,7 @@ class _CategoryDetailsState extends State<CategoryDetails>
   bool _isLoading;
 
   _CategoryDetailsState() {
-    _presenter = new CategoryDetailsPresenter(this);
+    _presenter = CategoryDetailsPresenter(this);
   }
 
   @override
@@ -50,13 +55,13 @@ class _CategoryDetailsState extends State<CategoryDetails>
   Widget build(BuildContext context) {
     var widget;
     if (_isLoading) {
-      widget = new Center(
-          child: new Padding(
+      widget = Center(
+          child: Padding(
               padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-              child: new CircularProgressIndicator()));
+              child: CircularProgressIndicator()));
     } else {
-      widget = new Center(
-          child: new Padding(
+      widget = Center(
+          child: Padding(
         padding: const EdgeInsets.only(left: 16.0, right: 16.0),
         child: _buildCategoryDetails(),
       ));
@@ -78,6 +83,9 @@ class _CategoryDetailsState extends State<CategoryDetails>
   }
 
   _buildCategoryDetails() {
-    return new Text(_category.category,style: new TextStyle(fontSize: 30.0),);
+    return Text(
+      _category.category,
+      style: TextStyle(fontSize: 30.0),
+    );
   }
 }

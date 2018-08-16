@@ -22,7 +22,7 @@ class FeedbackRepositoryImpl implements FeedbackRepository {
     final String jsonBody = response.body;
     final statusCode = response.statusCode;
     if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
-      throw new FetchDataException(
+      throw FetchDataException(
           "Error while posting feedback [StatusCode:$statusCode, Error:${response
               .reasonPhrase}]");
     }

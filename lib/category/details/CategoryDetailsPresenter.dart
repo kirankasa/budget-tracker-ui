@@ -2,17 +2,18 @@ import 'package:budget_tracker/category/CategoryRepository.dart';
 import 'package:budget_tracker/common/di/injection.dart';
 import 'package:budget_tracker/category/Category.dart';
 
-abstract class CategoryDetailsViewContract{
+abstract class CategoryDetailsViewContract {
   void showCategory(TransactionCategory category);
+
   void showError();
 }
 
-class CategoryDetailsPresenter{
+class CategoryDetailsPresenter {
   CategoryDetailsViewContract _view;
   CategoryRepository _repository;
 
   CategoryDetailsPresenter(this._view) {
-    _repository = new Injector().categoryRepository;
+    _repository = Injector().categoryRepository;
   }
 
   void loadTransactionDetails(int categoryId) {

@@ -18,12 +18,13 @@ class TransactionRepositoryImpl implements TransactionRepository {
     final String jsonBody = response.body;
     final statusCode = response.statusCode;
     if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
-      throw new FetchDataException(
-          "Error while retriveing transactions [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+      throw FetchDataException(
+          "Error while retriveing transactions [StatusCode:$statusCode, Error:${response
+              .reasonPhrase}]");
     }
     final List transactions = json.decode(response.body);
     return transactions
-        .map((transaction) => new Transaction.fromJson(transaction))
+        .map((transaction) => Transaction.fromJson(transaction))
         .toList();
   }
 
@@ -36,11 +37,12 @@ class TransactionRepositoryImpl implements TransactionRepository {
     final String jsonBody = response.body;
     final statusCode = response.statusCode;
     if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
-      throw new FetchDataException(
-          "Error while retriveing transaction details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+      throw FetchDataException(
+          "Error while retriveing transaction details [StatusCode:$statusCode, Error:${response
+              .reasonPhrase}]");
     }
     var transactionJson = json.decode(response.body);
-    return new Transaction.fromJson(transactionJson);
+    return Transaction.fromJson(transactionJson);
   }
 
   @override
@@ -56,11 +58,12 @@ class TransactionRepositoryImpl implements TransactionRepository {
     final String jsonBody = response.body;
     final statusCode = response.statusCode;
     if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
-      throw new FetchDataException(
-          "Error while saving transaction details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+      throw FetchDataException(
+          "Error while saving transaction details [StatusCode:$statusCode, Error:${response
+              .reasonPhrase}]");
     }
     var transactionJson = json.decode(response.body);
-    return new Transaction.fromJson(transactionJson);
+    return Transaction.fromJson(transactionJson);
   }
 
   @override
@@ -77,11 +80,12 @@ class TransactionRepositoryImpl implements TransactionRepository {
     final String jsonBody = response.body;
     final statusCode = response.statusCode;
     if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
-      throw new FetchDataException(
-          "Error while saving transaction details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+      throw FetchDataException(
+          "Error while saving transaction details [StatusCode:$statusCode, Error:${response
+              .reasonPhrase}]");
     }
     var transactionJson = json.decode(response.body);
-    return new Transaction.fromJson(transactionJson);
+    return Transaction.fromJson(transactionJson);
   }
 
   @override
@@ -95,8 +99,9 @@ class TransactionRepositoryImpl implements TransactionRepository {
     final statusCode = response.statusCode;
 
     if (statusCode < 200 || statusCode >= 300) {
-      throw new FetchDataException(
-          "Error while deleting transaction details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+      throw FetchDataException(
+          "Error while deleting transaction details [StatusCode:$statusCode, Error:${response
+              .reasonPhrase}]");
     }
     return null;
   }

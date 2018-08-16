@@ -4,6 +4,7 @@ import 'package:budget_tracker/common/di/injection.dart';
 
 abstract class CategoryListViewContract {
   void showCategoriesList(List<TransactionCategory> categories);
+
   void showError();
 }
 
@@ -12,7 +13,7 @@ class CategoryPresenter {
   CategoryRepository _repository;
 
   CategoryPresenter(this._view) {
-    _repository = new Injector().categoryRepository;
+    _repository = Injector().categoryRepository;
   }
 
   void loadTransactions() {

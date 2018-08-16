@@ -21,11 +21,12 @@ class UserRepositoryImpl implements UserRepository {
     final String jsonBody = response.body;
     final statusCode = response.statusCode;
     if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
-      throw new FetchDataException(
-          "Error while logging in [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+      throw FetchDataException(
+          "Error while logging in [StatusCode:$statusCode, Error:${response
+              .reasonPhrase}]");
     }
     var categoryJson = json.decode(response.body);
-    return new AuthenticationResponse.fromJson(categoryJson);
+    return AuthenticationResponse.fromJson(categoryJson);
   }
 
   @override
@@ -36,11 +37,12 @@ class UserRepositoryImpl implements UserRepository {
     final String jsonBody = response.body;
     final statusCode = response.statusCode;
     if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
-      throw new FetchDataException(
-          "Error while sign up [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+      throw FetchDataException(
+          "Error while sign up [StatusCode:$statusCode, Error:${response
+              .reasonPhrase}]");
     }
     var userJson = json.decode(response.body);
-    return new User.fromJson(userJson);
+    return User.fromJson(userJson);
   }
 
   @override
@@ -51,10 +53,11 @@ class UserRepositoryImpl implements UserRepository {
     final String jsonBody = response.body;
     final statusCode = response.statusCode;
     if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
-      throw new FetchDataException(
-          "Error while getting logged in user details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+      throw FetchDataException(
+          "Error while getting logged in user details [StatusCode:$statusCode, Error:${response
+              .reasonPhrase}]");
     }
     var userJson = json.decode(response.body);
-    return new User.fromJson(userJson);
+    return User.fromJson(userJson);
   }
 }

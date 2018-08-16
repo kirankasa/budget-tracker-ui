@@ -5,18 +5,19 @@ import 'package:flutter/material.dart';
 class AddCategoryView extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return new _AddCategoryState();
+    return _AddCategoryState();
   }
 }
 
 class _AddCategoryState extends State<AddCategoryView>
     implements AddCategoryViewContract {
-  final formKey = new GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   String _category;
 
   AddCategoryPresenter _presenter;
+
   _AddCategoryState() {
-    _presenter = new AddCategoryPresenter(this);
+    _presenter = AddCategoryPresenter(this);
   }
 
   @override
@@ -26,43 +27,42 @@ class _AddCategoryState extends State<AddCategoryView>
 
   @override
   Widget build(BuildContext context) {
-    var widget = new Form(
+    var widget = Form(
         key: formKey,
-        child: new ListView(
+        child: ListView(
           children: <Widget>[
-            new ListTile(
-              title: new TextFormField(
-                decoration: new InputDecoration(labelText: "Category"),
+            ListTile(
+              title: TextFormField(
+                decoration: InputDecoration(labelText: "Category"),
                 validator: (val) =>
                     val.isEmpty ? 'Category can\'t be empty.' : null,
                 onSaved: (val) => _category = val,
               ),
             ),
-            new ListTile(
-              title: new RaisedButton(
+            ListTile(
+              title: RaisedButton(
                 onPressed: () {
                   final form = formKey.currentState;
 
                   if (form.validate()) {
                     form.save();
                     _presenter.saveTransactionCategory(
-                        new TransactionCategory(category: _category));
+                        TransactionCategory(category: _category));
                   }
                 },
-                child: new Text(
+                child: Text(
                   "Add",
-                  style: new TextStyle(
-                      fontSize: 20.0, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                 ),
-                color:  Theme.of(context).primaryColor,
+                color: Theme.of(context).primaryColor,
                 textColor: Colors.white,
               ),
             ),
           ],
         ));
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Add Category'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Add Category'),
       ),
       body: widget,
     );

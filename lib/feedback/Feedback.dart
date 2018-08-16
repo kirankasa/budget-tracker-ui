@@ -6,7 +6,7 @@ class ExpenseFeedback {
   });
 
   factory ExpenseFeedback.fromJson(Map<String, dynamic> json) {
-    return new ExpenseFeedback(
+    return ExpenseFeedback(
       message: json['message'],
     );
   }

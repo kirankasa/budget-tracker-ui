@@ -7,20 +7,20 @@ import 'package:flutter/material.dart';
 
 class FeedbackView extends StatefulWidget {
   @override
-  _FeedbackViewState createState() => new _FeedbackViewState();
+  _FeedbackViewState createState() => _FeedbackViewState();
 }
 
 class _FeedbackViewState extends State<FeedbackView>
     implements FeedbackViewContract {
   User _loggedInUser;
   String _message;
-  TextEditingController messageController = new TextEditingController();
-  final formKey = new GlobalKey<FormState>();
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  TextEditingController messageController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   FeedbackViewPresenter _presenter;
 
   _FeedbackViewState() {
-    _presenter = new FeedbackViewPresenter(this);
+    _presenter = FeedbackViewPresenter(this);
   }
 
   @override
@@ -35,35 +35,36 @@ class _FeedbackViewState extends State<FeedbackView>
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       key: _scaffoldKey,
-      appBar: new AppBar(title: new Text("Feedback"),),
-      drawer: new BudgetDrawer(
+      appBar: AppBar(
+        title: Text("Feedback"),
+      ),
+      drawer: BudgetDrawer(
         userName: _loggedInUser != null ? _loggedInUser.userName : "",
         email: _loggedInUser != null ? _loggedInUser.email : "",
       ),
-      body: new Theme(
-        data: new ThemeData(
-            inputDecorationTheme: new InputDecorationTheme(
-                labelStyle: new TextStyle(fontSize: 20.0))),
-        child: new Form(
+      body: Theme(
+        data: ThemeData(
+            inputDecorationTheme:
+                InputDecorationTheme(labelStyle: TextStyle(fontSize: 20.0))),
+        child: Form(
             key: formKey,
-            child: new ListView(
+            child: ListView(
               children: <Widget>[
-                new Container(
+                Container(
                   height: 100.0,
                   width: 200.0,
                   padding: EdgeInsets.only(top: 20.0),
-                  child: new DecoratedBox(
-                    decoration: new BoxDecoration(
-                        image: new DecorationImage(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
                             fit: BoxFit.contain,
-                            image:
-                                new AssetImage("assets/expense_tracker.jpg"))),
+                            image: AssetImage("assets/expense_tracker.jpg"))),
                   ),
                 ),
-                new TextFormField(
-                  decoration: new InputDecoration(
+                TextFormField(
+                  decoration: InputDecoration(
                     labelText: "Message",
                   ),
                   controller: messageController,
@@ -73,20 +74,19 @@ class _FeedbackViewState extends State<FeedbackView>
                   onSaved: (val) => _message = val,
                   keyboardType: TextInputType.text,
                 ),
-                new Padding(
-                  padding: new EdgeInsets.all(15.0),
-                  child: new RaisedButton(
+                Padding(
+                  padding: EdgeInsets.all(15.0),
+                  child: RaisedButton(
                     onPressed: () {
                       final form = formKey.currentState;
                       if (form.validate()) {
                         form.save();
-                        _presenter
-                            .feedback(new ExpenseFeedback(message: _message));
+                        _presenter.feedback(ExpenseFeedback(message: _message));
                       }
                     },
-                    child: new Text(
+                    child: Text(
                       "Submit Feedback",
-                      style: new TextStyle(
+                      style: TextStyle(
                           fontSize: 20.0, fontWeight: FontWeight.bold),
                     ),
                     color: Theme.of(context).primaryColor,
@@ -110,6 +110,6 @@ class _FeedbackViewState extends State<FeedbackView>
       messageController.text = "";
     });
     _scaffoldKey.currentState.showSnackBar(
-        new SnackBar(content: new Text("Feedback submitted successfully")));
+        SnackBar(content: Text("Feedback submitted successfully")));
   }
 }

@@ -7,14 +7,16 @@ import 'package:meta/meta.dart';
 
 class TransactionDetailView extends StatelessWidget {
   final int transactionId;
+
   TransactionDetailView({Key key, @required this.transactionId});
+
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Transaction Details'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Transaction Details'),
       ),
-      body: new TransactionDetail(
+      body: TransactionDetail(
         transactionId: transactionId,
       ),
     );
@@ -23,9 +25,11 @@ class TransactionDetailView extends StatelessWidget {
 
 class TransactionDetail extends StatefulWidget {
   final int transactionId;
+
   TransactionDetail({Key key, @required this.transactionId});
+
   @override
-  _TransactionDetailState createState() => new _TransactionDetailState();
+  _TransactionDetailState createState() => _TransactionDetailState();
 }
 
 class _TransactionDetailState extends State<TransactionDetail>
@@ -37,7 +41,7 @@ class _TransactionDetailState extends State<TransactionDetail>
   bool _isLoading;
 
   _TransactionDetailState() {
-    _presenter = new TransactionDetailsPresenter(this);
+    _presenter = TransactionDetailsPresenter(this);
   }
 
   @override
@@ -52,23 +56,21 @@ class _TransactionDetailState extends State<TransactionDetail>
     var widget;
 
     if (_isLoading) {
-      widget = new Center(
-          child: new Padding(
+      widget = Center(
+          child: Padding(
               padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-              child: new CircularProgressIndicator()));
+              child: CircularProgressIndicator()));
     } else {
-      widget =
-       new Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _buildRow("Category", _transaction.category.category),
-            _buildRow("Note", _transaction.note),
-            _buildRow(
-              "Date",
-              new DateFormat().add_yMd().format(_transaction.dateTime),
-            ),
-          ],
-
+      widget = Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          _buildRow("Category", _transaction.category.category),
+          _buildRow("Note", _transaction.note),
+          _buildRow(
+            "Date",
+            DateFormat().add_yMd().format(_transaction.dateTime),
+          ),
+        ],
       );
     }
     return widget;
@@ -88,12 +90,18 @@ class _TransactionDetailState extends State<TransactionDetail>
   }
 
   Widget _buildRow(String fieldName, String value) {
-    return new Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        new Text(fieldName,style: new TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold),),
-        new Text(" : "),
-        new Text(value,style: new TextStyle(fontSize: 20.0,fontWeight: FontWeight.normal),),
+        Text(
+          fieldName,
+          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+        ),
+        Text(" : "),
+        Text(
+          value,
+          style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.normal),
+        ),
       ],
     );
   }
