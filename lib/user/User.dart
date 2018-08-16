@@ -13,7 +13,7 @@ class User {
       this.email});
 
   factory User.fromJson(Map<String, dynamic> json) {
-    return new User(
+    return User(
         userName: json['userName'],
         password: json['password'],
         firstName: json['firstName'],

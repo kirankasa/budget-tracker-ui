@@ -8,7 +8,7 @@ import 'package:budget_tracker/category/CategoryRepository.dart';
 import 'package:budget_tracker/category/CategoryRepositoryImpl.dart';
 
 class Injector {
-  static final Injector _singleton = new Injector._internal();
+  static final Injector _singleton = Injector._internal();
 
   factory Injector() {
     return _singleton;
@@ -17,18 +17,18 @@ class Injector {
   Injector._internal();
 
   TransactionRepository get transactionRepository {
-    return new TransactionRepositoryImpl();
+    return TransactionRepositoryImpl();
   }
 
   CategoryRepository get categoryRepository {
-    return new CategoryRepositoryImpl();
+    return CategoryRepositoryImpl();
   }
 
   UserRepository get userRepository {
-    return new UserRepositoryImpl();
+    return UserRepositoryImpl();
   }
 
   FeedbackRepository get feedbackRepository {
-    return new FeedbackRepositoryImpl();
+    return FeedbackRepositoryImpl();
   }
 }

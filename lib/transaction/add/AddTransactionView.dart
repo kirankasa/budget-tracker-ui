@@ -8,24 +8,24 @@ import 'package:intl/intl.dart';
 
 class AddTransactionView extends StatefulWidget {
   @override
-  _AddTransactionState createState() => new _AddTransactionState();
+  _AddTransactionState createState() => _AddTransactionState();
 }
 
 class _AddTransactionState extends State<AddTransactionView>
     implements AddTransactionViewContract {
   _AddTransactionState() {
-    _presenter = new AddTransactionPresenter(this);
+    _presenter = AddTransactionPresenter(this);
   }
 
   bool _isLoading = false;
-  DateTime _selectedDate = new DateTime.now();
+  DateTime _selectedDate = DateTime.now();
   String _selectedType;
   String _amount;
   String _note;
   TransactionCategory _selectedCategory;
   AddTransactionPresenter _presenter;
   List<TransactionCategory> _categories;
-  final formKey = new GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
 
   @override
   initState() {
@@ -38,87 +38,87 @@ class _AddTransactionState extends State<AddTransactionView>
   Widget build(BuildContext context) {
     var widget;
     if (_isLoading) {
-      widget = new Center(
-          child: new Padding(
+      widget = Center(
+          child: Padding(
               padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-              child: new CircularProgressIndicator()));
+              child: CircularProgressIndicator()));
     } else {
-      widget = new Form(
+      widget = Form(
           key: formKey,
-          child: new ListView(
+          child: ListView(
             children: <Widget>[
-              new ListTile(
-                  title: new DropdownButton<TransactionCategory>(
-                      hint: new Text("Select Category"),
+              ListTile(
+                  title: DropdownButton<TransactionCategory>(
+                      hint: Text("Select Category"),
                       items: _categories.map((TransactionCategory category) {
-                        return new DropdownMenuItem<TransactionCategory>(
-                          child: new Text(category.category),
+                        return DropdownMenuItem<TransactionCategory>(
+                          child: Text(category.category),
                           value: category,
                         );
                       }).toList(),
                       value: _selectedCategory,
-                      onChanged: (TransactionCategory newCategory) {
+                      onChanged: (TransactionCategory Category) {
                         setState(() {
-                          if (newCategory != null) {
-                            _selectedCategory = newCategory;
+                          if (Category != null) {
+                            _selectedCategory = Category;
                           }
                         });
                       })),
-              new ListTile(
-                  title: new DropdownButton<String>(
-                      hint: new Text("Select Type"),
+              ListTile(
+                  title: DropdownButton<String>(
+                      hint: Text("Select Type"),
                       items: ["D", "C"].map((String type) {
-                        return new DropdownMenuItem<String>(
-                          child: new Text(type == "C" ? "Income" : "Expense"),
+                        return DropdownMenuItem<String>(
+                          child: Text(type == "C" ? "Income" : "Expense"),
                           value: type,
                         );
                       }).toList(),
                       value: _selectedType,
-                      onChanged: (String newType) {
+                      onChanged: (String Type) {
                         setState(() {
-                          if (newType != null) {
-                            _selectedType = newType;
+                          if (Type != null) {
+                            _selectedType = Type;
                           }
                         });
                       })),
-              new ListTile(
-                title: new TextFormField(
-                  decoration: new InputDecoration(labelText: "Amount"),
+              ListTile(
+                title: TextFormField(
+                  decoration: InputDecoration(labelText: "Amount"),
                   keyboardType: TextInputType.number,
                   validator: (val) =>
                       val.isEmpty ? 'Amount can\'t be empty.' : null,
                   onSaved: (val) => _amount = val,
                 ),
               ),
-              new ListTile(
-                title: new InputDecorator(
-                  decoration: new InputDecoration(
+              ListTile(
+                title: InputDecorator(
+                  decoration: InputDecoration(
                       hintText: "Enter Date",
                       labelText: "Transaction Date",
-                      labelStyle: new TextStyle(fontSize: 20.0)),
-                  child: new Text(_selectedDate != null
-                      ? new DateFormat.yMMMd().format(_selectedDate)
+                      labelStyle: TextStyle(fontSize: 20.0)),
+                  child: Text(_selectedDate != null
+                      ? DateFormat.yMMMd().format(_selectedDate)
                       : ""),
                 ),
                 onTap: () {
                   _selectDate(context);
                 },
               ),
-              new ListTile(
-                title: new TextFormField(
-                  decoration: new InputDecoration(labelText: "Enter Note"),
+              ListTile(
+                title: TextFormField(
+                  decoration: InputDecoration(labelText: "Enter Note"),
                   validator: (val) =>
                       val.isEmpty ? 'Note can\'t be empty.' : null,
                   onSaved: (val) => _note = val,
                 ),
               ),
-              new ListTile(
-                title: new RaisedButton(
+              ListTile(
+                title: RaisedButton(
                   onPressed: () {
                     final form = formKey.currentState;
                     if (form.validate()) {
                       form.save();
-                      _presenter.saveTransaction(new Transaction(
+                      _presenter.saveTransaction(Transaction(
                           category: _selectedCategory,
                           amount: double.parse(_amount),
                           note: _note,
@@ -126,10 +126,10 @@ class _AddTransactionState extends State<AddTransactionView>
                           type: _selectedType));
                     }
                   },
-                  child: new Text(
+                  child: Text(
                     "Add",
-                    style: new TextStyle(
-                        fontSize: 20.0, fontWeight: FontWeight.bold),
+                    style:
+                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                   ),
                   color: Theme.of(context).primaryColor,
                   textColor: Colors.white,
@@ -138,9 +138,9 @@ class _AddTransactionState extends State<AddTransactionView>
             ],
           ));
     }
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Add Transaction'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Add Transaction'),
       ),
       body: widget,
     );
@@ -149,9 +149,9 @@ class _AddTransactionState extends State<AddTransactionView>
   Future<Null> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
-        initialDate: new DateTime.now(),
-        firstDate: new DateTime.now().add(new Duration(days: -365 * 2)),
-        lastDate: new DateTime.now().add(new Duration(days: 365 * 2)));
+        initialDate: DateTime.now(),
+        firstDate: DateTime.now().add(Duration(days: -365 * 2)),
+        lastDate: DateTime.now().add(Duration(days: 365 * 2)));
     if (picked != null && picked != _selectedDate) {
       setState(() {
         _selectedDate = picked;

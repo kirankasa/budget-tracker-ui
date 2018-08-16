@@ -24,12 +24,13 @@ class CategoryRepositoryImpl implements CategoryRepository {
     final statusCode = response.statusCode;
 
     if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
-      throw new FetchDataException(
-          "Error while retriveing categories [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+      throw FetchDataException(
+          "Error while retriveing categories [StatusCode:$statusCode, Error:${response
+              .reasonPhrase}]");
     }
     final List categories = json.decode(response.body);
     return categories
-        .map((category) => new TransactionCategory.fromJson(category))
+        .map((category) => TransactionCategory.fromJson(category))
         .toList();
   }
 
@@ -46,11 +47,12 @@ class CategoryRepositoryImpl implements CategoryRepository {
     final statusCode = response.statusCode;
 
     if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
-      throw new FetchDataException(
-          "Error while retriveing Transaction category details[StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+      throw FetchDataException(
+          "Error while retriveing Transaction category details[StatusCode:$statusCode, Error:${response
+              .reasonPhrase}]");
     }
     var categoryJson = json.decode(response.body);
-    return new TransactionCategory.fromJson(categoryJson);
+    return TransactionCategory.fromJson(categoryJson);
   }
 
   @override
@@ -65,11 +67,12 @@ class CategoryRepositoryImpl implements CategoryRepository {
     final String jsonBody = response.body;
     final statusCode = response.statusCode;
     if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
-      throw new FetchDataException(
-          "Error while saving transaction category details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+      throw FetchDataException(
+          "Error while saving transaction category details [StatusCode:$statusCode, Error:${response
+              .reasonPhrase}]");
     }
     var categoryJson = json.decode(response.body);
-    return new TransactionCategory.fromJson(categoryJson);
+    return TransactionCategory.fromJson(categoryJson);
   }
 
   @override
@@ -87,10 +90,11 @@ class CategoryRepositoryImpl implements CategoryRepository {
     final String jsonBody = response.body;
     final statusCode = response.statusCode;
     if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
-      throw new FetchDataException(
-          "Error while saving transaction category details [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
+      throw FetchDataException(
+          "Error while saving transaction category details [StatusCode:$statusCode, Error:${response
+              .reasonPhrase}]");
     }
     var categoryJson = json.decode(response.body);
-    return new TransactionCategory.fromJson(categoryJson);
+    return TransactionCategory.fromJson(categoryJson);
   }
 }

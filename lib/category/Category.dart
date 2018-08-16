@@ -5,14 +5,14 @@ class TransactionCategory {
   const TransactionCategory({this.id, this.category});
 
   factory TransactionCategory.fromJson(Map<String, dynamic> json) {
-    return new TransactionCategory(id: json['id'], category: json['category']);
+    return TransactionCategory(id: json['id'], category: json['category']);
   }
 
-  Map<String, dynamic> toJson() => {'category': category, 'id' : id};
+  Map<String, dynamic> toJson() => {'category': category, 'id': id};
 
   @override
   bool operator ==(other) {
-    return (other is TransactionCategory && other.id  == id);
+    return (other is TransactionCategory && other.id == id);
   }
 
   @override

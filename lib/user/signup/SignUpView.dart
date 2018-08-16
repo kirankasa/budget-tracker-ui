@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class SignUpView extends StatefulWidget {
   @override
-  _SignUpViewState createState() => new _SignUpViewState();
+  _SignUpViewState createState() => _SignUpViewState();
 }
 
 class _SignUpViewState extends State<SignUpView> implements SignUpViewContract {
@@ -14,94 +14,109 @@ class _SignUpViewState extends State<SignUpView> implements SignUpViewContract {
   String _password;
   String _lastName;
   String _email;
-  final formKey = new GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   SignUpViewPresenter _presenter;
+
   _SignUpViewState() {
-    _presenter = new SignUpViewPresenter(this);
+    _presenter = SignUpViewPresenter(this);
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      body: new Theme(
-        data: new ThemeData(
-            inputDecorationTheme: new InputDecorationTheme(
-                labelStyle: new TextStyle(fontSize: 20.0))),
-        child: new Form(
+    return Scaffold(
+      body: Theme(
+        data: ThemeData(
+            inputDecorationTheme:
+                InputDecorationTheme(labelStyle: TextStyle(fontSize: 20.0))),
+        child: Form(
             key: formKey,
-            child: new ListView(
+            child: ListView(
               children: <Widget>[
-                new Container(
+                Container(
                   height: 100.0,
                   width: 200.0,
                   padding: EdgeInsets.only(top: 20.0),
-                  child: new DecoratedBox(
-                    decoration: new BoxDecoration(
-                        image: new DecorationImage(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
                             fit: BoxFit.contain,
-                            image:
-                                new AssetImage("assets/expense_tracker.jpg"))),
+                            image: AssetImage("assets/expense_tracker.jpg"))),
                   ),
                 ),
-                new TextFormField(
-                  decoration: new InputDecoration(
-                    labelText: "Username",
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      labelText: "Username",
+                    ),
+                    validator: (val) =>
+                        val.isEmpty ? 'Username can\'t be empty.' : null,
+                    onSaved: (val) => _username = val,
+                    keyboardType: TextInputType.text,
                   ),
-                  validator: (val) =>
-                      val.isEmpty ? 'Username can\'t be empty.' : null,
-                  onSaved: (val) => _username = val,
-                  keyboardType: TextInputType.text,
                 ),
-                new TextFormField(
-                  decoration: new InputDecoration(
-                    labelText: "First Name",
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      labelText: "First Name",
+                    ),
+                    validator: (val) =>
+                        val.isEmpty ? 'First name can\'t be empty.' : null,
+                    onSaved: (val) => _firstName = val,
+                    keyboardType: TextInputType.text,
                   ),
-                  validator: (val) =>
-                      val.isEmpty ? 'First name can\'t be empty.' : null,
-                  onSaved: (val) => _firstName = val,
-                  keyboardType: TextInputType.text,
                 ),
-                new TextFormField(
-                  decoration: new InputDecoration(
-                    labelText: "Last Name",
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      labelText: "Last Name",
+                    ),
+                    validator: (val) =>
+                        val.isEmpty ? 'Last name can\'t be empty.' : null,
+                    onSaved: (val) => _lastName = val,
+                    keyboardType: TextInputType.text,
                   ),
-                  validator: (val) =>
-                      val.isEmpty ? 'Last name can\'t be empty.' : null,
-                  onSaved: (val) => _lastName = val,
-                  keyboardType: TextInputType.text,
                 ),
-                new TextFormField(
-                  decoration: new InputDecoration(
-                    labelText: "Email",
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      labelText: "Email",
+                    ),
+                    validator: (val) {
+                      if (val.isEmpty) {
+                        return 'Email can\'t be empty.';
+                      } else if (!val.contains("@")) {
+                        return 'Please enter valid email.';
+                      }
+                    },
+                    onSaved: (val) => _email = val,
+                    keyboardType: TextInputType.emailAddress,
                   ),
-                  validator: (val) {
-                    if (val.isEmpty) {
-                      return 'Email can\'t be empty.';
-                    } else if (!val.contains("@")) {
-                      return 'Please enter valid email.';
-                    }
-                  },
-                  onSaved: (val) => _email = val,
-                  keyboardType: TextInputType.emailAddress,
                 ),
-                new TextFormField(
-                  decoration: new InputDecoration(
-                    labelText: "Password",
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      labelText: "Password",
+                    ),
+                    validator: (val) =>
+                        val.isEmpty ? 'Password can\'t be empty.' : null,
+                    onSaved: (val) => _password = val,
+                    keyboardType: TextInputType.text,
+                    obscureText: true,
                   ),
-                  validator: (val) =>
-                      val.isEmpty ? 'Password can\'t be empty.' : null,
-                  onSaved: (val) => _password = val,
-                  keyboardType: TextInputType.text,
-                  obscureText: true,
                 ),
-                new Padding(
-                  padding: new EdgeInsets.all(8.0),
-                  child: new RaisedButton(
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: RaisedButton(
                     onPressed: () {
                       final form = formKey.currentState;
                       if (form.validate()) {
                         form.save();
-                        _presenter.register(new User(
+                        _presenter.register(User(
                             userName: _username,
                             firstName: _firstName,
                             lastName: _lastName,
@@ -109,28 +124,28 @@ class _SignUpViewState extends State<SignUpView> implements SignUpViewContract {
                             email: _email));
                       }
                     },
-                    child: new Text(
+                    child: Text(
                       "Sign Up",
-                      style: new TextStyle(
+                      style: TextStyle(
                           fontSize: 20.0, fontWeight: FontWeight.bold),
                     ),
                     color: Theme.of(context).primaryColor,
                     textColor: Colors.white,
                   ),
                 ),
-                new Padding(
-                  padding: new EdgeInsets.only(top: 25.0),
-                  child: new Center(
-                    child: new RichText(
-                      text: new TextSpan(children: [
-                        new TextSpan(
+                Padding(
+                  padding: EdgeInsets.only(top: 25.0),
+                  child: Center(
+                    child: RichText(
+                      text: TextSpan(children: [
+                        TextSpan(
                           text: 'Already registered? ',
-                          style: new TextStyle(color: Colors.black),
+                          style: TextStyle(color: Colors.black),
                         ),
-                        new TextSpan(
+                        TextSpan(
                           text: 'Login',
-                          style: new TextStyle(color: Colors.blue),
-                          recognizer: new TapGestureRecognizer()
+                          style: TextStyle(color: Colors.blue),
+                          recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               Navigator.of(context).pushNamedAndRemoveUntil(
                                   "/login", (Route<dynamic> route) => false);

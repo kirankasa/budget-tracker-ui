@@ -9,8 +9,9 @@ import 'package:budget_tracker/category/list/CategoryListPresenter.dart';
 
 class CategoryListView extends StatefulWidget {
   CategoryListView({Key key}) : super(key: key);
+
   @override
-  _CategoryListState createState() => new _CategoryListState();
+  _CategoryListState createState() => _CategoryListState();
 }
 
 class _CategoryListState extends State<CategoryListView>
@@ -22,7 +23,7 @@ class _CategoryListState extends State<CategoryListView>
   bool _isLoading;
 
   _CategoryListState() {
-    _presenter = new CategoryPresenter(this);
+    _presenter = CategoryPresenter(this);
   }
 
   @override
@@ -42,32 +43,30 @@ class _CategoryListState extends State<CategoryListView>
     var widget;
 
     if (_isLoading) {
-      widget = new Center(
-          child: new Padding(
+      widget = Center(
+          child: Padding(
               padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-              child: new CircularProgressIndicator()));
+              child: CircularProgressIndicator()));
     } else {
-      widget = new ListView(
-          padding: new EdgeInsets.symmetric(vertical: 8.0),
+      widget = ListView(
+          padding: EdgeInsets.symmetric(vertical: 8.0),
           children: _buildCategoryList());
     }
 
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Categories'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Categories'),
       ),
-      drawer: new BudgetDrawer(
+      drawer: BudgetDrawer(
         userName: _loggedInUser != null ? _loggedInUser.userName : "",
         email: _loggedInUser != null ? _loggedInUser.email : "",
       ),
       body: widget,
-      floatingActionButton: new FloatingActionButton(
-          child: new Icon(Icons.add),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
           onPressed: () {
-            Navigator.push(
-                context,
-                new MaterialPageRoute(
-                    builder: (context) => new AddCategoryView()));
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => AddCategoryView()));
           }),
     );
   }
@@ -87,13 +86,13 @@ class _CategoryListState extends State<CategoryListView>
 
   List<_CategoryListItem> _buildCategoryList() {
     return _categories
-        .map((category) => new _CategoryListItem(
+        .map((category) => _CategoryListItem(
             category: category,
             onTap: () {
               Navigator.push(
                   context,
-                  new MaterialPageRoute(
-                      builder: (context) => new UpdateCategoryView(category)));
+                  MaterialPageRoute(
+                      builder: (context) => UpdateCategoryView(category)));
             }))
         .toList();
   }
@@ -102,12 +101,12 @@ class _CategoryListState extends State<CategoryListView>
 class _CategoryListItem extends ListTile {
   _CategoryListItem({TransactionCategory category, GestureTapCallback onTap})
       : super(
-            title: new Padding(
-              padding: new EdgeInsets.only(left: 10.0),
-              child: new Text(category.category),
+            title: Padding(
+              padding: EdgeInsets.only(left: 10.0),
+              child: Text(category.category),
             ),
-            leading: new CircleAvatar(
-              child: new Text(category.category[0]),
+            leading: CircleAvatar(
+              child: Text(category.category[0]),
             ),
             onTap: onTap);
 }

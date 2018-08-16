@@ -10,12 +10,14 @@ import 'package:budget_tracker/user/UserRepository.dart';
 
 abstract class LoginViewContract {
   void navigateToTransactionsListPage();
+
   void showError();
 }
 
 class LoginViewPresenter {
   LoginViewContract _view;
   UserRepository _repository;
+
   LoginViewPresenter(this._view) {
     _repository = new Injector().userRepository;
   }

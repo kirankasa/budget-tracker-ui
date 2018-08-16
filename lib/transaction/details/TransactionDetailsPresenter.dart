@@ -7,7 +7,7 @@ class TransactionDetailsPresenter {
   TransactionRepository _repository;
 
   TransactionDetailsPresenter(this._view) {
-    _repository = new Injector().transactionRepository;
+    _repository = Injector().transactionRepository;
   }
 
   void loadTransactionDetails(int transactionId) {

@@ -7,7 +7,9 @@ import 'package:budget_tracker/category/Category.dart';
 
 abstract class AddTransactionViewContract {
   void showTransactionCategoryList(List<TransactionCategory> categories);
+
   void navigateToTransactionListPage();
+
   void showError();
 }
 
@@ -17,8 +19,8 @@ class AddTransactionPresenter {
   CategoryRepository _categoryRepository;
 
   AddTransactionPresenter(this._view) {
-    _transactionRepository = new Injector().transactionRepository;
-    _categoryRepository = new Injector().categoryRepository;
+    _transactionRepository = Injector().transactionRepository;
+    _categoryRepository = Injector().categoryRepository;
   }
 
   void loadCategories() {

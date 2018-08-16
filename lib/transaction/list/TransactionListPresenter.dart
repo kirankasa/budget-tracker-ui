@@ -4,6 +4,7 @@ import 'package:budget_tracker/common/di/injection.dart';
 
 abstract class TransactionListViewContract {
   void showTransactionList(List<Transaction> transactions);
+
   void showError();
 }
 
@@ -12,7 +13,7 @@ class TransactionListPresenter {
   TransactionRepository _repository;
 
   TransactionListPresenter(this._view) {
-    _repository = new Injector().transactionRepository;
+    _repository = Injector().transactionRepository;
   }
 
   void loadTransactions() {
@@ -29,9 +30,7 @@ class TransactionListPresenter {
 
   void deleteTransaction(int transactionId) {
     assert(_view != null);
-    _repository
-        .deleteTransaction(transactionId)
-        .catchError((onError) {
+    _repository.deleteTransaction(transactionId).catchError((onError) {
       print(onError);
       _view.showError();
     });

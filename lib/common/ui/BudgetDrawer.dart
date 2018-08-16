@@ -2,53 +2,55 @@ import 'package:budget_tracker/common/SharedPreferencesHelper.dart';
 import 'package:flutter/material.dart';
 
 class BudgetDrawer extends StatelessWidget {
-  String userName;
-  String email;
+  final String userName;
+  final String email;
+
   BudgetDrawer({this.email, this.userName});
+
   @override
   Widget build(BuildContext context) {
-    return new Drawer(
-      child: new ListView(
+    return Drawer(
+      child: ListView(
         children: <Widget>[
-          new UserAccountsDrawerHeader(
-              accountName: new Text(userName), accountEmail: new Text(email)),
-          new DrawerHeader(
-              child: new ListView(
+          UserAccountsDrawerHeader(
+              accountName: Text(userName), accountEmail: Text(email)),
+          DrawerHeader(
+              child: ListView(
             children: <Widget>[
-              new ListTile(
-                title: new Text("Transactions"),
-                leading: new Icon(Icons.assignment),
+              ListTile(
+                title: Text("Transactions"),
+                leading: Icon(Icons.assignment),
                 onTap: () {
                   Navigator.pushNamed(context, "/transactions");
                 },
               ),
-              new Divider(
+              Divider(
                 color: Colors.black,
                 height: 2.0,
               ),
-              new ListTile(
-                title: new Text("Categories"),
-                leading: new Icon(Icons.assessment),
+              ListTile(
+                title: Text("Categories"),
+                leading: Icon(Icons.assessment),
                 onTap: () {
                   Navigator.pushNamed(context, "/categories");
                 },
               ),
-              new Divider(
+              Divider(
                 color: Colors.black,
                 height: 2.0,
               ),
             ],
           )),
-          new ListTile(
-            title: new Text("Feedback"),
-            leading: new Icon(Icons.comment),
+          ListTile(
+            title: Text("Feedback"),
+            leading: Icon(Icons.comment),
             onTap: () {
               Navigator.pushNamed(context, "/feedback");
             },
           ),
-          new ListTile(
-            title: new Text("Sign out"),
-            leading: new Icon(Icons.remove_circle),
+          ListTile(
+            title: Text("Sign out"),
+            leading: Icon(Icons.remove_circle),
             onTap: () {
               SharedPreferencesHelper.removeToken();
               Navigator.pushNamed(context, "/login");

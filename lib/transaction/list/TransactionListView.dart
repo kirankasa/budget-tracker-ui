@@ -10,8 +10,9 @@ import 'package:intl/intl.dart';
 
 class TransactionListView extends StatefulWidget {
   TransactionListView({Key key}) : super(key: key);
+
   @override
-  _TransactionListState createState() => new _TransactionListState();
+  _TransactionListState createState() => _TransactionListState();
 }
 
 class _TransactionListState extends State<TransactionListView>
@@ -22,7 +23,7 @@ class _TransactionListState extends State<TransactionListView>
   bool _isLoading;
 
   _TransactionListState() {
-    _presenter = new TransactionListPresenter(this);
+    _presenter = TransactionListPresenter(this);
   }
 
   @override
@@ -42,32 +43,32 @@ class _TransactionListState extends State<TransactionListView>
     var widget;
 
     if (_isLoading) {
-      widget = new Center(
-          child: new Padding(
+      widget = Center(
+          child: Padding(
               padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-              child: new CircularProgressIndicator()));
+              child: CircularProgressIndicator()));
     } else {
-      widget = new ListView(
-          padding: new EdgeInsets.symmetric(vertical: 8.0),
+      widget = ListView(
+          padding: EdgeInsets.symmetric(vertical: 8.0),
           children: _buildTransactionList());
     }
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Transactions'),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Transactions'),
       ),
-      drawer: new BudgetDrawer(
+      drawer: BudgetDrawer(
         userName: _loggedInUser != null ? _loggedInUser.userName : "",
         email: _loggedInUser != null ? _loggedInUser.email : "",
       ),
       body: widget,
-      floatingActionButton: new FloatingActionButton(
-          child: new Icon(Icons.add),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
           onPressed: () {
             {
               Navigator.push(
                   context,
-                  new MaterialPageRoute(
-                      builder: (context) => new AddTransactionView()));
+                  MaterialPageRoute(
+                      builder: (context) => AddTransactionView()));
             }
           }),
     );
@@ -88,23 +89,24 @@ class _TransactionListState extends State<TransactionListView>
 
   List<Dismissible> _buildTransactionList() {
     return _transactions
-        .map((transaction) => new Dismissible(
-            key: new Key(transaction.id.toString()),
+        .map((transaction) => Dismissible(
+            key: Key(transaction.id.toString()),
             onDismissed: (direction) {
               _presenter.deleteTransaction(transaction.id);
               _transactions.remove(transaction);
-              Scaffold.of(context).showSnackBar(
-                  new SnackBar(content: new Text("Transaction deleted")));
+              Scaffold
+                  .of(context)
+                  .showSnackBar(SnackBar(content: Text("Transaction deleted")));
             },
-            background: new LeaveBehindView(),
-            child: new _TransactionListItem(
+            background: LeaveBehindView(),
+            child: _TransactionListItem(
                 transaction: transaction,
                 onTap: () {
                   Navigator.push(
                       context,
-                      new MaterialPageRoute(
+                      MaterialPageRoute(
                           builder: (context) =>
-                              new UpdateTransactionView(transaction)));
+                              UpdateTransactionView(transaction)));
                 })))
         .toList();
   }
@@ -113,19 +115,19 @@ class _TransactionListState extends State<TransactionListView>
 class _TransactionListItem extends ListTile {
   _TransactionListItem({Transaction transaction, GestureTapCallback onTap})
       : super(
-            title: new Container(
-              child: new Row(
+            title: Container(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  new Expanded(
-                      child: new Text(
+                  Expanded(
+                      child: Text(
                     transaction.category.category,
-                    style: new TextStyle(
-                        fontSize: 17.0, fontWeight: FontWeight.bold),
+                    style:
+                        TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold),
                   )),
-                  new Text(
+                  Text(
                     transaction.amount.toString(),
-                    style: new TextStyle(
+                    style: TextStyle(
                         color: transaction.type == "C"
                             ? Colors.green
                             : Colors.black,
@@ -135,12 +137,13 @@ class _TransactionListItem extends ListTile {
                 ],
               ),
             ),
-            subtitle: new Text(
-              "${new DateFormat.yMMMd().format(transaction.dateTime)}\n${transaction.note}",
-              style: new TextStyle(fontSize: 17.0),
+            subtitle: Text(
+              "${ DateFormat.yMMMd().format(transaction.dateTime)}\n${transaction
+            .note}",
+              style: TextStyle(fontSize: 17.0),
             ),
-            leading: new CircleAvatar(
-              child: new Text(transaction.category.category[0]),
+            leading: CircleAvatar(
+              child: Text(transaction.category.category[0]),
             ),
             onTap: onTap);
 }
@@ -150,16 +153,16 @@ class LeaveBehindView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
+    return Container(
       padding: const EdgeInsets.all(16.0),
       color: Colors.red,
-      child: new Row(
+      child: Row(
         children: <Widget>[
-          new Icon(Icons.delete),
-          new Expanded(
-            child: new Text(''),
+          Icon(Icons.delete),
+          Expanded(
+            child: Text(''),
           ),
-          new Icon(Icons.delete),
+          Icon(Icons.delete),
         ],
       ),
     );

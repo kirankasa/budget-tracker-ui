@@ -3,7 +3,6 @@ class FetchDataException implements Exception {
 
   FetchDataException(this._message);
 
-
   String toString() {
     return "Exception: $_message";
   }

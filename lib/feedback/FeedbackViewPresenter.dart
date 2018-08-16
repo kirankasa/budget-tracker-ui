@@ -1,6 +1,5 @@
 import 'package:budget_tracker/feedback/Feedback.dart';
 import 'package:budget_tracker/feedback/FeedbackRepository.dart';
-import 'package:budget_tracker/user/User.dart';
 import 'package:budget_tracker/common/di/injection.dart';
 
 abstract class FeedbackViewContract {
