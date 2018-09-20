@@ -57,10 +57,10 @@ class _AddTransactionState extends State<AddTransactionView>
                         );
                       }).toList(),
                       value: _selectedCategory,
-                      onChanged: (TransactionCategory Category) {
+                      onChanged: (TransactionCategory category) {
                         setState(() {
-                          if (Category != null) {
-                            _selectedCategory = Category;
+                          if (category != null) {
+                            _selectedCategory = category;
                           }
                         });
                       })),
@@ -74,10 +74,10 @@ class _AddTransactionState extends State<AddTransactionView>
                         );
                       }).toList(),
                       value: _selectedType,
-                      onChanged: (String Type) {
+                      onChanged: (String type) {
                         setState(() {
-                          if (Type != null) {
-                            _selectedType = Type;
+                          if (type != null) {
+                            _selectedType = type;
                           }
                         });
                       })),

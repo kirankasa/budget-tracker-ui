@@ -14,7 +14,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
   Future<List<Transaction>> retrieveTransactions() async {
     String _token = await SharedPreferencesHelper.getTokenValue();
     var response = await http
-        .get(transactions_url, headers: {HttpHeaders.AUTHORIZATION: _token});
+        .get(transactions_url, headers: {HttpHeaders.authorizationHeader: _token});
     final String jsonBody = response.body;
     final statusCode = response.statusCode;
     if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
@@ -33,7 +33,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
     String _token = await SharedPreferencesHelper.getTokenValue();
     var response = await http.get(
         transactions_url + "/" + transactionId.toString(),
-        headers: {HttpHeaders.AUTHORIZATION: _token});
+        headers: {HttpHeaders.authorizationHeader: _token});
     final String jsonBody = response.body;
     final statusCode = response.statusCode;
     if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {
@@ -52,8 +52,8 @@ class TransactionRepositoryImpl implements TransactionRepository {
     var response = await http.post(transactions_url,
         body: requestJson,
         headers: {
-          HttpHeaders.CONTENT_TYPE: 'application/json',
-          HttpHeaders.AUTHORIZATION: _token
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: _token
         });
     final String jsonBody = response.body;
     final statusCode = response.statusCode;
@@ -74,8 +74,8 @@ class TransactionRepositoryImpl implements TransactionRepository {
         transactions_url + "/" + transaction.id.toString(),
         body: requestJson,
         headers: {
-          HttpHeaders.CONTENT_TYPE: 'application/json',
-          HttpHeaders.AUTHORIZATION: _token
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: _token
         });
     final String jsonBody = response.body;
     final statusCode = response.statusCode;
@@ -93,8 +93,8 @@ class TransactionRepositoryImpl implements TransactionRepository {
     String _token = await SharedPreferencesHelper.getTokenValue();
     var response = await http
         .delete(transactions_url + "/" + transactionId.toString(), headers: {
-      HttpHeaders.CONTENT_TYPE: 'application/json',
-      HttpHeaders.AUTHORIZATION: _token
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.authorizationHeader: _token
     });
     final statusCode = response.statusCode;
 

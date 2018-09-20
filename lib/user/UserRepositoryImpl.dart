@@ -49,7 +49,7 @@ class UserRepositoryImpl implements UserRepository {
   Future<User> getLoggedInUserDetails() async {
     String _token = await SharedPreferencesHelper.getTokenValue();
     var response = await http
-        .get(loggedin_user_url, headers: {HttpHeaders.AUTHORIZATION: _token});
+        .get(loggedin_user_url, headers: {HttpHeaders.authorizationHeader: _token});
     final String jsonBody = response.body;
     final statusCode = response.statusCode;
     if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {

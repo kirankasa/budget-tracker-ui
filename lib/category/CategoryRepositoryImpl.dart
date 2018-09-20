@@ -16,8 +16,8 @@ class CategoryRepositoryImpl implements CategoryRepository {
     var response = await http.get(
       categories_url,
       headers: {
-        HttpHeaders.CONTENT_TYPE: 'application/json',
-        HttpHeaders.AUTHORIZATION: _token
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.authorizationHeader: _token
       },
     );
     final String jsonBody = response.body;
@@ -39,8 +39,8 @@ class CategoryRepositoryImpl implements CategoryRepository {
     String _token = await SharedPreferencesHelper.getTokenValue();
     var response = await http.get(categories_url + "/" + id.toString(),
         headers: {
-          HttpHeaders.CONTENT_TYPE: 'application/json',
-          HttpHeaders.AUTHORIZATION: _token
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: _token
         });
 
     final String jsonBody = response.body;
@@ -61,8 +61,8 @@ class CategoryRepositoryImpl implements CategoryRepository {
     String _token = await SharedPreferencesHelper.getTokenValue();
     String requestJson = json.encode(transactionCategory);
     var response = await http.post(categories_url, body: requestJson, headers: {
-      HttpHeaders.CONTENT_TYPE: 'application/json',
-      HttpHeaders.AUTHORIZATION: _token
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.authorizationHeader: _token
     });
     final String jsonBody = response.body;
     final statusCode = response.statusCode;
@@ -84,8 +84,8 @@ class CategoryRepositoryImpl implements CategoryRepository {
         categories_url + "/" + transactionCategory.id.toString(),
         body: requestJson,
         headers: {
-          HttpHeaders.CONTENT_TYPE: 'application/json',
-          HttpHeaders.AUTHORIZATION: _token
+          HttpHeaders.contentTypeHeader: 'application/json',
+          HttpHeaders.authorizationHeader: _token
         });
     final String jsonBody = response.body;
     final statusCode = response.statusCode;
