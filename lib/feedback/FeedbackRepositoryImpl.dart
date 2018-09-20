@@ -16,8 +16,8 @@ class FeedbackRepositoryImpl implements FeedbackRepository {
     print(_token);
     String requestJson = json.encode(feedback);
     var response = await http.post(feedback_url, body: requestJson, headers: {
-      HttpHeaders.CONTENT_TYPE: 'application/json',
-      HttpHeaders.AUTHORIZATION: _token
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.authorizationHeader: _token
     });
     final String jsonBody = response.body;
     final statusCode = response.statusCode;

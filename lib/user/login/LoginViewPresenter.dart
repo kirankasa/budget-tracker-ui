@@ -31,6 +31,7 @@ class LoginViewPresenter {
       var user = await _repository.getLoggedInUserDetails();
       _setUserValue(user);
     } on Exception catch (e) {
+      print("Exception occurred "+ e.toString());
       _view.showError();
     }
   }

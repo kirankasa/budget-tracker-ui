@@ -47,7 +47,7 @@ class _SignUpViewState extends State<SignUpView> implements SignUpViewContract {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     decoration: InputDecoration(
-                      labelText: "Username",
+                      labelText: "User Name",
                     ),
                     validator: (val) =>
                         val.isEmpty ? 'Username can\'t be empty.' : null,
