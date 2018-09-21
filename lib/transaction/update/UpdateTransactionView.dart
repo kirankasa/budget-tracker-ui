@@ -142,10 +142,13 @@ class _UpdateTransactionState extends State<UpdateTransactionView>
                           type: _selectedType));
                     }
                   },
-                  child: Text(
-                    "Update",
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
+                    child: Text(
+                      "Update",
+                      style:
+                          TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                    ),
                   ),
                   color: Theme.of(context).primaryColor,
                   textColor: Colors.white,
