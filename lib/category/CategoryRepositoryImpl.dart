@@ -35,7 +35,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
   }
 
   @override
-  Future<TransactionCategory> retrieveTransactionCategoryDetails(int id) async {
+  Future<TransactionCategory> retrieveTransactionCategoryDetails(String id) async {
     String _token = await SharedPreferencesHelper.getTokenValue();
     var response = await http.get(categories_url + "/" + id.toString(),
         headers: {

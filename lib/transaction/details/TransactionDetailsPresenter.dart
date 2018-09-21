@@ -10,7 +10,7 @@ class TransactionDetailsPresenter {
     _repository = Injector().transactionRepository;
   }
 
-  void loadTransactionDetails(int transactionId) {
+  void loadTransactionDetails(String transactionId) {
     assert(_view != null);
 
     _repository

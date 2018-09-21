@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
 class CategoryDetailsView extends StatelessWidget {
-  final int categoryId;
+  final String categoryId;
 
   CategoryDetailsView({Key key, @required this.categoryId});
 
@@ -22,7 +22,7 @@ class CategoryDetailsView extends StatelessWidget {
 }
 
 class CategoryDetails extends StatefulWidget {
-  final int categoryId;
+  final String categoryId;
 
   CategoryDetails({Key key, @required this.categoryId});
 

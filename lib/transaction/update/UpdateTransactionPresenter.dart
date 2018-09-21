@@ -45,7 +45,7 @@ class UpdateTransactionPresenter {
     });
   }
 
-  void deleteTransaction(int transactionId) {
+  void deleteTransaction(String transactionId) {
     assert(_view != null);
     _transactionRepository
         .deleteTransaction(transactionId)

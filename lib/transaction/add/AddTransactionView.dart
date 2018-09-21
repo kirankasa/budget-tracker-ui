@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:budget_tracker/category/Category.dart';
+import 'package:budget_tracker/category/add/AddCategoryView.dart';
 import 'package:budget_tracker/transaction/Transaction.dart';
 import 'package:budget_tracker/transaction/add/AddTransactionPresenter.dart';
 import 'package:flutter/material.dart';
@@ -46,24 +47,38 @@ class _AddTransactionState extends State<AddTransactionView>
       widget = Form(
           key: formKey,
           child: ListView(
+            padding: EdgeInsets.only(left: 16.0, right: 16.0),
             children: <Widget>[
               ListTile(
-                  title: DropdownButton<TransactionCategory>(
-                      hint: Text("Select Category"),
-                      items: _categories.map((TransactionCategory category) {
-                        return DropdownMenuItem<TransactionCategory>(
-                          child: Text(category.category),
-                          value: category,
-                        );
-                      }).toList(),
-                      value: _selectedCategory,
-                      onChanged: (TransactionCategory category) {
-                        setState(() {
-                          if (category != null) {
-                            _selectedCategory = category;
-                          }
-                        });
-                      })),
+                  title: Row(
+                    children: <Widget>[
+                      DropdownButton<TransactionCategory>(
+                          hint: Text("Select Category"),
+                          items: _categories.map((TransactionCategory category) {
+                            return DropdownMenuItem<TransactionCategory>(
+                              child: Text(category.category),
+                              value: category,
+                            );
+                          }).toList(),
+                          value: _selectedCategory,
+                          onChanged: (TransactionCategory category) {
+                            setState(() {
+                              if (category != null) {
+                                _selectedCategory = category;
+                              }
+                            });
+                          }),
+                      IconButton(icon: Icon(Icons.add),onPressed: (){
+                        {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AddCategoryView()));
+                        }
+                      },)
+
+                    ],
+                  )),
               ListTile(
                   title: DropdownButton<String>(
                       hint: Text("Select Type"),
@@ -113,26 +128,29 @@ class _AddTransactionState extends State<AddTransactionView>
                 ),
               ),
               ListTile(
-                title: RaisedButton(
-                  onPressed: () {
-                    final form = formKey.currentState;
-                    if (form.validate()) {
-                      form.save();
-                      _presenter.saveTransaction(Transaction(
-                          category: _selectedCategory,
-                          amount: double.parse(_amount),
-                          note: _note,
-                          dateTime: _selectedDate,
-                          type: _selectedType));
-                    }
-                  },
-                  child: Text(
-                    "Add",
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                title: Padding(
+                  padding: const EdgeInsets.only(top: 25.0),
+                  child: RaisedButton(
+                    onPressed: () {
+                      final form = formKey.currentState;
+                      if (form.validate()) {
+                        form.save();
+                        _presenter.saveTransaction(Transaction(
+                            category: _selectedCategory.category,
+                            amount: double.parse(_amount),
+                            note: _note,
+                            dateTime: _selectedDate,
+                            type: _selectedType));
+                      }
+                    },
+                    child: Text(
+                      "Add",
+                      style:
+                          TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                    ),
+                    color: Theme.of(context).primaryColor,
+                    textColor: Colors.white,
                   ),
-                  color: Theme.of(context).primaryColor,
-                  textColor: Colors.white,
                 ),
               ),
             ],
@@ -168,7 +186,7 @@ class _AddTransactionState extends State<AddTransactionView>
   void showTransactionCategoryList(List<TransactionCategory> categories) {
     setState(() {
       _categories = categories;
-      _selectedCategory = _categories != null ? _categories[0] : null;
+      _selectedCategory = _categories != null &&_categories.length >= 1 ? _categories[0] : null;
       _selectedType = "D";
       _isLoading = false;
     });

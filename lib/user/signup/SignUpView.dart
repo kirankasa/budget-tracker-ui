@@ -44,7 +44,7 @@ class _SignUpViewState extends State<SignUpView> implements SignUpViewContract {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(left: 16.0,right: 16.0),
                   child: TextFormField(
                     decoration: InputDecoration(
                       labelText: "User Name",
@@ -56,7 +56,7 @@ class _SignUpViewState extends State<SignUpView> implements SignUpViewContract {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(left: 16.0,right: 16.0),
                   child: TextFormField(
                     decoration: InputDecoration(
                       labelText: "First Name",
@@ -68,7 +68,7 @@ class _SignUpViewState extends State<SignUpView> implements SignUpViewContract {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(left: 16.0,right: 16.0),
                   child: TextFormField(
                     decoration: InputDecoration(
                       labelText: "Last Name",
@@ -80,7 +80,7 @@ class _SignUpViewState extends State<SignUpView> implements SignUpViewContract {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(left: 16.0,right: 16.0),
                   child: TextFormField(
                     decoration: InputDecoration(
                       labelText: "Email",
@@ -97,7 +97,7 @@ class _SignUpViewState extends State<SignUpView> implements SignUpViewContract {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(left: 16.0,right: 16.0),
                   child: TextFormField(
                     decoration: InputDecoration(
                       labelText: "Password",
@@ -110,7 +110,7 @@ class _SignUpViewState extends State<SignUpView> implements SignUpViewContract {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.only(top: 25.0,left: 16.0, right: 16.0),
                   child: RaisedButton(
                     onPressed: () {
                       final form = formKey.currentState;

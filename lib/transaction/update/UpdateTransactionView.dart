@@ -23,11 +23,11 @@ class _UpdateTransactionState extends State<UpdateTransactionView>
 
   bool _isLoading = false;
   DateTime _selectedDate;
-  int _transactionId;
+  String _transactionId;
   String _selectedType;
   String _amount;
   String _note;
-  TransactionCategory _selectedCategory;
+  String _selectedCategory;
 
   UpdateTransactionPresenter _presenter;
   List<TransactionCategory> _categories;
@@ -61,16 +61,16 @@ class _UpdateTransactionState extends State<UpdateTransactionView>
           child: ListView(
             children: <Widget>[
               ListTile(
-                  title: DropdownButton<TransactionCategory>(
+                  title: DropdownButton<String>(
                       hint: Text("Select Category"),
                       items: _categories.map((TransactionCategory category) {
-                        return DropdownMenuItem<TransactionCategory>(
+                        return DropdownMenuItem<String>(
                           child: Text(category.category),
-                          value: category,
+                          value: category.category,
                         );
                       }).toList(),
                       value: _selectedCategory,
-                      onChanged: (TransactionCategory category) {
+                      onChanged: (String category) {
                         setState(() {
                           if (category != null) {
                             _selectedCategory = category;

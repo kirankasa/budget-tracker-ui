@@ -1,5 +1,5 @@
 class TransactionCategory {
-  final int id;
+  final String id;
   final String category;
 
   const TransactionCategory({this.id, this.category});

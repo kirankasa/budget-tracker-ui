@@ -15,7 +15,7 @@ class UpdateCategoryView extends StatefulWidget {
 
 class _UpdateCategoryState extends State<UpdateCategoryView>
     implements UpdateCategoryViewContract {
-  int _categoryId;
+  String _categoryId;
   String _category;
   final formKey = GlobalKey<FormState>();
   UpdateCategoryPresenter _presenter;
@@ -36,6 +36,7 @@ class _UpdateCategoryState extends State<UpdateCategoryView>
     var widget = Form(
         key: formKey,
         child: ListView(
+          padding: EdgeInsets.only(left: 16.0, right: 16.0),
           children: <Widget>[
             ListTile(
               title: TextFormField(
@@ -47,22 +48,28 @@ class _UpdateCategoryState extends State<UpdateCategoryView>
               ),
             ),
             ListTile(
-              title: RaisedButton(
-                onPressed: () {
-                  final form = formKey.currentState;
+              title: Padding(
+                padding: const EdgeInsets.only(top: 25.0, left: 16.0, right: 16.0),
+                child: RaisedButton(
+                  onPressed: () {
+                    final form = formKey.currentState;
 
-                  if (form.validate()) {
-                    form.save();
-                    _presenter.updateTransactionCategory(TransactionCategory(
-                        id: _categoryId, category: _category));
-                  }
-                },
-                child: Text(
-                  "Update",
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                    if (form.validate()) {
+                      form.save();
+                      _presenter.updateTransactionCategory(TransactionCategory(
+                          id: _categoryId, category: _category));
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
+                    child: Text(
+                      "Update",
+                      style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold,),
+                    ),
+                  ),
+                  color: Theme.of(context).primaryColor,
+                  textColor: Colors.white,
                 ),
-                color: Theme.of(context).primaryColor,
-                textColor: Colors.white,
               ),
             ),
           ],
