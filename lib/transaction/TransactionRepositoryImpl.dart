@@ -29,7 +29,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<Transaction> retrieveTransactionDetails(int transactionId) async {
+  Future<Transaction> retrieveTransactionDetails(String transactionId) async {
     String _token = await SharedPreferencesHelper.getTokenValue();
     var response = await http.get(
         transactions_url + "/" + transactionId.toString(),
@@ -89,7 +89,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<Null> deleteTransaction(int transactionId) async {
+  Future<Null> deleteTransaction(String transactionId) async {
     String _token = await SharedPreferencesHelper.getTokenValue();
     var response = await http
         .delete(transactions_url + "/" + transactionId.toString(), headers: {

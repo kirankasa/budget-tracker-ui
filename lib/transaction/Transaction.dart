@@ -1,10 +1,9 @@
-import 'package:budget_tracker/category/Category.dart';
 import 'package:intl/intl.dart';
 
 class Transaction {
-  final int id;
+  final String id;
   final String type;
-  final TransactionCategory category;
+  final String category;
   final double amount;
   final DateTime dateTime;
   final String note;
@@ -24,13 +23,13 @@ class Transaction {
         amount: json['amount'],
         dateTime: DateFormat('yyyy-MM-dd').parse(json['date']),
         note: json['note'],
-        category: TransactionCategory.fromJson(json['category']));
+        category: json['category']);
   }
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'type': type,
-        'category': {'category': category.category, 'id': category.id},
+        'category': category,
         'amount': amount,
         'date': DateFormat('yyyy-MM-dd').format(dateTime),
         'note': note

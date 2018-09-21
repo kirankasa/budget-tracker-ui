@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 
 class TransactionDetailView extends StatelessWidget {
-  final int transactionId;
+  final String transactionId;
 
   TransactionDetailView({Key key, @required this.transactionId});
 
@@ -24,7 +24,7 @@ class TransactionDetailView extends StatelessWidget {
 }
 
 class TransactionDetail extends StatefulWidget {
-  final int transactionId;
+  final String transactionId;
 
   TransactionDetail({Key key, @required this.transactionId});
 
@@ -64,7 +64,7 @@ class _TransactionDetailState extends State<TransactionDetail>
       widget = Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          _buildRow("Category", _transaction.category.category),
+          _buildRow("Category", _transaction.category),
           _buildRow("Note", _transaction.note),
           _buildRow(
             "Date",

@@ -53,7 +53,7 @@ class _LoginViewState extends State<LoginView> implements LoginViewContract {
                     )
                   : Container(),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(left: 16.0,right: 16.0),
                 child: TextFormField(
                   decoration: InputDecoration(
                     labelText: "Username",
@@ -64,7 +64,7 @@ class _LoginViewState extends State<LoginView> implements LoginViewContract {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(left: 16.0,right: 16.0),
                 child: TextFormField(
                   decoration: InputDecoration(labelText: "Password"),
                   obscureText: true,
@@ -74,7 +74,7 @@ class _LoginViewState extends State<LoginView> implements LoginViewContract {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(25.0),
                 child: RaisedButton(
                   highlightColor: Colors.cyan,
                   onPressed: () {

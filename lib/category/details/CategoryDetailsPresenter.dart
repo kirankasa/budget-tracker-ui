@@ -16,7 +16,7 @@ class CategoryDetailsPresenter {
     _repository = Injector().categoryRepository;
   }
 
-  void loadTransactionDetails(int categoryId) {
+  void loadTransactionDetails(String categoryId) {
     assert(_view != null);
 
     _repository

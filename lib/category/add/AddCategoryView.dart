@@ -30,6 +30,7 @@ class _AddCategoryState extends State<AddCategoryView>
     var widget = Form(
         key: formKey,
         child: ListView(
+          padding: EdgeInsets.only(left: 16.0, right: 16.0),
           children: <Widget>[
             ListTile(
               title: TextFormField(
@@ -40,22 +41,28 @@ class _AddCategoryState extends State<AddCategoryView>
               ),
             ),
             ListTile(
-              title: RaisedButton(
-                onPressed: () {
-                  final form = formKey.currentState;
+              title: Padding(
+                padding: const EdgeInsets.only(top: 25.0, left: 16.0, right: 16.0),
+                child: RaisedButton(
+                  onPressed: () {
+                    final form = formKey.currentState;
 
-                  if (form.validate()) {
-                    form.save();
-                    _presenter.saveTransactionCategory(
-                        TransactionCategory(category: _category));
-                  }
-                },
-                child: Text(
-                  "Add",
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                    if (form.validate()) {
+                      form.save();
+                      _presenter.saveTransactionCategory(
+                          TransactionCategory(category: _category));
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
+                    child: Text(
+                      "Add",
+                      style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  color: Theme.of(context).primaryColor,
+                  textColor: Colors.white,
                 ),
-                color: Theme.of(context).primaryColor,
-                textColor: Colors.white,
               ),
             ),
           ],

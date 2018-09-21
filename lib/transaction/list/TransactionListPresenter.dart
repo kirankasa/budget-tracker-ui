@@ -28,7 +28,7 @@ class TransactionListPresenter {
     });
   }
 
-  void deleteTransaction(int transactionId) {
+  void deleteTransaction(String transactionId) {
     assert(_view != null);
     _repository.deleteTransaction(transactionId).catchError((onError) {
       print(onError);

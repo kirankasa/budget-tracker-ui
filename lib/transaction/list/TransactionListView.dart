@@ -121,10 +121,10 @@ class _TransactionListItem extends ListTile {
                 children: <Widget>[
                   Expanded(
                       child: Text(
-                    transaction.category.category,
-                    style:
+                        transaction.category,
+                        style:
                         TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold),
-                  )),
+                      )),
                   Text(
                     transaction.amount.toString(),
                     style: TextStyle(
@@ -143,7 +143,7 @@ class _TransactionListItem extends ListTile {
               style: TextStyle(fontSize: 17.0),
             ),
             leading: CircleAvatar(
-              child: Text(transaction.category.category[0]),
+              child: Text(transaction.category[0]),
             ),
             onTap: onTap);
 }
