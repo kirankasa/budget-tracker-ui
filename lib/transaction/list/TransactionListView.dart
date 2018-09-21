@@ -48,9 +48,13 @@ class _TransactionListState extends State<TransactionListView>
               padding: const EdgeInsets.only(left: 16.0, right: 16.0),
               child: CircularProgressIndicator()));
     } else {
-      widget = ListView(
-          padding: EdgeInsets.symmetric(vertical: 8.0),
-          children: _buildTransactionList());
+      widget = Builder(
+        builder: (BuildContext context){
+          return ListView(
+              padding: EdgeInsets.symmetric(vertical: 8.0),
+              children: _buildTransactionList(context));
+        },
+      );
     }
     return Scaffold(
       appBar: AppBar(
@@ -87,7 +91,7 @@ class _TransactionListState extends State<TransactionListView>
     });
   }
 
-  List<Dismissible> _buildTransactionList() {
+  List<Dismissible> _buildTransactionList(BuildContext context) {
     return _transactions
         .map((transaction) => Dismissible(
             key: Key(transaction.id.toString()),
