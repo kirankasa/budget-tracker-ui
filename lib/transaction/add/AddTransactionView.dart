@@ -39,125 +39,25 @@ class _AddTransactionState extends State<AddTransactionView>
   Widget build(BuildContext context) {
     var widget;
     if (_isLoading) {
-      widget = Center(
-          child: Padding(
-              padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-              child: CircularProgressIndicator()));
+      widget = Center(child: CircularProgressIndicator());
     } else {
-      widget = Form(
-          key: formKey,
-          child: ListView(
-            padding: EdgeInsets.only(left: 16.0, right: 16.0),
-            children: <Widget>[
-              InputDecorator(
-                decoration: InputDecoration(labelText: "Category"),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<TransactionCategory>(
-                    hint: Text("Select Category"),
-                    isDense: true,
-                    items: _categories.map((TransactionCategory category) {
-                      return DropdownMenuItem<TransactionCategory>(
-                        child: Text(category.category),
-                        value: category,
-                      );
-                    }).toList(),
-                    value: _selectedCategory,
-                    onChanged: (TransactionCategory category) {
-                      setState(() {
-                        if (category != null) {
-                          _selectedCategory = category;
-                        }
-                      });
-                    },
-                  ),
-                ),
-              ),
-              InputDecorator(
-                decoration: InputDecoration(labelText: "Transaction Type"),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton<String>(
-                      hint: Text("Select Type"),
-                      isDense: true,
-                      items: ["D", "C"].map((String type) {
-                        return DropdownMenuItem<String>(
-                          child: Text(type == "C" ? "Income" : "Expense"),
-                          value: type,
-                        );
-                      }).toList(),
-                      value: _selectedType,
-                      onChanged: (String type) {
-                        setState(() {
-                          if (type != null) {
-                            _selectedType = type;
-                          }
-                        });
-                      }),
-                ),
-              ),
-              TextFormField(
-                decoration: InputDecoration(
-                    labelText: "Amount", hintText: "Enter Transaction Amount"),
-                keyboardType: TextInputType.number,
-                validator: (val) =>
-                    val.isEmpty ? 'Amount can\'t be empty.' : null,
-                onSaved: (val) => _amount = val,
-              ),
-              new Row(children: <Widget>[
-                new Expanded(
-                    child: new TextFormField(
-                  validator: (val) =>
-                  isValidTransactionDate(val) ? null : 'Not a valid date',
-                  decoration: new InputDecoration(
-                    hintText: 'Enter transaction date',
-                    labelText: 'Transaction date',
-                  ),
-                  controller: _controller,
-                  keyboardType: TextInputType.datetime,
-                )),
-                new IconButton(
-                  icon: new Icon(Icons.date_range),
-                  tooltip: 'Choose date',
-                  onPressed: (() {
-                    _selectDate(context, _controller.text);
-                  }),
-                )
-              ]),
-              TextFormField(
-                decoration: InputDecoration(
-                    labelText: "Notes", hintText: "Enter Notes"),
-                validator: (val) =>
-                    val.isEmpty ? 'Note can\'t be empty.' : null,
-                onSaved: (val) => _note = val,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 30.0),
-                child: RaisedButton(
-                  onPressed: () {
-                    final form = formKey.currentState;
-                    if (form.validate()) {
-                      form.save();
-                      _presenter.saveTransaction(Transaction(
-                          category: _selectedCategory.category,
-                          amount: double.parse(_amount),
-                          note: _note,
-                          dateTime: _selectedDate,
-                          type: _selectedType));
-                    }
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
-                    child: Text(
-                      "Add",
-                      style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  color: Theme.of(context).primaryColor,
-                  textColor: Colors.white,
-                ),
-              ),
-            ],
-          ));
+      widget = Container(
+        margin: EdgeInsets.all(16.0),
+        child: Form(
+            key: formKey,
+            child: ListView(
+              padding: EdgeInsets.only(left: 16.0, right: 16.0),
+              children: <Widget>[
+                categoryField(),
+                transactionTypeField(),
+                amountField(),
+                transactionDateField(),
+                transactionNotesField(),
+                Container(padding: EdgeInsets.only(bottom: 25.0)),
+                addButton(),
+              ],
+            )),
+      );
     }
     return Scaffold(
       appBar: AppBar(
@@ -207,6 +107,57 @@ class _AddTransactionState extends State<AddTransactionView>
     // TODO: implement showError
   }
 
+  Widget categoryField() {
+    return InputDecorator(
+      decoration: InputDecoration(labelText: "Category"),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<TransactionCategory>(
+          hint: Text("Select Category"),
+          isDense: true,
+          items: _categories.map((TransactionCategory category) {
+            return DropdownMenuItem<TransactionCategory>(
+              child: Text(category.category),
+              value: category,
+            );
+          }).toList(),
+          value: _selectedCategory,
+          onChanged: (TransactionCategory category) {
+            setState(() {
+              if (category != null) {
+                _selectedCategory = category;
+              }
+            });
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget transactionTypeField() {
+    return InputDecorator(
+      decoration: InputDecoration(labelText: "Transaction Type"),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+            hint: Text("Select Type"),
+            isDense: true,
+            items: ["D", "C"].map((String type) {
+              return DropdownMenuItem<String>(
+                child: Text(type == "C" ? "Income" : "Expense"),
+                value: type,
+              );
+            }).toList(),
+            value: _selectedType,
+            onChanged: (String type) {
+              setState(() {
+                if (type != null) {
+                  _selectedType = type;
+                }
+              });
+            }),
+      ),
+    );
+  }
+
   @override
   void showTransactionCategoryList(List<TransactionCategory> categories) {
     setState(() {
@@ -223,5 +174,72 @@ class _AddTransactionState extends State<AddTransactionView>
   void navigateToTransactionListPage() {
     Navigator.of(context).pushNamedAndRemoveUntil(
         "/transactions", (Route<dynamic> route) => false);
+  }
+
+  Widget amountField() {
+    return TextFormField(
+      decoration: InputDecoration(
+          labelText: "Amount", hintText: "Enter Transaction Amount"),
+      keyboardType: TextInputType.number,
+      validator: (val) => val.isEmpty ? 'Amount can\'t be empty.' : null,
+      onSaved: (val) => _amount = val,
+    );
+  }
+
+  Widget transactionDateField() {
+    return new Row(children: <Widget>[
+      new Expanded(
+          child: new TextFormField(
+        validator: (val) =>
+            isValidTransactionDate(val) ? null : 'Not a valid date',
+        decoration: new InputDecoration(
+          hintText: 'Enter transaction date',
+          labelText: 'Transaction date',
+        ),
+        controller: _controller,
+        keyboardType: TextInputType.datetime,
+      )),
+      new IconButton(
+        icon: new Icon(Icons.date_range),
+        tooltip: 'Choose date',
+        onPressed: (() {
+          _selectDate(context, _controller.text);
+        }),
+      )
+    ]);
+  }
+
+  Widget transactionNotesField() {
+    return TextFormField(
+      decoration: InputDecoration(labelText: "Notes", hintText: "Enter Notes"),
+      validator: (val) => val.isEmpty ? 'Note can\'t be empty.' : null,
+      onSaved: (val) => _note = val,
+    );
+  }
+
+  Widget addButton() {
+    return RaisedButton(
+      onPressed: () {
+        final form = formKey.currentState;
+        if (form.validate()) {
+          form.save();
+          _presenter.saveTransaction(Transaction(
+              category: _selectedCategory.category,
+              amount: double.parse(_amount),
+              note: _note,
+              dateTime: _selectedDate,
+              type: _selectedType));
+        }
+      },
+      child: Padding(
+        padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
+        child: Text(
+          "Add",
+          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+        ),
+      ),
+      color: Theme.of(context).primaryColor,
+      textColor: Colors.white,
+    );
   }
 }
