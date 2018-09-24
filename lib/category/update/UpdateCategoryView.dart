@@ -33,47 +33,18 @@ class _UpdateCategoryState extends State<UpdateCategoryView>
 
   @override
   Widget build(BuildContext context) {
-    var widget = Form(
-        key: formKey,
-        child: ListView(
-          padding: EdgeInsets.only(left: 16.0, right: 16.0),
-          children: <Widget>[
-            ListTile(
-              title: TextFormField(
-                decoration: InputDecoration(labelText: "Category"),
-                initialValue: _category,
-                validator: (val) =>
-                    val.isEmpty ? 'Category can\'t be empty.' : null,
-                onSaved: (val) => _category = val,
-              ),
-            ),
-            ListTile(
-              title: Padding(
-                padding: const EdgeInsets.only(top: 25.0, left: 16.0, right: 16.0),
-                child: RaisedButton(
-                  onPressed: () {
-                    final form = formKey.currentState;
-
-                    if (form.validate()) {
-                      form.save();
-                      _presenter.updateTransactionCategory(TransactionCategory(
-                          id: _categoryId, category: _category));
-                    }
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
-                    child: Text(
-                      "Update",
-                      style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold,),
-                    ),
-                  ),
-                  color: Theme.of(context).primaryColor,
-                  textColor: Colors.white,
-                ),
-              ),
-            ),
-          ],
-        ));
+    var widget = Container(
+      margin: EdgeInsets.all(16.0),
+      child: Form(
+          key: formKey,
+          child: ListView(
+            children: <Widget>[
+              categoryField(),
+              Container(padding: EdgeInsets.only(bottom: 25.0)),
+              updateButton(),
+            ],
+          )),
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -88,9 +59,45 @@ class _UpdateCategoryState extends State<UpdateCategoryView>
     // TODO: implement showError
   }
 
+  onUpdate() {
+    final form = formKey.currentState;
+
+    if (form.validate()) {
+      form.save();
+      _presenter.updateTransactionCategory(
+          TransactionCategory(id: _categoryId, category: _category));
+    }
+  }
+
   @override
   void navigateToCategoriesListPage() {
     Navigator.of(context).pushNamedAndRemoveUntil(
         "/categories", (Route<dynamic> route) => false);
+  }
+
+  Widget categoryField() {
+    return TextFormField(
+      decoration: InputDecoration(labelText: "Category"),
+      initialValue: _category,
+      validator: (val) => val.isEmpty ? 'Category can\'t be empty.' : null,
+      onSaved: (val) => _category = val,
+    );
+  }
+
+  Widget updateButton() {
+    return RaisedButton(
+      onPressed: onUpdate,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
+        child: Text(
+          "Update",
+          style: TextStyle(
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+      textColor: Colors.white,
+    );
   }
 }

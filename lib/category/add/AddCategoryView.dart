@@ -27,46 +27,18 @@ class _AddCategoryState extends State<AddCategoryView>
 
   @override
   Widget build(BuildContext context) {
-    var widget = Form(
-        key: formKey,
-        child: ListView(
-          padding: EdgeInsets.only(left: 16.0, right: 16.0),
-          children: <Widget>[
-            ListTile(
-              title: TextFormField(
-                decoration: InputDecoration(labelText: "Category"),
-                validator: (val) =>
-                    val.isEmpty ? 'Category can\'t be empty.' : null,
-                onSaved: (val) => _category = val,
-              ),
-            ),
-            ListTile(
-              title: Padding(
-                padding: const EdgeInsets.only(top: 25.0, left: 16.0, right: 16.0),
-                child: RaisedButton(
-                  onPressed: () {
-                    final form = formKey.currentState;
-
-                    if (form.validate()) {
-                      form.save();
-                      _presenter.saveTransactionCategory(
-                          TransactionCategory(category: _category));
-                    }
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
-                    child: Text(
-                      "Add",
-                      style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  color: Theme.of(context).primaryColor,
-                  textColor: Colors.white,
-                ),
-              ),
-            ),
-          ],
-        ));
+    var widget = Container(
+      margin: EdgeInsets.all(16.0),
+      child: Form(
+          key: formKey,
+          child: ListView(
+            children: <Widget>[
+              categoryField(),
+              Container(padding: EdgeInsets.only(bottom: 25.0)),
+              addButton(),
+            ],
+          )),
+    );
     return Scaffold(
       appBar: AppBar(
         title: Text('Add Category'),
@@ -75,9 +47,41 @@ class _AddCategoryState extends State<AddCategoryView>
     );
   }
 
+  onAdd() {
+    final form = formKey.currentState;
+
+    if (form.validate()) {
+      form.save();
+      _presenter
+          .saveTransactionCategory(TransactionCategory(category: _category));
+    }
+  }
+
   @override
   void showError() {
     // TODO: implement showError
+  }
+
+  Widget categoryField() {
+    return TextFormField(
+      decoration: InputDecoration(labelText: "Category"),
+      validator: (val) => val.isEmpty ? 'Category can\'t be empty.' : null,
+      onSaved: (val) => _category = val,
+    );
+  }
+
+  Widget addButton() {
+    return RaisedButton(
+      onPressed: onAdd,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
+        child: Text(
+          "Add",
+          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+        ),
+      ),
+      textColor: Colors.white,
+    );
   }
 
   @override
