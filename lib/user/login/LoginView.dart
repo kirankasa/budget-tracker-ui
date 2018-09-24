@@ -22,103 +22,23 @@ class _LoginViewState extends State<LoginView> implements LoginViewContract {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Theme(
-      data: ThemeData(
-          inputDecorationTheme:
-              InputDecorationTheme(labelStyle: TextStyle(fontSize: 20.0))),
+        body: Container(
+      margin: EdgeInsets.all(16.0),
       child: Form(
-          key: formKey,
-          child: ListView(
-            children: <Widget>[
-              Container(
-                height: 100.0,
-                width: 200.0,
-                padding: EdgeInsets.only(top: 20.0),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          fit: BoxFit.contain,
-                          image: AssetImage("assets/expense_tracker.jpg"))),
-                ),
-              ),
-              error
-                  ? Center(
-                      child: Text(
-                        "Invalid username or password",
-                        style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.red,
-                            fontStyle: FontStyle.italic),
-                      ),
-                    )
-                  : Container(),
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0,right: 16.0),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    labelText: "Username",
-                  ),
-                  validator: (val) =>
-                      val.isEmpty ? 'Username can\'t be empty.' : null,
-                  onSaved: (val) => _username = val,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0,right: 16.0),
-                child: TextFormField(
-                  decoration: InputDecoration(labelText: "Password"),
-                  obscureText: true,
-                  validator: (val) =>
-                      val.isEmpty ? 'Password can\'t be empty.' : null,
-                  onSaved: (val) => _password = val,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(25.0),
-                child: RaisedButton(
-                  highlightColor: Colors.cyan,
-                  onPressed: () {
-                    final form = formKey.currentState;
-
-                    if (form.validate()) {
-                      form.save();
-                      _presenter.login(AuthenticationRequest(
-                          userName: _username, password: _password));
-                    }
-                  },
-                  child: Text(
-                    "Login",
-                    style:
-                        TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                  ),
-                  color: Theme.of(context).primaryColor,
-                  textColor: Colors.white,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 25.0),
-                child: Center(
-                  child: RichText(
-                    text: TextSpan(children: [
-                      TextSpan(
-                        text: 'New user? ',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      TextSpan(
-                        text: 'Sign up',
-                        style: TextStyle(color: Colors.blue),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Navigator.of(context).pushNamedAndRemoveUntil(
-                                "/signup", (Route<dynamic> route) => false);
-                          },
-                      )
-                    ]),
-                  ),
-                ),
-              )
-            ],
-          )),
+        key: formKey,
+        child: ListView(
+          children: <Widget>[
+            expenseTrackerLogo(),
+            error ? errorMessageWidget() : Container(),
+            userNameField(),
+            passwordField(),
+            Container(padding: EdgeInsets.only(bottom: 25.0)),
+            loginButton(),
+            Container(padding: EdgeInsets.only(bottom: 40.0)),
+            Center(child: signUpLink()),
+          ],
+        ),
+      ),
     ));
   }
 
@@ -133,5 +53,91 @@ class _LoginViewState extends State<LoginView> implements LoginViewContract {
     setState(() {
       error = true;
     });
+  }
+
+  onLogin() {
+    final form = formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      _presenter.login(
+          AuthenticationRequest(userName: _username, password: _password));
+    }
+  }
+
+  onSignUp() {
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil("/signup", (Route<dynamic> route) => false);
+  }
+
+  Widget userNameField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: "Username",
+      ),
+      validator: (val) => val.isEmpty ? 'Username can\'t be empty.' : null,
+      onSaved: (val) => _username = val,
+    );
+  }
+
+  Widget passwordField() {
+    return TextFormField(
+      decoration: InputDecoration(labelText: "Password"),
+      obscureText: true,
+      validator: (val) => val.isEmpty ? 'Password can\'t be empty.' : null,
+      onSaved: (val) => _password = val,
+    );
+  }
+
+  Widget errorMessageWidget() {
+    return Center(
+      child: Text(
+        "Invalid username or password",
+        style: TextStyle(
+            fontSize: 20.0, color: Colors.red, fontStyle: FontStyle.italic),
+      ),
+    );
+  }
+
+  Widget loginButton() {
+    return RaisedButton(
+      highlightColor: Colors.cyan,
+      onPressed: onLogin,
+      child: Text(
+        "Login",
+        style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+      ),
+      color: Theme.of(context).primaryColor,
+      textColor: Colors.white,
+    );
+  }
+
+  Widget signUpLink() {
+    return RichText(
+      text: TextSpan(children: [
+        TextSpan(
+          text: 'New user? ',
+          style: TextStyle(color: Colors.black),
+        ),
+        TextSpan(
+          text: 'Sign up',
+          style: TextStyle(color: Colors.blue),
+          recognizer: TapGestureRecognizer()..onTap = onSignUp,
+        )
+      ]),
+    );
+  }
+
+  Widget expenseTrackerLogo() {
+    return Container(
+      height: 100.0,
+      width: 200.0,
+      padding: EdgeInsets.only(top: 20.0),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.contain,
+                image: AssetImage("assets/expense_tracker.jpg"))),
+      ),
+    );
   }
 }

@@ -14,6 +14,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.teal,
+        inputDecorationTheme:
+            InputDecorationTheme(labelStyle: TextStyle(fontSize: 20.0)),
       ),
       debugShowCheckedModeBanner: false,
       home: FutureBuilder(
@@ -33,21 +35,6 @@ class MyApp extends StatelessWidget {
         '/categories': (BuildContext context) => CategoryListView(),
         '/feedback': (BuildContext context) => FeedbackView()
       },
-    );
-  }
-}
-
-class MyHomePage extends StatelessWidget {
-  final String title;
-
-  MyHomePage({this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-      ),
     );
   }
 }
