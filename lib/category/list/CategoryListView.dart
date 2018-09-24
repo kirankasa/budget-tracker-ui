@@ -35,7 +35,7 @@ class _CategoryListState extends State<CategoryListView>
         _loggedInUser = user;
       });
     });
-    _presenter.loadTransactions();
+    _presenter.loadTransactionCategories();
   }
 
   @override
@@ -43,14 +43,12 @@ class _CategoryListState extends State<CategoryListView>
     var widget;
 
     if (_isLoading) {
-      widget = Center(
-          child: Padding(
-              padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-              child: CircularProgressIndicator()));
+      widget = Center(child: CircularProgressIndicator());
     } else {
-      widget = ListView(
-          padding: EdgeInsets.symmetric(vertical: 8.0),
-          children: _buildCategoryList());
+      widget = Container(
+        margin: EdgeInsets.all(16.0),
+        child: ListView(children: _buildCategoryList()),
+      );
     }
 
     return Scaffold(
@@ -62,18 +60,19 @@ class _CategoryListState extends State<CategoryListView>
         email: _loggedInUser != null ? _loggedInUser.email : "",
       ),
       body: widget,
-      floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => AddCategoryView()));
-          }),
+      floatingActionButton:
+          FloatingActionButton(child: Icon(Icons.add), onPressed: onAdd),
     );
   }
 
   @override
   void showError() {
     // TODO: implement showError
+  }
+
+  onAdd() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => AddCategoryView()));
   }
 
   @override
