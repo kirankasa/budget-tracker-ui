@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.teal,
         inputDecorationTheme:
             InputDecorationTheme(labelStyle: TextStyle(fontSize: 20.0)),
+        buttonColor: Colors.teal,
       ),
       debugShowCheckedModeBanner: false,
       home: FutureBuilder(

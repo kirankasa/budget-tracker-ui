@@ -102,11 +102,13 @@ class _LoginViewState extends State<LoginView> implements LoginViewContract {
     return RaisedButton(
       highlightColor: Colors.cyan,
       onPressed: onLogin,
-      child: Text(
-        "Login",
-        style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
+        child: Text(
+          "Login",
+          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+        ),
       ),
-      color: Theme.of(context).primaryColor,
       textColor: Colors.white,
     );
   }
