@@ -43,16 +43,14 @@ class _TransactionListState extends State<TransactionListView>
     var widget;
 
     if (_isLoading) {
-      widget = Center(
-          child: Padding(
-              padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-              child: CircularProgressIndicator()));
+      widget = Center(child: CircularProgressIndicator());
     } else {
       widget = Builder(
-        builder: (BuildContext context){
-          return ListView(
-              padding: EdgeInsets.symmetric(vertical: 8.0),
-              children: _buildTransactionList(context));
+        builder: (BuildContext context) {
+          return Container(
+            margin: EdgeInsets.all(16.0),
+            child: ListView(children: _buildTransactionList(context)),
+          );
         },
       );
     }
@@ -65,22 +63,19 @@ class _TransactionListState extends State<TransactionListView>
         email: _loggedInUser != null ? _loggedInUser.email : "",
       ),
       body: widget,
-      floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
-          onPressed: () {
-            {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AddTransactionView()));
-            }
-          }),
+      floatingActionButton:
+          FloatingActionButton(child: Icon(Icons.add), onPressed: onAdd),
     );
   }
 
   @override
   void showError() {
     // TODO: implement showError
+  }
+
+  onAdd() {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => AddTransactionView()));
   }
 
   @override
@@ -98,8 +93,7 @@ class _TransactionListState extends State<TransactionListView>
             onDismissed: (direction) {
               _presenter.deleteTransaction(transaction.id);
               _transactions.remove(transaction);
-              Scaffold
-                  .of(context)
+              Scaffold.of(context)
                   .showSnackBar(SnackBar(content: Text("Transaction deleted")));
             },
             background: LeaveBehindView(),
@@ -121,14 +115,13 @@ class _TransactionListItem extends ListTile {
       : super(
             title: Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Expanded(
                       child: Text(
-                        transaction.category,
-                        style:
+                    transaction.category,
+                    style:
                         TextStyle(fontSize: 17.0, fontWeight: FontWeight.bold),
-                      )),
+                  )),
                   Text(
                     transaction.amount.toString(),
                     style: TextStyle(
@@ -142,8 +135,7 @@ class _TransactionListItem extends ListTile {
               ),
             ),
             subtitle: Text(
-              "${ DateFormat.yMMMd().format(transaction.dateTime)}\n${transaction
-            .note}",
+              "${DateFormat.yMMMd().format(transaction.dateTime)}\n${transaction.note}",
               style: TextStyle(fontSize: 17.0),
             ),
             leading: CircleAvatar(
