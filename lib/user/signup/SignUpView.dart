@@ -9,11 +9,7 @@ class SignUpView extends StatefulWidget {
 }
 
 class _SignUpViewState extends State<SignUpView> implements SignUpViewContract {
-  String _username;
-  String _firstName;
-  String _password;
-  String _lastName;
-  String _email;
+  var newUser = User();
   final formKey = GlobalKey<FormState>();
   SignUpViewPresenter _presenter;
 
@@ -26,23 +22,27 @@ class _SignUpViewState extends State<SignUpView> implements SignUpViewContract {
     return Scaffold(
       body: Container(
         margin: EdgeInsets.all(16.0),
-        child: Form(
-          key: formKey,
-          child: ListView(
-            children: <Widget>[
-              expenseTrackerLogo(),
-              userNameField(),
-              firstNameField(),
-              lastNameField(),
-              emailField(),
-              passwordField(),
-              Container(padding: EdgeInsets.only(bottom: 25.0)),
-              signupButton(),
-              Container(padding: EdgeInsets.only(bottom: 40.0)),
-              Center(child: loginLink())
-            ],
-          ),
-        ),
+        child: signUpForm(),
+      ),
+    );
+  }
+
+  Widget signUpForm() {
+    return Form(
+      key: formKey,
+      child: ListView(
+        children: <Widget>[
+          expenseTrackerLogo(),
+          userNameField(),
+          firstNameField(),
+          lastNameField(),
+          emailField(),
+          passwordField(),
+          Container(padding: EdgeInsets.only(bottom: 25.0)),
+          signupButton(),
+          Container(padding: EdgeInsets.only(bottom: 40.0)),
+          Center(child: loginLink())
+        ],
       ),
     );
   }
@@ -67,12 +67,7 @@ class _SignUpViewState extends State<SignUpView> implements SignUpViewContract {
     final form = formKey.currentState;
     if (form.validate()) {
       form.save();
-      _presenter.register(User(
-          userName: _username,
-          firstName: _firstName,
-          lastName: _lastName,
-          password: _password,
-          email: _email));
+      _presenter.register(newUser);
     }
   }
 
@@ -82,7 +77,7 @@ class _SignUpViewState extends State<SignUpView> implements SignUpViewContract {
         labelText: "User Name",
       ),
       validator: (val) => val.isEmpty ? 'Username can\'t be empty.' : null,
-      onSaved: (val) => _username = val,
+      onSaved: (val) => newUser.userName = val,
       keyboardType: TextInputType.text,
     );
   }
@@ -93,7 +88,7 @@ class _SignUpViewState extends State<SignUpView> implements SignUpViewContract {
         labelText: "First Name",
       ),
       validator: (val) => val.isEmpty ? 'First name can\'t be empty.' : null,
-      onSaved: (val) => _firstName = val,
+      onSaved: (val) => newUser.firstName = val,
       keyboardType: TextInputType.text,
     );
   }
@@ -104,7 +99,7 @@ class _SignUpViewState extends State<SignUpView> implements SignUpViewContract {
         labelText: "Last Name",
       ),
       validator: (val) => val.isEmpty ? 'Last name can\'t be empty.' : null,
-      onSaved: (val) => _lastName = val,
+      onSaved: (val) => newUser.lastName = val,
       keyboardType: TextInputType.text,
     );
   }
@@ -121,7 +116,7 @@ class _SignUpViewState extends State<SignUpView> implements SignUpViewContract {
           return 'Please enter valid email.';
         }
       },
-      onSaved: (val) => _email = val,
+      onSaved: (val) => newUser.email = val,
       keyboardType: TextInputType.emailAddress,
     );
   }
@@ -132,7 +127,7 @@ class _SignUpViewState extends State<SignUpView> implements SignUpViewContract {
         labelText: "Password",
       ),
       validator: (val) => val.isEmpty ? 'Password can\'t be empty.' : null,
-      onSaved: (val) => _password = val,
+      onSaved: (val) => newUser.password = val,
       keyboardType: TextInputType.text,
       obscureText: true,
     );

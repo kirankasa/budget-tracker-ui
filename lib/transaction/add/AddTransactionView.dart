@@ -46,7 +46,6 @@ class _AddTransactionState extends State<AddTransactionView>
         child: Form(
             key: formKey,
             child: ListView(
-              padding: EdgeInsets.only(left: 16.0, right: 16.0),
               children: <Widget>[
                 categoryField(),
                 transactionTypeField(),
@@ -219,18 +218,7 @@ class _AddTransactionState extends State<AddTransactionView>
 
   Widget addButton() {
     return RaisedButton(
-      onPressed: () {
-        final form = formKey.currentState;
-        if (form.validate()) {
-          form.save();
-          _presenter.saveTransaction(Transaction(
-              category: _selectedCategory.category,
-              amount: double.parse(_amount),
-              note: _note,
-              dateTime: _selectedDate,
-              type: _selectedType));
-        }
-      },
+      onPressed: onAdd,
       child: Padding(
         padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
         child: Text(
@@ -241,5 +229,18 @@ class _AddTransactionState extends State<AddTransactionView>
       color: Theme.of(context).primaryColor,
       textColor: Colors.white,
     );
+  }
+
+  void onAdd() {
+    final form = formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      _presenter.saveTransaction(Transaction(
+          category: _selectedCategory.category,
+          amount: double.parse(_amount),
+          note: _note,
+          dateTime: _selectedDate,
+          type: _selectedType));
+    }
   }
 }

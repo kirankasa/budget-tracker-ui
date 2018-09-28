@@ -1,11 +1,11 @@
 class User {
-  final String userName;
-  final String firstName;
-  final String lastName;
-  final String email;
-  final String password;
+  String userName;
+  String firstName;
+  String lastName;
+  String email;
+  String password;
 
-  const User(
+  User(
       {this.userName,
       this.password,
       this.firstName,
