@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:budget_tracker/category/Category.dart';
+import 'package:budget_tracker/common/util/DateUtil.dart';
 import 'package:budget_tracker/transaction/Transaction.dart';
 import 'package:budget_tracker/transaction/update/UpdateTransactionPresenter.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,7 @@ class _UpdateTransactionState extends State<UpdateTransactionView>
   UpdateTransactionPresenter _presenter;
   List<TransactionCategory> _categories;
   final formKey = GlobalKey<FormState>();
+  final TextEditingController _controller = new TextEditingController();
 
   @override
   initState() {
@@ -42,7 +44,7 @@ class _UpdateTransactionState extends State<UpdateTransactionView>
     _note = widget.transaction.note.toString();
     _selectedCategory = widget.transaction.category;
     _selectedType = widget.transaction.type;
-
+    _controller.text = new DateFormat.yMd().format(_selectedDate);
     _transactionId = widget.transaction.id;
     _presenter.loadCategories();
   }
@@ -51,111 +53,24 @@ class _UpdateTransactionState extends State<UpdateTransactionView>
   Widget build(BuildContext context) {
     var widget;
     if (_isLoading) {
-      widget = Center(
-          child: Padding(
-              padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-              child: CircularProgressIndicator()));
+      widget = Center(child: CircularProgressIndicator());
     } else {
-      widget = Form(
-          key: formKey,
-          child: ListView(
-            children: <Widget>[
-              ListTile(
-                  title: DropdownButton<String>(
-                      hint: Text("Select Category"),
-                      items: _categories.map((TransactionCategory category) {
-                        return DropdownMenuItem<String>(
-                          child: Text(category.category),
-                          value: category.category,
-                        );
-                      }).toList(),
-                      value: _selectedCategory,
-                      onChanged: (String category) {
-                        setState(() {
-                          if (category != null) {
-                            _selectedCategory = category;
-                          }
-                        });
-                      })),
-              ListTile(
-                  title: DropdownButton<String>(
-                      hint: Text("Select Type"),
-                      items: ["D", "C"].map((String type) {
-                        return DropdownMenuItem<String>(
-                          child: Text(type == "C" ? "Income" : "Expense"),
-                          value: type,
-                        );
-                      }).toList(),
-                      value: _selectedType,
-                      onChanged: (String type) {
-                        setState(() {
-                          if (type != null) {
-                            _selectedType = type;
-                          }
-                        });
-                      })),
-              ListTile(
-                title: TextFormField(
-                  decoration: InputDecoration(labelText: "Amount"),
-                  keyboardType: TextInputType.number,
-                  initialValue: _amount,
-                  validator: (val) =>
-                      val.isEmpty ? 'Amount can\'t be empty.' : null,
-                  onSaved: (val) => _amount = val,
-                ),
-              ),
-              ListTile(
-                title: InputDecorator(
-                  decoration: InputDecoration(
-                      hintText: "Enter Date",
-                      labelText: "Transaction Date",
-                      labelStyle: TextStyle(fontSize: 20.0)),
-                  child: Text(_selectedDate != null
-                      ? DateFormat.yMMMd().format(_selectedDate)
-                      : ""),
-                ),
-                onTap: () {
-                  _selectDate(context);
-                },
-              ),
-              ListTile(
-                title: TextFormField(
-                  decoration: InputDecoration(labelText: "Enter Note"),
-                  initialValue: _note,
-                  validator: (val) =>
-                      val.isEmpty ? 'Note can\'t be empty.' : null,
-                  onSaved: (val) => _note = val,
-                ),
-              ),
-              ListTile(
-                title: RaisedButton(
-                  onPressed: () {
-                    final form = formKey.currentState;
-                    if (form.validate()) {
-                      form.save();
-                      _presenter.updateTransaction(Transaction(
-                          id: _transactionId,
-                          category: _selectedCategory,
-                          amount: double.parse(_amount),
-                          note: _note,
-                          dateTime: _selectedDate,
-                          type: _selectedType));
-                    }
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
-                    child: Text(
-                      "Update",
-                      style:
-                          TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  color: Theme.of(context).primaryColor,
-                  textColor: Colors.white,
-                ),
-              ),
-            ],
-          ));
+      widget = Container(
+        margin: EdgeInsets.all(16.0),
+        child: Form(
+            key: formKey,
+            child: ListView(
+              children: <Widget>[
+                categoryField(),
+                transactionTypeField(),
+                amountField(),
+                transactionDateField(),
+                noteField(),
+                Container(padding: EdgeInsets.only(bottom: 25.0)),
+                updateButton(),
+              ],
+            )),
+      );
     }
     return Scaffold(
       appBar: AppBar(
@@ -172,16 +87,145 @@ class _UpdateTransactionState extends State<UpdateTransactionView>
     );
   }
 
-  Future<Null> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+  Widget categoryField() {
+    return InputDecorator(
+      decoration: InputDecoration(labelText: "Category"),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          hint: Text("Select Category"),
+          isDense: true,
+          items: _categories.map((TransactionCategory category) {
+            return DropdownMenuItem<String>(
+              child: Text(category.category),
+              value: category.category,
+            );
+          }).toList(),
+          value: _selectedCategory,
+          onChanged: (String category) {
+            setState(() {
+              if (category != null) {
+                _selectedCategory = category;
+              }
+            });
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget transactionTypeField() {
+    return InputDecorator(
+      decoration: InputDecoration(labelText: "Transaction Type"),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+            hint: Text("Select Type"),
+            isDense: true,
+            items: ["D", "C"].map((String type) {
+              return DropdownMenuItem<String>(
+                child: Text(type == "C" ? "Income" : "Expense"),
+                value: type,
+              );
+            }).toList(),
+            value: _selectedType,
+            onChanged: (String type) {
+              setState(() {
+                if (type != null) {
+                  _selectedType = type;
+                }
+              });
+            }),
+      ),
+    );
+  }
+
+  Widget amountField() {
+    return TextFormField(
+      decoration: InputDecoration(labelText: "Amount"),
+      keyboardType: TextInputType.number,
+      initialValue: _amount,
+      validator: (val) => val.isEmpty ? 'Amount can\'t be empty.' : null,
+      onSaved: (val) => _amount = val,
+    );
+  }
+
+  Widget noteField() {
+    return TextFormField(
+      decoration: InputDecoration(labelText: "Enter Note"),
+      initialValue: _note,
+      validator: (val) => val.isEmpty ? 'Note can\'t be empty.' : null,
+      onSaved: (val) => _note = val,
+    );
+  }
+
+  Widget transactionDateField() {
+    return new Row(children: <Widget>[
+      new Expanded(
+          child: new TextFormField(
+        validator: (val) =>
+        DateUtil.isValidDate(val) ? null : 'Not a valid date',
+        decoration: new InputDecoration(
+          hintText: 'Enter transaction date',
+          labelText: 'Transaction date',
+        ),
+        controller: _controller,
+        keyboardType: TextInputType.datetime,
+      )),
+      new IconButton(
+        icon: new Icon(Icons.date_range),
+        tooltip: 'Choose date',
+        onPressed: (() {
+          _selectDate(context, _controller.text);
+        }),
+      )
+    ]);
+  }
+
+  Future _selectDate(BuildContext context, String initialDateString) async {
+    var now = new DateTime.now();
+    var initialDate = DateUtil.convertToDate(initialDateString) ?? now;
+    initialDate = (initialDate.year >= 1900 && initialDate.isBefore(now)
+        ? initialDate
+        : now);
+
+    var result = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime.now().add(Duration(days: -365 * 2)),
-        lastDate: DateTime.now().add(Duration(days: 365 * 2)));
-    if (picked != null && picked != _selectedDate) {
-      setState(() {
-        _selectedDate = picked;
-      });
+        initialDate: initialDate,
+        firstDate: new DateTime(1900),
+        lastDate: new DateTime.now());
+
+    if (result == null) return;
+
+    setState(() {
+      _controller.text = new DateFormat.yMd().format(result);
+    });
+  }
+
+  Widget updateButton() {
+    return RaisedButton(
+      onPressed: onUpdate,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
+        child: Text(
+          "Update",
+          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+        ),
+      ),
+      color: Theme.of(context).primaryColor,
+      textColor: Colors.white,
+    );
+  }
+
+  void onUpdate() {
+    final form = formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      _presenter.updateTransaction(Transaction(
+          id: _transactionId,
+          category: _selectedCategory,
+          amount: double.parse(_amount),
+          note: _note,
+          dateTime: DateUtil.convertToDate(_controller.text),
+          type: _selectedType));
     }
   }
 

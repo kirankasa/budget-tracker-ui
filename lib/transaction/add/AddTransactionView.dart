@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:budget_tracker/category/Category.dart';
+import 'package:budget_tracker/common/util/DateUtil.dart';
 import 'package:budget_tracker/transaction/Transaction.dart';
 import 'package:budget_tracker/transaction/add/AddTransactionPresenter.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,6 @@ class _AddTransactionState extends State<AddTransactionView>
   }
 
   bool _isLoading = false;
-  DateTime _selectedDate = DateTime.now();
   String _selectedType;
   String _amount;
   String _note;
@@ -68,7 +68,7 @@ class _AddTransactionState extends State<AddTransactionView>
 
   Future _selectDate(BuildContext context, String initialDateString) async {
     var now = new DateTime.now();
-    var initialDate = convertToDate(initialDateString) ?? now;
+    var initialDate = DateUtil.convertToDate(initialDateString) ?? now;
     initialDate = (initialDate.year >= 1900 && initialDate.isBefore(now)
         ? initialDate
         : now);
@@ -84,21 +84,6 @@ class _AddTransactionState extends State<AddTransactionView>
     setState(() {
       _controller.text = new DateFormat.yMd().format(result);
     });
-  }
-
-  bool isValidTransactionDate(String transactionDate) {
-    if (transactionDate.isEmpty) return true;
-    var d = convertToDate(transactionDate);
-    return d != null && d.isBefore(new DateTime.now());
-  }
-
-  DateTime convertToDate(String input) {
-    try {
-      var d = new DateFormat.yMd().parseStrict(input);
-      return d;
-    } catch (e) {
-      return null;
-    }
   }
 
   @override
@@ -190,7 +175,7 @@ class _AddTransactionState extends State<AddTransactionView>
       new Expanded(
           child: new TextFormField(
         validator: (val) =>
-            isValidTransactionDate(val) ? null : 'Not a valid date',
+            DateUtil.isValidDate(val) ? null : 'Not a valid date',
         decoration: new InputDecoration(
           hintText: 'Enter transaction date',
           labelText: 'Transaction date',
@@ -239,7 +224,7 @@ class _AddTransactionState extends State<AddTransactionView>
           category: _selectedCategory.category,
           amount: double.parse(_amount),
           note: _note,
-          dateTime: _selectedDate,
+          dateTime: DateUtil.convertToDate(_controller.text),
           type: _selectedType));
     }
   }

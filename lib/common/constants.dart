@@ -1,7 +1,7 @@
-final base_url = 'http://10.216.72.113:8080/';
-final transactions_url = base_url + 'transactions';
-final categories_url = base_url + 'transactions/categories';
-final feedback_url = base_url + 'feedback';
-final login_url = base_url + 'auth';
-final register_url = base_url + 'users/register';
-final loggedin_user_url = base_url + 'auth/user';
+const BASE_URL = 'http://172.19.158.145:8080/';
+const transactions_url = BASE_URL + 'transactions';
+const categories_url = BASE_URL + 'transactions/categories';
+const feedback_url = BASE_URL + 'feedback';
+const login_url = BASE_URL + 'auth';
+const register_url = BASE_URL + 'users/register';
+const loggedin_user_url = BASE_URL + 'auth/user';
