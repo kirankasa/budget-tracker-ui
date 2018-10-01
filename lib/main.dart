@@ -1,5 +1,4 @@
 import 'package:budget_tracker/category/list/CategoryListView.dart';
-import 'package:budget_tracker/common/SharedPreferencesHelper.dart';
 import 'package:budget_tracker/feedback/FeedbackView.dart';
 import 'package:budget_tracker/user/login/LoginView.dart';
 import 'package:budget_tracker/user/signup/SignUpView.dart';
@@ -19,23 +18,18 @@ class MyApp extends StatelessWidget {
         buttonColor: Colors.teal,
       ),
       debugShowCheckedModeBanner: false,
-      home: FutureBuilder(
-        builder: ((BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
-            return LoginView();
-          } else {
-            return SignUpView();
-          }
-        }),
-        future: SharedPreferencesHelper.getTokenValue(),
-      ),
-      routes: <String, WidgetBuilder>{
-        '/login': (BuildContext context) => LoginView(),
-        '/signup': (BuildContext context) => SignUpView(),
-        '/transactions': (BuildContext context) => TransactionListView(),
-        '/categories': (BuildContext context) => CategoryListView(),
-        '/feedback': (BuildContext context) => FeedbackView()
-      },
+      home: LoginView(),
+      routes: routes(),
     );
+  }
+
+  Map<String, WidgetBuilder> routes() {
+    return {
+      '/login': (BuildContext context) => LoginView(),
+      '/signup': (BuildContext context) => SignUpView(),
+      '/transactions': (BuildContext context) => TransactionListView(),
+      '/categories': (BuildContext context) => CategoryListView(),
+      '/feedback': (BuildContext context) => FeedbackView()
+    };
   }
 }
