@@ -64,7 +64,7 @@ class _AddCategoryState extends State<AddCategoryView>
 
   Widget categoryField() {
     return TextFormField(
-      decoration: InputDecoration(labelText: "Category"),
+      decoration: InputDecoration(labelText: "Category", hintText: "Enter Category"),
       validator: (val) => val.isEmpty ? 'Category can\'t be empty.' : null,
       onSaved: (val) => _category = val,
     );
