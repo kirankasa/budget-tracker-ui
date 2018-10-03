@@ -11,7 +11,6 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> implements LoginViewContract {
   String _username;
   String _password;
-  bool error = false;
   final formKey = GlobalKey<FormState>();
   LoginViewPresenter _presenter;
 
@@ -29,7 +28,6 @@ class _LoginViewState extends State<LoginView> implements LoginViewContract {
         child: ListView(
           children: <Widget>[
             expenseTrackerLogo(),
-            error ? errorMessageWidget() : Container(),
             userNameField(),
             passwordField(),
             Container(padding: EdgeInsets.only(bottom: 25.0)),
@@ -42,6 +40,29 @@ class _LoginViewState extends State<LoginView> implements LoginViewContract {
     ));
   }
 
+  void _showDialog() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return errorDialog();
+        });
+  }
+
+  Widget errorDialog() {
+    return AlertDialog(
+      title: Text("Login Error"),
+      content: Text("Invalid Username or Password"),
+      actions: <Widget>[
+        FlatButton(
+          child: Text("Close"),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        )
+      ],
+    );
+  }
+
   @override
   void navigateToTransactionsListPage() {
     Navigator.of(context).pushNamedAndRemoveUntil(
@@ -51,7 +72,7 @@ class _LoginViewState extends State<LoginView> implements LoginViewContract {
   @override
   void showError() {
     setState(() {
-      error = true;
+      _showDialog();
     });
   }
 

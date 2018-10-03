@@ -1,4 +1,4 @@
-const BASE_URL = 'http://172.19.158.145:8080/';
+const BASE_URL = 'http://10.216.72.113:8080/';
 const transactions_url = BASE_URL + 'transactions';
 const categories_url = BASE_URL + 'transactions/categories';
 const feedback_url = BASE_URL + 'feedback';
