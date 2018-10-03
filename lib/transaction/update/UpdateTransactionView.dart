@@ -140,7 +140,7 @@ class _UpdateTransactionState extends State<UpdateTransactionView>
 
   Widget amountField() {
     return TextFormField(
-      decoration: InputDecoration(labelText: "Amount"),
+      decoration: InputDecoration(labelText: "Amount", hintText: "Enter Transaction Amount"),
       keyboardType: TextInputType.number,
       initialValue: _amount,
       validator: (val) => val.isEmpty ? 'Amount can\'t be empty.' : null,
@@ -150,7 +150,7 @@ class _UpdateTransactionState extends State<UpdateTransactionView>
 
   Widget noteField() {
     return TextFormField(
-      decoration: InputDecoration(labelText: "Enter Note"),
+      decoration: InputDecoration(labelText: "Note",hintText: "Enter note"),
       initialValue: _note,
       validator: (val) => val.isEmpty ? 'Note can\'t be empty.' : null,
       onSaved: (val) => _note = val,
