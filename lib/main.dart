@@ -1,5 +1,6 @@
 import 'package:budget_tracker/category/list/CategoryListView.dart';
 import 'package:budget_tracker/feedback/FeedbackView.dart';
+import 'package:budget_tracker/transaction/report/AmountPerCategoryChart.dart';
 import 'package:budget_tracker/user/login/LoginView.dart';
 import 'package:budget_tracker/user/signup/SignUpView.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         buttonColor: Colors.teal,
       ),
       debugShowCheckedModeBanner: false,
-      home: LoginView(),
+      home: SimpleBarChart.withSampleData(),
       routes: routes(),
     );
   }
