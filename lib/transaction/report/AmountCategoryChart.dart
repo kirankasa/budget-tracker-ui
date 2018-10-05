@@ -64,18 +64,37 @@ class _AmountPerCategoryChartState extends State<AmountPerCategoryChart>
     var chartSeries = [
       new charts.Series<AmountPerCategory, String>(
         id: 'AmountPerCategory',
-        colorFn: (_, __) => charts.MaterialPalette.teal.shadeDefault,
         domainFn: (AmountPerCategory amountPerCategory, _) =>
             amountPerCategory.category,
         measureFn: (AmountPerCategory amountPerCategory, _) =>
             amountPerCategory.totalAmount,
+        labelAccessorFn: (AmountPerCategory amountPerCategory, _) =>
+            '${amountPerCategory.category}',
         data: _amountPerCategories,
       )
     ];
     return _amountPerCategories.length == 0
         ? Container()
         : Container(
-            margin: EdgeInsets.all(16.0), child: charts.BarChart(chartSeries));
+            margin: EdgeInsets.all(16.0),
+            child: _amountPerCategories.length == 1
+                ? barChart(chartSeries)
+                : pieChart(chartSeries));
+  }
+
+  Widget barChart(chartSeries) {
+    return charts.BarChart(
+      chartSeries,
+      animate: true,
+    );
+  }
+
+  Widget pieChart(chartSeries) {
+    return charts.PieChart(chartSeries,
+        animate: true,
+        defaultRenderer: new charts.ArcRendererConfig(
+            arcWidth: 100,
+            arcRendererDecorators: [new charts.ArcLabelDecorator()]));
   }
 
   @override
