@@ -23,7 +23,7 @@ class BudgetDrawer extends StatelessWidget {
           ),
           ListTile(
             title: Text("Categories"),
-            leading: Icon(Icons.assessment),
+            leading: Icon(Icons.apps),
             onTap: () {
               Navigator.pushNamedAndRemoveUntil(context, "/categories", (Route<dynamic> route) => false);
             },
