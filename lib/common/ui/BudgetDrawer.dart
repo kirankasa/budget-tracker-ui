@@ -14,38 +14,32 @@ class BudgetDrawer extends StatelessWidget {
         children: <Widget>[
           UserAccountsDrawerHeader(
               accountName: Text(userName), accountEmail: Text(email)),
-          DrawerHeader(
-              child: ListView(
-            children: <Widget>[
-              ListTile(
-                title: Text("Transactions"),
-                leading: Icon(Icons.assignment),
-                onTap: () {
-                  Navigator.pushNamed(context, "/transactions");
-                },
-              ),
-              Divider(
-                color: Colors.black,
-                height: 2.0,
-              ),
-              ListTile(
-                title: Text("Categories"),
-                leading: Icon(Icons.assessment),
-                onTap: () {
-                  Navigator.pushNamed(context, "/categories");
-                },
-              ),
-              Divider(
-                color: Colors.black,
-                height: 2.0,
-              ),
-            ],
-          )),
+          ListTile(
+            title: Text("Transactions"),
+            leading: Icon(Icons.assignment),
+            onTap: () {
+              Navigator.pushNamedAndRemoveUntil(context, "/transactions", (Route<dynamic> route) => false);
+            },
+          ),
+          ListTile(
+            title: Text("Categories"),
+            leading: Icon(Icons.assessment),
+            onTap: () {
+              Navigator.pushNamedAndRemoveUntil(context, "/categories", (Route<dynamic> route) => false);
+            },
+          ),
+          ListTile(
+            title: Text("Chart"),
+            leading: Icon(Icons.insert_chart),
+            onTap: () {
+              Navigator.pushNamedAndRemoveUntil(context, "/chart", (Route<dynamic> route) => false);
+            },
+          ),
           ListTile(
             title: Text("Feedback"),
             leading: Icon(Icons.comment),
             onTap: () {
-              Navigator.pushNamed(context, "/feedback");
+              Navigator.pushNamedAndRemoveUntil(context, "/feedback", (Route<dynamic> route) => false);
             },
           ),
           ListTile(
@@ -53,7 +47,7 @@ class BudgetDrawer extends StatelessWidget {
             leading: Icon(Icons.remove_circle),
             onTap: () {
               SharedPreferencesHelper.removeToken();
-              Navigator.pushNamed(context, "/login");
+              Navigator.pushNamedAndRemoveUntil(context, "/login", (Route<dynamic> route) => false);
             },
           )
         ],

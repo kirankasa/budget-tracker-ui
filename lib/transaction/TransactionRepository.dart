@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:budget_tracker/transaction/AmountPerCategory.dart';
 import 'package:budget_tracker/transaction/Transaction.dart';
 
 abstract class TransactionRepository {
@@ -11,4 +12,7 @@ abstract class TransactionRepository {
   Future<Transaction> updateTransaction(Transaction transaction);
 
   Future<Null> deleteTransaction(String transactionId);
+
+  Future<List<AmountPerCategory>> retrieveAmountPerCategory(String monthAndYear,
+      String transactionType);
 }

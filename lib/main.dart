@@ -1,10 +1,10 @@
 import 'package:budget_tracker/category/list/CategoryListView.dart';
 import 'package:budget_tracker/feedback/FeedbackView.dart';
-import 'package:budget_tracker/transaction/report/AmountPerCategoryChart.dart';
+import 'package:budget_tracker/transaction/list/TransactionListView.dart';
+import 'package:budget_tracker/transaction/report/AmountCategoryChart.dart';
 import 'package:budget_tracker/user/login/LoginView.dart';
 import 'package:budget_tracker/user/signup/SignUpView.dart';
 import 'package:flutter/material.dart';
-import 'package:budget_tracker/transaction/list/TransactionListView.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         buttonColor: Colors.teal,
       ),
       debugShowCheckedModeBanner: false,
-      home: SimpleBarChart.withSampleData(),
+      home: LoginView(),
       routes: routes(),
     );
   }
@@ -30,7 +30,8 @@ class MyApp extends StatelessWidget {
       '/signup': (BuildContext context) => SignUpView(),
       '/transactions': (BuildContext context) => TransactionListView(),
       '/categories': (BuildContext context) => CategoryListView(),
-      '/feedback': (BuildContext context) => FeedbackView()
+      '/feedback': (BuildContext context) => FeedbackView(),
+      '/chart': (BuildContext context) => AmountPerCategoryChart()
     };
   }
 }
