@@ -13,7 +13,6 @@ class FeedbackRepositoryImpl implements FeedbackRepository {
   @override
   Future<String> feedback(ExpenseFeedback feedback) async {
     String _token = await SharedPreferencesHelper.getTokenValue();
-    print(_token);
     String requestJson = json.encode(feedback);
     var response = await http.post(feedback_url, body: requestJson, headers: {
       HttpHeaders.contentTypeHeader: 'application/json',

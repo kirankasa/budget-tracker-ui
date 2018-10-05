@@ -44,59 +44,71 @@ class _FeedbackViewState extends State<FeedbackView>
         userName: _loggedInUser != null ? _loggedInUser.userName : "",
         email: _loggedInUser != null ? _loggedInUser.email : "",
       ),
-      body: Theme(
-        data: ThemeData(
-            inputDecorationTheme:
-                InputDecorationTheme(labelStyle: TextStyle(fontSize: 20.0))),
+      body: Container(
+        margin: EdgeInsets.all(16.0),
         child: Form(
             key: formKey,
             child: ListView(
               children: <Widget>[
-                Container(
-                  height: 100.0,
-                  width: 200.0,
-                  padding: EdgeInsets.only(top: 20.0),
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            fit: BoxFit.contain,
-                            image: AssetImage("assets/expense_tracker.jpg"))),
-                  ),
-                ),
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: "Message",
-                  ),
-                  controller: messageController,
-                  maxLines: 4,
-                  validator: (val) =>
-                      val.isEmpty ? 'Message can\'t be empty.' : null,
-                  onSaved: (val) => _message = val,
-                  keyboardType: TextInputType.text,
-                ),
-                Padding(
-                  padding: EdgeInsets.all(15.0),
-                  child: RaisedButton(
-                    onPressed: () {
-                      final form = formKey.currentState;
-                      if (form.validate()) {
-                        form.save();
-                        _presenter.feedback(ExpenseFeedback(message: _message));
-                      }
-                    },
-                    child: Text(
-                      "Submit Feedback",
-                      style: TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.bold),
-                    ),
-                    color: Theme.of(context).primaryColor,
-                    textColor: Colors.white,
-                  ),
-                ),
+                expenseTrackerLogo(),
+                feedBackMessageField(),
+                Container(padding: EdgeInsets.only(bottom: 25.0)),
+                submitButton(),
               ],
             )),
       ),
     );
+  }
+
+  Widget expenseTrackerLogo() {
+    return Container(
+      height: 100.0,
+      width: 200.0,
+      padding: EdgeInsets.only(top: 20.0),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.contain,
+                image: AssetImage("assets/expense_tracker.jpg"))),
+      ),
+    );
+  }
+
+  Widget feedBackMessageField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: "Feedback",
+        hintText: "Please provide your feedback"
+      ),
+      controller: messageController,
+      maxLines: 4,
+      validator: (val) => val.isEmpty ? 'Feedback can\'t be empty.' : null,
+      onSaved: (val) => _message = val,
+      keyboardType: TextInputType.text,
+    );
+  }
+
+  Widget submitButton() {
+    return RaisedButton(
+      onPressed: onSubmit,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
+        child: Text(
+          "Submit Feedback",
+          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+        ),
+      ),
+      color: Theme.of(context).primaryColor,
+      textColor: Colors.white,
+    );
+  }
+
+  void onSubmit() {
+    final form = formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      _presenter.feedback(ExpenseFeedback(message: _message));
+    }
   }
 
   @override
