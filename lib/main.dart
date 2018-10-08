@@ -13,10 +13,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        primarySwatch: Colors.teal,
+        primarySwatch: Colors.blue,
         inputDecorationTheme:
             InputDecorationTheme(labelStyle: TextStyle(fontSize: 20.0)),
-        buttonColor: Colors.teal,
+        buttonColor: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
       home: LoginView(),
