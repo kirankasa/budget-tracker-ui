@@ -16,7 +16,6 @@ class CategoryListView extends StatefulWidget {
 
 class _CategoryListState extends State<CategoryListView>
     implements CategoryListViewContract {
-  User _loggedInUser;
   CategoryPresenter _presenter;
 
   List<TransactionCategory> _categories;
@@ -30,11 +29,6 @@ class _CategoryListState extends State<CategoryListView>
   void initState() {
     super.initState();
     _isLoading = true;
-    SharedPreferencesHelper.getLoggedInValue().then((user) {
-      setState(() {
-        _loggedInUser = user;
-      });
-    });
     _presenter.loadTransactionCategories();
   }
 
@@ -55,10 +49,7 @@ class _CategoryListState extends State<CategoryListView>
       appBar: AppBar(
         title: Text('Categories'),
       ),
-      drawer: BudgetDrawer(
-        userName: _loggedInUser != null ? _loggedInUser.userName : "",
-        email: _loggedInUser != null ? _loggedInUser.email : "",
-      ),
+      drawer: BudgetDrawer(),
       body: widget,
       floatingActionButton:
           FloatingActionButton(child: Icon(Icons.add), onPressed: onAdd),

@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'package:budget_tracker/transaction/AmountPerCategory.dart';
 import 'package:budget_tracker/transaction/Transaction.dart';
+import 'package:budget_tracker/transaction/TransactionPage.dart';
 
 abstract class TransactionRepository {
-  Future<List<Transaction>> retrieveTransactions();
+  Future<TransactionPage> retrieveTransactions();
 
   Future<Transaction> retrieveTransactionDetails(String transactionId);
 

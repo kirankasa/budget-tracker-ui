@@ -6,7 +6,6 @@ import 'package:budget_tracker/user/User.dart';
 import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
-
 class AmountPerCategoryChart extends StatefulWidget {
   @override
   _AmountPerCategoryChartState createState() => _AmountPerCategoryChartState();
@@ -16,7 +15,6 @@ class _AmountPerCategoryChartState extends State<AmountPerCategoryChart>
     implements AmountPerCategoryViewContract {
   AmountPerCategoryViewPresenter _presenter;
   bool _isLoading;
-  User _loggedInUser;
   String _selectedMonth;
   String _selectedYear;
   String _transactionType;
@@ -30,11 +28,6 @@ class _AmountPerCategoryChartState extends State<AmountPerCategoryChart>
   initState() {
     super.initState();
     _isLoading = true;
-    SharedPreferencesHelper.getLoggedInValue().then((user) {
-      setState(() {
-        _loggedInUser = user;
-      });
-    });
     _selectedMonth = '${DateTime.now().month}';
     print(_selectedMonth);
     _selectedYear = '${DateTime.now().year}';
@@ -67,10 +60,7 @@ class _AmountPerCategoryChartState extends State<AmountPerCategoryChart>
       appBar: AppBar(
         title: Text('Expense Report'),
       ),
-      drawer: BudgetDrawer(
-        userName: _loggedInUser != null ? _loggedInUser.userName : "",
-        email: _loggedInUser != null ? _loggedInUser.email : "",
-      ),
+      drawer: BudgetDrawer(),
       body: widget,
     );
   }
@@ -82,14 +72,26 @@ class _AmountPerCategoryChartState extends State<AmountPerCategoryChart>
         child: DropdownButton<String>(
             hint: Text("Select Month"),
             isDense: true,
-            items: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
-                .map((String month) {
+            items: [
+              '01',
+              '02',
+              '03',
+              '04',
+              '05',
+              '06',
+              '07',
+              '08',
+              '09',
+              '10',
+              '11',
+              '12'
+            ].map((String month) {
               return DropdownMenuItem<String>(
                 child: Text(month),
                 value: month,
               );
             }).toList(),
-             value: _selectedMonth,
+            value: _selectedMonth,
             onChanged: (String month) {
               setState(() {
                 if (month != null) {

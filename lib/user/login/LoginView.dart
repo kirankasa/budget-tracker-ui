@@ -66,7 +66,7 @@ class _LoginViewState extends State<LoginView> implements LoginViewContract {
   @override
   void navigateToTransactionsListPage() {
     Navigator.of(context).pushNamedAndRemoveUntil(
-        "/transactions", (Route<dynamic> route) => false);
+        "/categories", (Route<dynamic> route) => false);
   }
 
   @override

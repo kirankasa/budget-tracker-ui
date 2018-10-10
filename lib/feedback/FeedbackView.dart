@@ -12,7 +12,6 @@ class FeedbackView extends StatefulWidget {
 
 class _FeedbackViewState extends State<FeedbackView>
     implements FeedbackViewContract {
-  User _loggedInUser;
   String _message;
   TextEditingController messageController = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -26,11 +25,6 @@ class _FeedbackViewState extends State<FeedbackView>
   @override
   void initState() {
     super.initState();
-    SharedPreferencesHelper.getLoggedInValue().then((user) {
-      setState(() {
-        _loggedInUser = user;
-      });
-    });
   }
 
   @override
@@ -40,10 +34,7 @@ class _FeedbackViewState extends State<FeedbackView>
       appBar: AppBar(
         title: Text("Feedback"),
       ),
-      drawer: BudgetDrawer(
-        userName: _loggedInUser != null ? _loggedInUser.userName : "",
-        email: _loggedInUser != null ? _loggedInUser.email : "",
-      ),
+      drawer: BudgetDrawer(),
       body: Container(
         margin: EdgeInsets.all(16.0),
         child: Form(
@@ -77,9 +68,7 @@ class _FeedbackViewState extends State<FeedbackView>
   Widget feedBackMessageField() {
     return TextFormField(
       decoration: InputDecoration(
-        labelText: "Feedback",
-        hintText: "Please provide your feedback"
-      ),
+          labelText: "Feedback", hintText: "Please provide your feedback"),
       controller: messageController,
       maxLines: 4,
       validator: (val) => val.isEmpty ? 'Feedback can\'t be empty.' : null,

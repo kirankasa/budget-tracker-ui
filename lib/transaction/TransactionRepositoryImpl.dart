@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:budget_tracker/common/SharedPreferencesHelper.dart';
 import 'package:budget_tracker/transaction/AmountPerCategory.dart';
+import 'package:budget_tracker/transaction/TransactionPage.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:budget_tracker/common/exception/CommonExceptions.dart';
@@ -12,7 +13,7 @@ import 'package:budget_tracker/common/constants.dart';
 
 class TransactionRepositoryImpl implements TransactionRepository {
   @override
-  Future<List<Transaction>> retrieveTransactions() async {
+  Future<TransactionPage> retrieveTransactions() async {
     String _token = await SharedPreferencesHelper.getTokenValue();
     var response = await http.get(transactions_url,
         headers: {HttpHeaders.authorizationHeader: _token});
@@ -22,10 +23,8 @@ class TransactionRepositoryImpl implements TransactionRepository {
       throw FetchDataException(
           "Error while retriveing transactions [StatusCode:$statusCode, Error:${response.reasonPhrase}]");
     }
-    final List transactions = json.decode(response.body);
-    return transactions
-        .map((transaction) => Transaction.fromJson(transaction))
-        .toList();
+    var transactionPage = json.decode(response.body);
+    return TransactionPage.fromJson(transactionPage);
   }
 
   @override

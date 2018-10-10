@@ -1,10 +1,11 @@
+import 'dart:async';
+
 import 'package:budget_tracker/transaction/Transaction.dart';
+import 'package:budget_tracker/transaction/TransactionPage.dart';
 import 'package:budget_tracker/transaction/TransactionRepository.dart';
 import 'package:budget_tracker/common/di/injection.dart';
 
 abstract class TransactionListViewContract {
-  void showTransactionList(List<Transaction> transactions);
-
   void showError();
 }
 
@@ -16,16 +17,8 @@ class TransactionListPresenter {
     _repository = Injector().transactionRepository;
   }
 
-  void loadTransactions() {
-    assert(_view != null);
-
-    _repository
-        .retrieveTransactions()
-        .then((transactions) => _view.showTransactionList(transactions))
-        .catchError((onError) {
-      print(onError);
-      _view.showError();
-    });
+  Future<TransactionPage> loadTransactions() {
+  return  _repository.retrieveTransactions();
   }
 
   void deleteTransaction(String transactionId) {

@@ -17,7 +17,6 @@ class TransactionListView extends StatefulWidget {
 
 class _TransactionListState extends State<TransactionListView>
     implements TransactionListViewContract {
-  User _loggedInUser;
   TransactionListPresenter _presenter;
   List<Transaction> _transactions;
   bool _isLoading;
@@ -30,11 +29,6 @@ class _TransactionListState extends State<TransactionListView>
   void initState() {
     super.initState();
     _isLoading = true;
-    SharedPreferencesHelper.getLoggedInValue().then((user) {
-      setState(() {
-        _loggedInUser = user;
-      });
-    });
     _presenter.loadTransactions();
   }
 
@@ -58,10 +52,7 @@ class _TransactionListState extends State<TransactionListView>
       appBar: AppBar(
         title: Text('Transactions'),
       ),
-      drawer: BudgetDrawer(
-        userName: _loggedInUser != null ? _loggedInUser.userName : "",
-        email: _loggedInUser != null ? _loggedInUser.email : "",
-      ),
+      drawer: BudgetDrawer(),
       body: widget,
       floatingActionButton:
           FloatingActionButton(child: Icon(Icons.add), onPressed: onAdd),
@@ -76,14 +67,6 @@ class _TransactionListState extends State<TransactionListView>
   onAdd() {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => AddTransactionView()));
-  }
-
-  @override
-  void showTransactionList(List<Transaction> transactions) {
-    setState(() {
-      _transactions = transactions;
-      _isLoading = false;
-    });
   }
 
   List<Dismissible> _buildTransactionList(BuildContext context) {
