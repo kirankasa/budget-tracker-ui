@@ -1,14 +1,14 @@
+import 'package:budget_tracker/common/di/injection.dart';
 import 'package:budget_tracker/common/ui/BudgetDrawer.dart';
 import 'package:budget_tracker/transaction/Transaction.dart';
 import 'package:budget_tracker/transaction/TransactionPage.dart';
 import 'package:budget_tracker/transaction/add/AddTransactionView.dart';
-import 'package:budget_tracker/transaction/list/TransactionListPresenter.dart';
 import 'package:budget_tracker/transaction/update/UpdateTransactionView.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TransactionListView extends StatelessWidget {
-  final _presenter = TransactionListPresenter();
+  final _repository = Injector().transactionRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -17,18 +17,21 @@ class TransactionListView extends StatelessWidget {
         title: Text('Transactions'),
       ),
       drawer: BudgetDrawer(),
-      body: FutureBuilder<TransactionPage>(
-        builder:
-            ((BuildContext context, AsyncSnapshot<TransactionPage> snapshot) {
-          if (snapshot.hasData) {
-            return ListView(
-                children:
-                    _buildTransactionList(context, snapshot.data.transactions));
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        }),
-        future: _presenter.loadTransactions(),
+      body: Container(
+        margin: EdgeInsets.all(16.0),
+        child: FutureBuilder<TransactionPage>(
+          builder:
+              ((BuildContext context, AsyncSnapshot<TransactionPage> snapshot) {
+            if (snapshot.hasData) {
+              return ListView(
+                  children: _buildTransactionList(
+                      context, snapshot.data.transactions));
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          }),
+          future: _repository.retrieveTransactions(),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add), onPressed: () => onAdd(context)),
@@ -46,7 +49,7 @@ class TransactionListView extends StatelessWidget {
         .map((transaction) => Dismissible(
             key: Key(transaction.id.toString()),
             onDismissed: (direction) {
-              _presenter.deleteTransaction(transaction.id);
+              _repository.deleteTransaction(transaction.id);
               transactions.remove(transaction);
               Scaffold.of(context)
                   .showSnackBar(SnackBar(content: Text("Transaction deleted")));
