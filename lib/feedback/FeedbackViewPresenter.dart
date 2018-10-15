@@ -11,7 +11,7 @@ class FeedbackViewPresenter {
   FeedbackViewContract _view;
   FeedbackRepository _repository;
   FeedbackViewPresenter(this._view) {
-    _repository = new Injector().feedbackRepository;
+    _repository =  Injector().feedbackRepository;
   }
 
   void feedback(ExpenseFeedback feedback) {

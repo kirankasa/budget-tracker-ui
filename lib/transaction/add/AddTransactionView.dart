@@ -26,7 +26,7 @@ class _AddTransactionState extends State<AddTransactionView>
   AddTransactionPresenter _presenter;
   List<TransactionCategory> _categories;
   final formKey = GlobalKey<FormState>();
-  final TextEditingController _controller = new TextEditingController();
+  final TextEditingController _controller =  TextEditingController();
 
   @override
   initState() {
@@ -67,7 +67,7 @@ class _AddTransactionState extends State<AddTransactionView>
   }
 
   Future _selectDate(BuildContext context, String initialDateString) async {
-    var now = new DateTime.now();
+    var now =  DateTime.now();
     var initialDate = DateUtil.convertToDate(initialDateString) ?? now;
     initialDate = (initialDate.year >= 1900 && initialDate.isBefore(now)
         ? initialDate
@@ -76,13 +76,13 @@ class _AddTransactionState extends State<AddTransactionView>
     var result = await showDatePicker(
         context: context,
         initialDate: initialDate,
-        firstDate: new DateTime(1900),
-        lastDate: new DateTime.now());
+        firstDate:  DateTime(1900),
+        lastDate:  DateTime.now());
 
     if (result == null) return;
 
     setState(() {
-      _controller.text = new DateFormat.yMd().format(result);
+      _controller.text =  DateFormat.yMd().format(result);
     });
   }
 
@@ -171,20 +171,20 @@ class _AddTransactionState extends State<AddTransactionView>
   }
 
   Widget transactionDateField() {
-    return new Row(children: <Widget>[
-      new Expanded(
-          child: new TextFormField(
+    return  Row(children: <Widget>[
+       Expanded(
+          child:  TextFormField(
         validator: (val) =>
             DateUtil.isValidDate(val) ? null : 'Not a valid date',
-        decoration: new InputDecoration(
+        decoration:  InputDecoration(
           hintText: 'Enter transaction date',
           labelText: 'Transaction date',
         ),
         controller: _controller,
         keyboardType: TextInputType.datetime,
       )),
-      new IconButton(
-        icon: new Icon(Icons.date_range),
+       IconButton(
+        icon:  Icon(Icons.date_range),
         tooltip: 'Choose date',
         onPressed: (() {
           _selectDate(context, _controller.text);

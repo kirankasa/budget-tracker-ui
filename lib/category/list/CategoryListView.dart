@@ -1,11 +1,9 @@
 import 'package:budget_tracker/category/Category.dart';
 import 'package:budget_tracker/category/add/AddCategoryView.dart';
-import 'package:budget_tracker/category/update/UpdateCategoryView.dart';
-import 'package:budget_tracker/common/SharedPreferencesHelper.dart';
-import 'package:budget_tracker/common/ui/BudgetDrawer.dart';
-import 'package:budget_tracker/user/User.dart';
-import 'package:flutter/material.dart';
 import 'package:budget_tracker/category/list/CategoryListPresenter.dart';
+import 'package:budget_tracker/category/update/UpdateCategoryView.dart';
+import 'package:budget_tracker/common/ui/BudgetDrawer.dart';
+import 'package:flutter/material.dart';
 
 class CategoryListView extends StatefulWidget {
   CategoryListView({Key key}) : super(key: key);

@@ -1,10 +1,8 @@
-import 'package:budget_tracker/common/SharedPreferencesHelper.dart';
 import 'package:budget_tracker/common/ui/BudgetDrawer.dart';
 import 'package:budget_tracker/transaction/AmountPerCategory.dart';
 import 'package:budget_tracker/transaction/report/AmountPerCategoryPresenter.dart';
-import 'package:budget_tracker/user/User.dart';
-import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:flutter/material.dart';
 
 class AmountPerCategoryChart extends StatefulWidget {
   @override
@@ -167,9 +165,9 @@ class _AmountPerCategoryChartState extends State<AmountPerCategoryChart>
   Widget pieChart(chartSeries) {
     return charts.PieChart(chartSeries,
         animate: true,
-        defaultRenderer: new charts.ArcRendererConfig(
+        defaultRenderer:  charts.ArcRendererConfig(
             arcWidth: 100,
-            arcRendererDecorators: [new charts.ArcLabelDecorator()]));
+            arcRendererDecorators: [ charts.ArcLabelDecorator()]));
   }
 
   @override

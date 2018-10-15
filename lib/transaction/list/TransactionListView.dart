@@ -1,81 +1,53 @@
-import 'package:budget_tracker/common/SharedPreferencesHelper.dart';
 import 'package:budget_tracker/common/ui/BudgetDrawer.dart';
 import 'package:budget_tracker/transaction/Transaction.dart';
+import 'package:budget_tracker/transaction/TransactionPage.dart';
 import 'package:budget_tracker/transaction/add/AddTransactionView.dart';
 import 'package:budget_tracker/transaction/list/TransactionListPresenter.dart';
 import 'package:budget_tracker/transaction/update/UpdateTransactionView.dart';
-import 'package:budget_tracker/user/User.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class TransactionListView extends StatefulWidget {
-  TransactionListView({Key key}) : super(key: key);
-
-  @override
-  _TransactionListState createState() => _TransactionListState();
-}
-
-class _TransactionListState extends State<TransactionListView>
-    implements TransactionListViewContract {
-  TransactionListPresenter _presenter;
-  List<Transaction> _transactions;
-  bool _isLoading;
-
-  _TransactionListState() {
-    _presenter = TransactionListPresenter(this);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _isLoading = true;
-    _presenter.loadTransactions();
-  }
+class TransactionListView extends StatelessWidget {
+  final _presenter = TransactionListPresenter();
 
   @override
   Widget build(BuildContext context) {
-    var widget;
-
-    if (_isLoading) {
-      widget = Center(child: CircularProgressIndicator());
-    } else {
-      widget = Builder(
-        builder: (BuildContext context) {
-          return Container(
-            margin: EdgeInsets.all(16.0),
-            child: ListView(children: _buildTransactionList(context)),
-          );
-        },
-      );
-    }
     return Scaffold(
       appBar: AppBar(
         title: Text('Transactions'),
       ),
       drawer: BudgetDrawer(),
-      body: widget,
-      floatingActionButton:
-          FloatingActionButton(child: Icon(Icons.add), onPressed: onAdd),
+      body: FutureBuilder<TransactionPage>(
+        builder:
+            ((BuildContext context, AsyncSnapshot<TransactionPage> snapshot) {
+          if (snapshot.hasData) {
+            return ListView(
+                children:
+                    _buildTransactionList(context, snapshot.data.transactions));
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        }),
+        future: _presenter.loadTransactions(),
+      ),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add), onPressed: () => onAdd(context)),
     );
   }
 
-  @override
-  void showError() {
-    // TODO: implement showError
-  }
-
-  onAdd() {
+  onAdd(context) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => AddTransactionView()));
   }
 
-  List<Dismissible> _buildTransactionList(BuildContext context) {
-    return _transactions
+  List<Dismissible> _buildTransactionList(
+      BuildContext context, List<Transaction> transactions) {
+    return transactions
         .map((transaction) => Dismissible(
             key: Key(transaction.id.toString()),
             onDismissed: (direction) {
               _presenter.deleteTransaction(transaction.id);
-              _transactions.remove(transaction);
+              transactions.remove(transaction);
               Scaffold.of(context)
                   .showSnackBar(SnackBar(content: Text("Transaction deleted")));
             },

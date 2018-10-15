@@ -4,17 +4,20 @@ import 'dart:io';
 import 'package:budget_tracker/common/SharedPreferencesHelper.dart';
 import 'package:budget_tracker/feedback/Feedback.dart';
 import 'package:budget_tracker/feedback/FeedbackRepository.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart' show Client;
 
 import 'package:budget_tracker/common/exception/CommonExceptions.dart';
 import 'package:budget_tracker/common/constants.dart';
 
 class FeedbackRepositoryImpl implements FeedbackRepository {
+
+  Client client = Client();
+
   @override
   Future<String> feedback(ExpenseFeedback feedback) async {
     String _token = await SharedPreferencesHelper.getTokenValue();
     String requestJson = json.encode(feedback);
-    var response = await http.post(feedback_url, body: requestJson, headers: {
+    var response = await client.post(feedback_url, body: requestJson, headers: {
       HttpHeaders.contentTypeHeader: 'application/json',
       HttpHeaders.authorizationHeader: _token
     });

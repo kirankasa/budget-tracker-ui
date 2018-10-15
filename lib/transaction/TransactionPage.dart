@@ -13,7 +13,8 @@ class TransactionPage {
       totalPages: json['totalPages'],
       transactions: json['content']
           .map((transaction) => Transaction.fromJson(transaction))
-          .toList(),
+          .toList()
+          .cast<Transaction>(),
     );
   }
 }

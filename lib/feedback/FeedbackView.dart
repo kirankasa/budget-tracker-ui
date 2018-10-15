@@ -1,8 +1,6 @@
-import 'package:budget_tracker/common/SharedPreferencesHelper.dart';
 import 'package:budget_tracker/common/ui/BudgetDrawer.dart';
-import 'package:budget_tracker/feedback/FeedbackViewPresenter.dart';
 import 'package:budget_tracker/feedback/Feedback.dart';
-import 'package:budget_tracker/user/User.dart';
+import 'package:budget_tracker/feedback/FeedbackViewPresenter.dart';
 import 'package:flutter/material.dart';
 
 class FeedbackView extends StatefulWidget {

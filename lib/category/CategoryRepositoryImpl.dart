@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:budget_tracker/common/SharedPreferencesHelper.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart' show Client;
 
 import 'package:budget_tracker/common/exception/CommonExceptions.dart';
 import 'package:budget_tracker/category/Category.dart';
@@ -10,10 +10,13 @@ import 'package:budget_tracker/category/CategoryRepository.dart';
 import 'package:budget_tracker/common/constants.dart';
 
 class CategoryRepositoryImpl implements CategoryRepository {
+
+  Client client = Client();
+
   @override
   Future<List<TransactionCategory>> retrieveTransactionCategories() async {
     String _token = await SharedPreferencesHelper.getTokenValue();
-    var response = await http.get(
+    var response = await client.get(
       categories_url,
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
@@ -37,7 +40,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
   @override
   Future<TransactionCategory> retrieveTransactionCategoryDetails(String id) async {
     String _token = await SharedPreferencesHelper.getTokenValue();
-    var response = await http.get(categories_url + "/" + id.toString(),
+    var response = await client.get(categories_url + "/" + id.toString(),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.authorizationHeader: _token
@@ -60,7 +63,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
       TransactionCategory transactionCategory) async {
     String _token = await SharedPreferencesHelper.getTokenValue();
     String requestJson = json.encode(transactionCategory);
-    var response = await http.post(categories_url, body: requestJson, headers: {
+    var response = await client.post(categories_url, body: requestJson, headers: {
       HttpHeaders.contentTypeHeader: 'application/json',
       HttpHeaders.authorizationHeader: _token
     });
@@ -80,7 +83,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
       TransactionCategory transactionCategory) async {
     String _token = await SharedPreferencesHelper.getTokenValue();
     String requestJson = json.encode(transactionCategory);
-    var response = await http.put(
+    var response = await client.put(
         categories_url + "/" + transactionCategory.id.toString(),
         body: requestJson,
         headers: {

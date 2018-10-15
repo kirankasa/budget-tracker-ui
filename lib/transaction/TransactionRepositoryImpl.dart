@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:budget_tracker/common/SharedPreferencesHelper.dart';
 import 'package:budget_tracker/transaction/AmountPerCategory.dart';
 import 'package:budget_tracker/transaction/TransactionPage.dart';
-import 'package:http/http.dart' as http;
+import 'package:http/http.dart' show Client;
 
 import 'package:budget_tracker/common/exception/CommonExceptions.dart';
 import 'package:budget_tracker/transaction/Transaction.dart';
@@ -12,10 +12,13 @@ import 'package:budget_tracker/transaction/TransactionRepository.dart';
 import 'package:budget_tracker/common/constants.dart';
 
 class TransactionRepositoryImpl implements TransactionRepository {
+
+  Client client = Client();
+
   @override
   Future<TransactionPage> retrieveTransactions() async {
     String _token = await SharedPreferencesHelper.getTokenValue();
-    var response = await http.get(transactions_url,
+    var response = await client.get(transactions_url,
         headers: {HttpHeaders.authorizationHeader: _token});
     final String jsonBody = response.body;
     final statusCode = response.statusCode;
@@ -30,7 +33,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
   @override
   Future<Transaction> retrieveTransactionDetails(String transactionId) async {
     String _token = await SharedPreferencesHelper.getTokenValue();
-    var response = await http.get(
+    var response = await client.get(
         transactions_url + "/" + transactionId.toString(),
         headers: {HttpHeaders.authorizationHeader: _token});
     final String jsonBody = response.body;
@@ -48,7 +51,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
     String _token = await SharedPreferencesHelper.getTokenValue();
     String requestJson = json.encode(transaction);
     var response =
-        await http.post(transactions_url, body: requestJson, headers: {
+        await client.post(transactions_url, body: requestJson, headers: {
       HttpHeaders.contentTypeHeader: 'application/json',
       HttpHeaders.authorizationHeader: _token
     });
@@ -66,7 +69,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
   Future<Transaction> updateTransaction(Transaction transaction) async {
     String _token = await SharedPreferencesHelper.getTokenValue();
     String requestJson = json.encode(transaction);
-    var response = await http.put(
+    var response = await client.put(
         transactions_url + "/" + transaction.id.toString(),
         body: requestJson,
         headers: {
@@ -86,7 +89,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
   @override
   Future<Null> deleteTransaction(String transactionId) async {
     String _token = await SharedPreferencesHelper.getTokenValue();
-    var response = await http
+    var response = await client
         .delete(transactions_url + "/" + transactionId.toString(), headers: {
       HttpHeaders.contentTypeHeader: 'application/json',
       HttpHeaders.authorizationHeader: _token
@@ -114,7 +117,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
         path: "transactions/amountPerCategory",
         queryParameters: queryParameters);
     var response =
-        await http.get(uri, headers: {HttpHeaders.authorizationHeader: _token});
+        await client.get(uri, headers: {HttpHeaders.authorizationHeader: _token});
     final String jsonBody = response.body;
     final statusCode = response.statusCode;
     if (statusCode < 200 || statusCode >= 300 || jsonBody == null) {

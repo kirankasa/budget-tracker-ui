@@ -19,7 +19,7 @@ class LoginViewPresenter {
   UserRepository _repository;
 
   LoginViewPresenter(this._view) {
-    _repository = new Injector().userRepository;
+    _repository = Injector().userRepository;
   }
 
   Future login(AuthenticationRequest authenticationRequest) async {
