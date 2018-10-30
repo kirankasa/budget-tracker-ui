@@ -1,54 +1,28 @@
-import 'package:budget_tracker/user/AuthenticationRequest.dart';
-import 'package:budget_tracker/user/login/LoginViewPresenter.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import '../../user/login/LoginBloc.dart';
 
-class LoginView extends StatefulWidget {
-  @override
-  _LoginViewState createState() => _LoginViewState();
-}
-
-class _LoginViewState extends State<LoginView> implements LoginViewContract {
-  String _username;
-  String _password;
-  final formKey = GlobalKey<FormState>();
-  LoginViewPresenter _presenter;
-
-  _LoginViewState() {
-    _presenter = LoginViewPresenter(this);
-  }
-
+class LoginView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
       margin: EdgeInsets.all(16.0),
-      child: Form(
-        key: formKey,
-        child: ListView(
-          children: <Widget>[
-            expenseTrackerLogo(),
-            userNameField(),
-            passwordField(),
-            Container(padding: EdgeInsets.only(bottom: 25.0)),
-            loginButton(),
-            Container(padding: EdgeInsets.only(bottom: 40.0)),
-            Center(child: signUpLink()),
-          ],
-        ),
+      child: ListView(
+        children: <Widget>[
+          expenseTrackerLogo(),
+          emailField(),
+          passwordField(),
+          Container(padding: EdgeInsets.only(bottom: 25.0)),
+          loginButton(),
+          Container(padding: EdgeInsets.only(bottom: 40.0)),
+          Center(child: signUpLink()),
+        ],
       ),
     ));
   }
 
-  void _showDialog() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return errorDialog();
-        });
-  }
-
-  Widget errorDialog() {
+  Widget errorDialog(BuildContext context) {
     return AlertDialog(
       title: Text("Login Error"),
       content: Text("Invalid Username or Password"),
@@ -63,49 +37,43 @@ class _LoginViewState extends State<LoginView> implements LoginViewContract {
     );
   }
 
-  @override
   void navigateToTransactionsListPage() {
-    Navigator.of(context).pushNamedAndRemoveUntil(
-        "/categories", (Route<dynamic> route) => false);
+    /* Navigator.of(context).pushNamedAndRemoveUntil(
+        "/categories", (Route<dynamic> route) => false);*/
   }
 
-  @override
-  void showError() {
-    setState(() {
-      _showDialog();
-    });
-  }
-
-  onLogin() {
-    final form = formKey.currentState;
-    if (form.validate()) {
-      form.save();
-      _presenter.login(
-          AuthenticationRequest(userName: _username, password: _password));
-    }
-  }
-
-  onSignUp() {
+  onSignUp(context) {
     Navigator.of(context)
         .pushNamedAndRemoveUntil("/signup", (Route<dynamic> route) => false);
   }
 
-  Widget userNameField() {
-    return TextFormField(
-      decoration: InputDecoration(
-        labelText: "Username",
-      ),
-      validator: (val) => val.isEmpty ? 'Username can\'t be empty.' : null,
-      onSaved: (val) => _username = val,
+  Widget emailField() {
+    return StreamBuilder(
+      stream: loginBloc.email,
+      builder: (context, snapshot) {
+        return TextField(
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+              labelText: "Email",
+              hintText: "you@example.com",
+              errorText: snapshot.error),
+          onChanged: loginBloc.changeEmail,
+        );
+      },
     );
   }
 
   Widget passwordField() {
-    return TextFormField(
-      decoration: InputDecoration(labelText: "Password"),
-      obscureText: true,
-      validator: (val) => val.isEmpty ? 'Password can\'t be empty.' : null,
-      onSaved: (val) => _password = val,
+    return StreamBuilder(
+      stream: loginBloc.password,
+      builder: (context, snapshot) {
+        return TextField(
+          obscureText: true,
+          decoration:
+              InputDecoration(labelText: "Password", errorText: snapshot.error),
+          onChanged: loginBloc.changePassword,
+        );
+      },
     );
   }
 
@@ -120,18 +88,40 @@ class _LoginViewState extends State<LoginView> implements LoginViewContract {
   }
 
   Widget loginButton() {
-    return RaisedButton(
-      highlightColor: Colors.cyan,
-      onPressed: onLogin,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
-        child: Text(
-          "Login",
-          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-        ),
-      ),
-      textColor: Colors.white,
-    );
+    return StreamBuilder(
+        stream: loginBloc.submitValid,
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+          return RaisedButton(
+            highlightColor: Colors.cyan,
+            onPressed: snapshot.hasData
+                ? () => loginBloc.login(
+                      onError: () => onError(context),
+                      onSuccess: () => onSuccess(context),
+                    )
+                : null,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 12.0, bottom: 12.0),
+              child: Text(
+                "Login",
+                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+              ),
+            ),
+            textColor: Colors.white,
+          );
+        });
+  }
+
+  onSuccess(context) {
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil("/signup", (Route<dynamic> route) => false);
+  }
+
+  onError(context) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return errorDialog(context);
+        });
   }
 
   Widget signUpLink() {
@@ -144,7 +134,7 @@ class _LoginViewState extends State<LoginView> implements LoginViewContract {
         TextSpan(
           text: 'Sign up',
           style: TextStyle(color: Colors.blue),
-          recognizer: TapGestureRecognizer()..onTap = onSignUp,
+          recognizer: TapGestureRecognizer()..onTap = () => onSignUp(onSignUp),
         )
       ]),
     );
