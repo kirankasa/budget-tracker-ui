@@ -16,7 +16,7 @@ class LoginView extends StatelessWidget {
           Container(padding: EdgeInsets.only(bottom: 25.0)),
           loginButton(),
           Container(padding: EdgeInsets.only(bottom: 40.0)),
-          Center(child: signUpLink()),
+          Center(child: signUpLink(context)),
         ],
       ),
     ));
@@ -77,16 +77,6 @@ class LoginView extends StatelessWidget {
     );
   }
 
-  Widget errorMessageWidget() {
-    return Center(
-      child: Text(
-        "Invalid username or password",
-        style: TextStyle(
-            fontSize: 20.0, color: Colors.red, fontStyle: FontStyle.italic),
-      ),
-    );
-  }
-
   Widget loginButton() {
     return StreamBuilder(
         stream: loginBloc.submitValid,
@@ -124,7 +114,7 @@ class LoginView extends StatelessWidget {
         });
   }
 
-  Widget signUpLink() {
+  Widget signUpLink(context) {
     return RichText(
       text: TextSpan(children: [
         TextSpan(
@@ -134,7 +124,7 @@ class LoginView extends StatelessWidget {
         TextSpan(
           text: 'Sign up',
           style: TextStyle(color: Colors.blue),
-          recognizer: TapGestureRecognizer()..onTap = () => onSignUp(onSignUp),
+          recognizer: TapGestureRecognizer()..onTap = () => onSignUp(context),
         )
       ]),
     );

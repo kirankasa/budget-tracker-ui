@@ -18,7 +18,7 @@ class AuthenticationApiProvider {
     return fireBaseUser;
   }
 
-  Future<String> getIdToken(String email, String password) async {
+  Future<String> getIdToken() async {
     FirebaseUser fireBaseUser = await FirebaseAuth.instance.currentUser();
     String token = await fireBaseUser.getIdToken();
     return token;

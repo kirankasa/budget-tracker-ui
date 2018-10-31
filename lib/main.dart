@@ -3,7 +3,7 @@ import 'package:budget_tracker/feedback/FeedbackView.dart';
 import 'package:budget_tracker/transaction/list/TransactionListView.dart';
 import 'package:budget_tracker/transaction/report/AmountCategoryChart.dart';
 import 'package:budget_tracker/user/login/LoginView.dart';
-import 'package:budget_tracker/user/signup/SignUpView.dart';
+import 'package:budget_tracker/user/signup/sign_up_view.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
